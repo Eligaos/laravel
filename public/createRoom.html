@@ -8,33 +8,41 @@
 <div>
     <label>Total Lines: {{ngDialogData.linesSlider.value}}</label>
     <rzslider rz-slider-model="ngDialogData.linesSlider.value"  rz-slider-options="ngDialogData.linesSlider.options" rz-slider-hide-limit-labels="false"></rzslider>
-    <span class="error" id="ngDialogData.msgError_Lines"> {{ngDialogData.msgErrorLines}}</span>
+    <span class="error" id="msgError_Lines"> {{ngDialogData.msgErrorLines}}</span>
 </div>
 
 <div>
     <label>Total Columns: {{ngDialogData.columnSlider.value}} </label>
     <rzslider rz-slider-model="ngDialogData.columnSlider.value"  rz-slider-options="ngDialogData.columnSlider.options" rz-slider-hide-limit-labels="true"></rzslider>
-    <span class="error" id="ngDialogData.msgError_Cols">{{ngDialogData.msgErrorCols}}</span>
+    <span class="error" id="msgError_Cols">{{ngDialogData.msgErrorCols}}</span>
 </div>
-<label>Nº Players: {{ngDialogData.players}}</label>
-<input type="number" name = "nrPlayer">
+<label>Nº Players:</label>
+<input type="number" id="nrPlayer" ng-model="ngDialogData.playerValue" min="0" required>
+<span class="error" id="msgError_Players">{{ngDialogData.msgErrorPlayers}}</span>
 <br>
 <label>Game Visibility:</label>
-
 <br>
-<form>
-    <input type="radio" name="visibility" value="private" ng-show=''> Private
+<form required>
+    <input type="radio" id="private" value="private" ng-model = "ngDialogData.content"> Private
     <br>
-        <div ng-show='private'>
+        <div ng-show="ngDialogData.content == 'private'">
             <label>Token: </label>
-            <input type="text" name="token" disabled>
+            <input type="text" id="token" disabled>
             <button type="button">Copy</button>
         </div>
-    <input type="radio" name="visibility" value="public"> Public
+    <input type="radio" id="public" value="public" ng-model="ngDialogData.content"> Public
 </form>
+<span class="error" id="msgError_Visibility">{{ngDialogData.msgErrorVis}}</span>
 <br>
 <form action="">
-    <input type="checkbox" name="bots" value="Bots">Play with Bots?
+    <input type="checkbox" id="bots" value="bots" ng-model="ngDialogData.bot">Play with Bots?
+    <div ng-show="ngDialogData.bot">
+        <label>Bots:</label>
+        <input type="number" id = "nrBots" ng-model="ngDialogData.nrBots" min="0" required>
+    </div>
+    <span class="error" id="msgError_Bot">{{ngDialogData.msgErrorBot}}</span>
 </form>
+<button type="button" ng-click="ngDialogData.createGame()">Create</button>
+<button type="button" ng-click="closeThisDialog('cancel')">Cancel</button>
 </body>
 </html>

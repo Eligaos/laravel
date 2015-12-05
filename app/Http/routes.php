@@ -19,7 +19,7 @@ Route::get('game', function () {
 });
 
 Route::get('gameLobby', function () {
-    dd($user);
+   
 
     return view('gameLobby');
 });

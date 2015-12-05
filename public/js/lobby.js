@@ -28,7 +28,7 @@
 	function gameLobbyController($scope,$log, ngDialog) {
 
         $scope.linesSlider = {
-            value: 0,
+            value: 2,
             options: {
                 floor: 2,
                 ceil: 10,
@@ -37,7 +37,7 @@
             }
         };
         $scope.columnSlider = {
-            value: 0,
+            value: 2,
             options: {
                 floor: 2,
                 ceil: 10,
@@ -45,6 +45,31 @@
                 disabled: false
             }
         }
+
+		$scope.createGame = function(){
+			if($scope.check($scope.linesSlider.value, $scope.linesSlider.value)){
+				if(!($scope.playerValue <= ($scope.linesSlider.value*$scope.linesSlider.value/2))){
+					$scope.msgErrorPlayers = "Insert correct number of players";
+					if(!($scope.content != undefined)){
+						$scope.msgErrorVis = "Select Game Visibility";
+						console.log($scope.bot )
+						if($scope.bot == true){
+							console.log($scope.nrBots )
+							console.log($scope.playerValue )
+							if($scope.nrBots < $scope.playerValue){
+							$scope.msgErrorBot = "Insert number of bots";
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$scope.resetErrors = function(){
+			$scope.msgErrorPlayers = "";
+			$scope.msgErrorVis = "";
+			$scope.msgErrorBot = "";
+		}
 
 		$scope.createRoom = function () {
             ngDialog.open({
@@ -55,7 +80,10 @@
 				closeByDocument: false,
 				preCloseCallback: function (value)
                 {
-                    console.log("asd")
+					if(value=="cancel"){
+						$scope.linesSlider.value=2;
+						$scope.columnSlider.value=2;
+					}
                 }
 			});
 		}
@@ -72,6 +100,8 @@
                 $scope.msgErrorCols = "Game cannot have an odd number of tiles"
                 return false;
             }
+			$scope.msgErrorLines = "";
+			$scope.msgErrorCols = ""
             return true;
         }
 
