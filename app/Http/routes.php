@@ -19,7 +19,7 @@ Route::get('game', function () {
 });
 
 Route::get('gameLobby', function () {
-   
+
 
     return view('gameLobby');
 });
@@ -27,6 +27,7 @@ Route::get('gameLobby', function () {
 // Authentication routes...
 Route::any('login', 'LoginRegisterController@showLoginView');
 Route::post('login/confirmation', ['as' => 'login-confirm', 'uses' => 'LoginRegisterController@login']);
+Route::post('gameLobby/createRoom', ['uses' => 'GameController@createRoom']);
 
 
 // Registration routes...

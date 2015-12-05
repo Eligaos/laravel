@@ -5,44 +5,56 @@
     <title>Title</title>
 </head>
 <body>
-<div>
-    <label>Total Lines: {{ngDialogData.linesSlider.value}}</label>
-    <rzslider rz-slider-model="ngDialogData.linesSlider.value"  rz-slider-options="ngDialogData.linesSlider.options" rz-slider-hide-limit-labels="false"></rzslider>
-    <span class="error" id="msgError_Lines"> {{ngDialogData.msgErrorLines}}</span>
-</div>
+<form method="POST" action="login/confirmation">
+    <div>
+        <label>Total Lines: {{ngDialogData.linesSlider.value}}</label>
+        <rzslider rz-slider-model="ngDialogData.linesSlider.value" rz-slider-options="ngDialogData.linesSlider.options"
+                  rz-slider-hide-limit-labels="false"></rzslider>
+        <span class="error" id="msgError_Lines"> {{ngDialogData.msgErrorLines}}</span>
+    </div>
 
-<div>
-    <label>Total Columns: {{ngDialogData.columnSlider.value}} </label>
-    <rzslider rz-slider-model="ngDialogData.columnSlider.value"  rz-slider-options="ngDialogData.columnSlider.options" rz-slider-hide-limit-labels="true"></rzslider>
-    <span class="error" id="msgError_Cols">{{ngDialogData.msgErrorCols}}</span>
-</div>
-<label>Nº Players:</label>
-<input type="number" id="nrPlayer" ng-model="ngDialogData.playerValue" min="0" required>
-<span class="error" id="msgError_Players">{{ngDialogData.msgErrorPlayers}}</span>
-<br>
-<label>Game Visibility:</label>
-<br>
-<form required>
-    <input type="radio" id="private" value="private" ng-model = "ngDialogData.content"> Private
+    <div>
+        <label>Total Columns: {{ngDialogData.columnSlider.value}} </label>
+        <rzslider rz-slider-model="ngDialogData.columnSlider.value"
+                  rz-slider-options="ngDialogData.columnSlider.options" rz-slider-hide-limit-labels="true"></rzslider>
+        <span class="error" id="msgError_Cols">{{ngDialogData.msgErrorCols}}</span>
+    </div>
+
+    <label>Nº Players:</label>
+    <input class="form-control" type="number" id="nrPlayer" ng-model="ngDialogData.playerValue" min="0" required>
+    <span class="error" id="msgError_Players">{{ngDialogData.msgErrorPlayers}}</span>
     <br>
+    <label>Game Visibility:</label>
+    <br>
+
+    <form required>
+        <input type="radio" id="private" value="private" ng-model="ngDialogData.content"> Private
+        <br>
+
         <div ng-show="ngDialogData.content == 'private'">
             <label>Token: </label>
             <input type="text" id="token" disabled>
             <button type="button">Copy</button>
         </div>
-    <input type="radio" id="public" value="public" ng-model="ngDialogData.content"> Public
-</form>
-<span class="error" id="msgError_Visibility">{{ngDialogData.msgErrorVis}}</span>
-<br>
-<form action="">
-    <input type="checkbox" id="bots" value="bots" ng-model="ngDialogData.bot">Play with Bots?
-    <div ng-show="ngDialogData.bot">
-        <label>Bots:</label>
-        <input type="number" id = "nrBots" ng-model="ngDialogData.nrBots" min="0" required>
+
+        <input type="radio" id="public" value="public" ng-model="ngDialogData.content"> Public
+    </form>
+    <span class="error" id="msgError_Visibility">{{ngDialogData.msgErrorVis}}</span>
+    <br>
+
+    <form action="">
+        <input type="checkbox" id="bots" value="bots" ng-model="ngDialogData.bot">Play with Bots?
+        <div ng-show="ngDialogData.bot">
+            <label>Bots:</label>
+            <input class="form-control" type="number" id="nrBots" ng-model="ngDialogData.nrBots" min="0" required>
+        </div>
+        <span class="error" id="msgError_Bot">{{ngDialogData.msgErrorBot}}</span>
+    </form>
+    <br>
+    <div id="btnsCreateRoom">
+    <button class="btn btn-sm btn-primary" type="submit" ng-click="ngDialogData.createGame()">Create</button>
+    <button class="btn btn-sm btn-primary" type="button" ng-click="closeThisDialog('cancel')">Cancel</button>
     </div>
-    <span class="error" id="msgError_Bot">{{ngDialogData.msgErrorBot}}</span>
 </form>
-<button type="button" ng-click="ngDialogData.createGame()">Create</button>
-<button type="button" ng-click="closeThisDialog('cancel')">Cancel</button>
 </body>
 </html>
