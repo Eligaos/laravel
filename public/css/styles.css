@@ -1,0 +1,219 @@
+body{
+	margin: 10px;
+}
+
+h1, h2, h3 {
+	text-align: center;
+}
+
+#contentor{
+	position: relative;
+	margin: auto;
+	padding: 5px;
+	width: 630px;
+	background-color: gray;
+	overflow: hidden;
+	float:left;
+		margin-left: 20%;
+}
+
+
+.header{
+	margin: 10px;
+	padding: 10px;	
+	clear:both;
+	background-color: white; 
+	min-height: 40px; 
+	line-height: 40px;
+	overflow: hidden;
+}
+
+
+#gameForm label{
+	text-align: right;
+	display: inline-block;
+	width: 120px;
+}
+#gameForm input{
+	width: 30px;
+
+}
+
+#gameForm div:last-child{
+	text-align: center;
+}
+
+#gameForm input[type="button"]{
+	width: 200px;
+	height: 40px;
+}
+
+.error, .msgErro{
+	color: red;
+	font-style: italic;
+	font-size: small;
+}
+
+#gameScore div{
+	display: inline-block;
+	float: right;
+	padding-left: 5px;
+	padding-right: 15px;
+}
+
+#gameScore div:first-child{
+	float: left;
+}
+
+#gameScore div span:last-child{
+	font-weight: bold;
+}
+
+#main{
+	margin: 10px;
+	padding: 10px;	
+	clear: right;
+	background-color: white;
+}
+
+#main table{
+	margin: auto;
+}
+
+#main div:last-child{
+	font-size: small;
+	font-style: italic;
+	text-align: center;
+	margin-top: 15px;
+}
+
+#highscores{
+    margin: auto;
+    overflow: hidden;
+    padding: 5px;
+    position: relative;
+    width: 200px;
+	float:left;
+}
+#highscores table, #highscores td{
+ 	border: 1px solid black;
+}
+
+#highscores table{
+ border-collapse: collapse;
+}
+
+.rz-bubble {
+	display:none;
+}
+
+
+
+flippy {
+  float: left;
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  -ms-perspective: 600px;
+  perspective: 600px;
+}
+flippy-front {
+  position: absolute;
+  z-index: 900;
+  width: inherit;
+  height: inherit;
+  -webkit-transform: rotate3d(0, 0, 0, 0deg);
+  -moz-transform: rotate3d(0, 0, 0, 0deg);
+  -ms-transform: rotate3d(0, 0, 0, 0deg);
+  transform: rotate3d(0, 0, 0, 0deg);
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+flippy-back {
+  position: absolute;
+  z-index: 800;
+  width: inherit;
+  height: inherit;
+  -webkit-transform: rotate3d(0, 1, 0, -180deg);
+  -moz-transform: rotate3d(0, 1, 0, -180deg);
+  -ms-transform: rotate3d(0, 1, 0, -180deg);
+  transform: rotate3d(0, 1, 0, -180deg);
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+flippy.flipped flippy-front {
+  z-index: 900;
+  -webkit-transform: rotate3d(0, 1, 0, 180deg);
+  -moz-transform: rotate3d(0, 1, 0, 180deg);
+  -ms-transform: rotate3d(0, 1, 0, 180deg);
+  transform: rotate3d(0, 1, 0, 180deg);
+}
+flippy.flipped flippy-back {
+  z-index: 1000;
+  -webkit-transform: rotate3d(0, 0, 0, 0deg);
+  -moz-transform: rotate3d(0, 0, 0, 0deg);
+  -ms-transform: rotate3d(0, 0, 0, 0deg);
+  transform: rotate3d(0, 0, 0, 0deg);
+}
+
+
+
+flippy.fancy {
+  float: left;
+  margin: 0 10px 10px 0;
+  position: relative;
+  font-size: .8em;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+flippy.fancy img {
+  height: 100%;
+  width: 100%;
+}
+flippy.fancy flippy-front {
+  float: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 900;
+  width: inherit;
+  height: inherit;
+  border: 1px solid #ccc;
+  background: white;
+  text-align: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+}
+flippy.fancy flippy-front.flipped {
+  border-color: #eee;
+  /*background: #333;*/
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+flippy.fancy flippy-back {
+  float: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 800;
+  width: inherit;
+  height: inherit;
+  border: 1px solid #ccc;
+  background: white;
+  text-align: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+}
+flippy.fancy flippy-back.flipped {
+  /*background: #80868d;*/
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}

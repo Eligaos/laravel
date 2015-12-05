@@ -1,0 +1,30 @@
+<div>
+	<h1>Game End!</h1>
+	<hr>
+	<p>
+	<span style="font-weight: bold"> Time: </span>
+	<span id="time">{{ngDialogData.timer}} sec</span>
+	</p>
+	<p>
+	<span style="font-weight: bold"> Moves: </span>
+	<span id="moves">{{ngDialogData.moves}}</span>
+	</p>
+	<p>
+	<span style="font-weight: bold"> Score: </span>
+	<span id="score">{{ngDialogData.score}} </span>
+	</p>
+</div>
+<div >
+	<hr>
+	<div ng-show="ngDialogData.isTop">
+	<form name="myForm"> 
+	 <p style="font-weight: bold; color:red">New Highscore!</p><label> Insert your name: </label>
+	 <input ng-model="playerName" type="text" name="playerName" ng-minlength="1" style="height: 25px;" required>
+	    <div role="alert">
+      <span class="error" ng-show="myForm.playerName.$error.required">
+       Name Required!</span>
+    </div>
+	 </div>
+	 <input ng-click="closeThisDialog(playerName)" value="OK" type="submit">
+	 </form>
+</div>
