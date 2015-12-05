@@ -10,10 +10,12 @@ use Input;
 use Hash;
 use App\User;
 use Session;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class LoginRegisterController extends Controller
 {
+    protected $primaryKey = "id";
+
     public function showLoginView()
     {
 
@@ -31,10 +33,13 @@ class LoginRegisterController extends Controller
         if(count($input) > 0){
             $user = User::validateUser($input);
             if(is_object($user)) {
-                return Redirect::to('gameLobby');
+
+            echo("User".Auth::user());
+             return Redirect::to('gameLobby');
             }
         }
         Session::flash('error', $user);
+
         return Redirect::to('login');
     }
 
@@ -51,7 +56,15 @@ class LoginRegisterController extends Controller
         return Redirect::to('gameLobby');
     }
 
+    public function logout()
+    {
+
+
+    }
 
 
 
 }
+
+
+

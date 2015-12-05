@@ -10,7 +10,7 @@
 
 @section('content')
 
-    @if(  Session::get('error'))
+    @if( Session::get('error'))
     <div>
       <span class="alert-info"> {{ Session::get('error') }}</span>
     </div>

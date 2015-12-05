@@ -19,8 +19,6 @@ Route::get('game', function () {
 });
 
 Route::get('gameLobby', function () {
-   
-
     return view('gameLobby');
 });
 
@@ -34,5 +32,6 @@ Route::any('register', ['as' => 'form-register', 'uses' => 'LoginRegisterControl
 
 Route::any('register/registration', ['as' => 'form-register', 'uses' => 'LoginRegisterController@registerAccount']);
 
+Route::any('logout', ['as' => 'logout', 'uses' => 'LoginRegisterController@logout']);
 
 
