@@ -24,14 +24,18 @@
     <div class="container-fluid">
     <div class="row">
       <div id="sideMenu" class="col-sm-4 col-md-4 sidebar">
+          @if( isset($nickname))
+              <h3>Hello, {{$nickname}}</h3>
+
+          @endif
  	  <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div id="navbar" class="navbar-collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li class="active"><a href="/">Home</a></li>
               <li><a href="#">Top 10</a></li>
                  <li><a href="#">Profile</a></li>
-               <li><a href="#">Logout</a></li>
+               <li><a href="logout">Logout</a></li>
                 </ul>
               </li>
             </ul>

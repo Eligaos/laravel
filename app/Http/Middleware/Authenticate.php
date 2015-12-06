@@ -13,8 +13,7 @@ class Authenticate
      * @var Guard
      */
     protected $auth;
-    protected $loginPath = '/login';
-    protected $redirectPath = '/gameLobby';
+
     /**
      * Create a new filter instance.
      *
@@ -39,7 +38,7 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('auth/login');
+                return redirect()->guest('login');
             }
         }
 

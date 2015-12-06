@@ -11,9 +11,9 @@
 @section('content')
 
     @if( Session::get('error'))
-    <div>
-      <span class="alert-info"> {{ Session::get('error') }}</span>
-    </div>
+        <div style="text-align: center">
+            <span  class="alert alert-info"> {{ Session::get('error') }}</span>
+        </div>
     @endif
     <form class="form-signin"  method="POST" action="login/confirmation">
         <input type="hidden" name="_token" value="{!!  csrf_token()!!}">

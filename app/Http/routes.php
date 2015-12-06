@@ -18,9 +18,14 @@ Route::get('game', function () {
     return view('game');
 });
 
-Route::get('gameLobby', function () {
-    return view('gameLobby');
-});
+
+
+/*Route::get('gameLobby', function () {
+    echo("User".Auth::user());
+    //return view('gameLobby');
+});*/
+Route::any('gameLobby', 'GameLobbyController@lobby');
+
 
 // Authentication routes...
 Route::any('login', 'LoginRegisterController@showLoginView');
@@ -34,5 +39,4 @@ Route::any('register', ['as' => 'form-register', 'uses' => 'LoginRegisterControl
 Route::any('register/registration', ['as' => 'form-register', 'uses' => 'LoginRegisterController@registerAccount']);
 
 Route::any('logout', ['as' => 'logout', 'uses' => 'LoginRegisterController@logout']);
-
 

@@ -14,31 +14,25 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginRegisterController extends Controller
 {
-    protected $primaryKey = "id";
+
 
     public function showLoginView()
     {
-
-
+        \Debugbar::info(Auth::user());
         if(count(Input::all()) > 0){
             Session::reflash();
         }
-
         return view('auth.login');
     }
 
     public function login()
     {
         $input = Input::except("_token");
-        if(count($input) > 0){
-            $user = User::validateUser($input);
-            if(is_object($user)) {
 
-            echo("User".Auth::user());
-             return Redirect::to('gameLobby');
-            }
+        if(Auth::attempt(['nickname' => $input['nickname'], 'password' => $input['password'] ])){
+              return Redirect::to('gameLobby');
         }
-        Session::flash('error', $user);
+        Session::flash('error', 'Login failed check your nickname and/or password');
 
         return Redirect::to('login');
     }
@@ -47,7 +41,6 @@ class LoginRegisterController extends Controller
     public function showRegisterView()
     {
         return view('auth.register');
-
     }
 
     public function registerAccount(Requests\RegisterRequest $request)
@@ -58,8 +51,8 @@ class LoginRegisterController extends Controller
 
     public function logout()
     {
-
-
+        Auth::logout();
+        return Redirect::to('/');
     }
 
 
