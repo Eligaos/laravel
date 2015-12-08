@@ -71,6 +71,6 @@ input[type=number]::-webkit-outer-spin-button {
   height: 768px;
 }
 
-#btnsCreateRoom button{
-  margin-right: -50%;
+#btnsCreateRoom{
+  text-align:center;
 }

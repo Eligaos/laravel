@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Game extends Model
+class Game extends Eloquent
 {
     //
-    protected $table = 'games';
+ //   protected $table = 'games';
 
-    protected $fillable = ['nickname', 'email', 'password'];
+    protected $fillable = ['gameName', 'gameOwner','lines','columns','maxPlayers','joinPlayers','gameType','winner'];
 }

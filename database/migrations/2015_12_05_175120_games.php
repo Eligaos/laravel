@@ -15,11 +15,13 @@ class Games extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
             $table->string('gameName')->unique();
+            $table->string('gameOwner');
             $table->integer('lines');
             $table->integer('columns');
             $table->integer('maxPlayers');
             $table->integer('joinedPlayers');
             $table->boolean('gameType');
+            $table->string('winner')->nullable();
             $table->string('token');
             $table->timestamps();
         });
