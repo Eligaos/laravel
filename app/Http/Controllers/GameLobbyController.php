@@ -16,7 +16,8 @@ class GameLobbyController extends Controller
        if(Auth::user()){
 
            $user = Auth::user();
-           \Debugbar::info($user);
+           \Debugbar::info(Auth::getRecallerName());
+
            return view('gameLobby')->with('nickname', $user['nickname']);
        }
 

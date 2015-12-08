@@ -34,5 +34,10 @@ return [
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
+    //Socialite
+    'facebook' => [
+        'client_id'     => '1712826242286061',
+        'client_secret' => 'c5ae18cc424fb69d9d1b8100723bfc99',
+        'redirect'      => 'http://grp20.dad/login/callback/facebook',
+    ],
 ];

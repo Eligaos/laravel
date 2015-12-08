@@ -24,7 +24,7 @@ Route::get('game', function () {
     echo("User".Auth::user());
     //return view('gameLobby');
 });*/
-Route::any('gameLobby', 'GameLobbyController@lobby');
+Route::get('gameLobby', 'GameLobbyController@lobby');
 
 
 // Authentication routes...
@@ -40,3 +40,14 @@ Route::any('register/registration', ['as' => 'form-register', 'uses' => 'LoginRe
 
 Route::any('logout', ['as' => 'logout', 'uses' => 'LoginRegisterController@logout']);
 
+//Social Login
+Route::get('/login/{provider?}',[
+    'uses' => 'SocialiteController@getSocialAuth',
+    'as'   => 'auth.getSocialAuth'
+]);
+
+
+Route::get('/login/callback/{provider?}',[
+    'uses' => 'SocialiteController@getSocialAuthCallback',
+    'as'   => 'auth.getSocialAuthCallback'
+]);

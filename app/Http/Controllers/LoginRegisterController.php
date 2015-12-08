@@ -11,6 +11,7 @@ use Hash;
 use App\User;
 use Session;
 use Illuminate\Support\Facades\Auth;
+use \Illuminate\Support\Facades\Cookie as Cookie;
 
 class LoginRegisterController extends Controller
 {
@@ -18,7 +19,7 @@ class LoginRegisterController extends Controller
 
     public function showLoginView()
     {
-        \Debugbar::info(Auth::user());
+
         if(count(Input::all()) > 0){
             Session::reflash();
         }
@@ -29,7 +30,7 @@ class LoginRegisterController extends Controller
     {
         $input = Input::except("_token");
 
-        if(Auth::attempt(['nickname' => $input['nickname'], 'password' => $input['password'] ])){
+        if(Auth::attempt(['nickname' => $input['nickname'], 'password' => $input['password']], Input::get('remember_token'))){
               return Redirect::to('gameLobby');
         }
         Session::flash('error', 'Login failed check your nickname and/or password');
@@ -46,13 +47,20 @@ class LoginRegisterController extends Controller
     public function registerAccount(Requests\RegisterRequest $request)
     {
         User::createUser(Input::except("_token", "password_confirmation"));
-        return Redirect::to('gameLobby');
+        if(Auth::attempt(['nickname' => Input::get('nickname'), 'password' => Input::get('password')])){
+               return Redirect::to('gameLobby');
+         }
     }
 
     public function logout()
     {
         Auth::logout();
-        return Redirect::to('/');
+        $rememberMeCookie = Auth::getRecallerName();
+        // Tell Laravel to forget this cookie
+        $cookie = Cookie::forget($rememberMeCookie);
+
+
+        return Redirect::to('/')->withCookie($cookie);
     }
 
 

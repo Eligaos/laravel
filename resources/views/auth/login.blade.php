@@ -12,22 +12,40 @@
 
     @if( Session::get('error'))
         <div style="text-align: center">
-            <span  class="alert alert-info"> {{ Session::get('error') }}</span>
+            <span class="alert alert-info"> {{ Session::get('error') }}</span>
         </div>
     @endif
-    <form class="form-signin"  method="POST" action="login/confirmation">
+    <div style="text-align: center">
+        <span style="font-weight: bold">Please Login</span> <span>Or</span>
+       <a href="/register"><button class="btn btn-xs btn-primary " type="submit">Register</button></a>
+    </div>
+
+
+    <form class="form-signin" method="POST" action="login/confirmation">
         <input type="hidden" name="_token" value="{!!  csrf_token()!!}">
-        <h3 class="form-signin-heading" >Please Login</h3>
+
+
         <label for="nickname" class="sr-only">Nickname</label>
-        <input type="text" name="nickname" id="nickname" class="form-control" value="{{ old('nickname') }}" placeholder="Nickname" required autofocus>
+        <input type="text" name="nickname" id="nickname" class="form-control" value="{{ old('nickname') }}"
+               placeholder="Nickname" required autofocus>
         <label for="password" class="sr-only">Password</label>
         <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+
         <div class="checkbox">
             <label>
-                <input type="checkbox" value="remember-me"> Remember me
+                <input type="checkbox" name="remember_token" value="remember-me"> Remember me
             </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+        <div style="text-align: center; padding-top: 2%">
+
+                <span style="font-weight: bold">Or Login with:</span>
+        </div>
+        <div id="social-login">
+            <button class="btn btn-xs btn-primary" type="submit">face</button>
+
+        </div>
     </form>
 
 @stop
