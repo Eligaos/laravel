@@ -22,5 +22,8 @@ class GameController extends Controller
         $gameCreated = Game::create($createGame);
 
         return $gameCreated;
+        /*$input = Request::all();
+        Article.create($input);
+        return $input;*/
     }
 }

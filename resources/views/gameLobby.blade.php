@@ -44,7 +44,13 @@
       </nav>
       <div id="gamesList">
           <h1 class="page-header">Game Lobby</h1>
-           <button class="btn btn-lg btn-primary btn-block" type="button" ng-click="createRoom()">Create Game</button>
+           <button class="btn btn-lg btn-primary" type="button" name ng-click="createRoom()">Create Game</button>
+           <button class="btn btn-lg btn-primary" name=private value="private" ng-click="ngPrivate =! ngPrivate" type="button">Private Games</button>
+
+          <div ng-show="ngPrivate">
+              <input class="form-control" type="number" name="nrBots" id="nrBots" ng-model="ngDialogData.nrBots" min="0" required>
+              <button class="btn btn-default" type="button" ng-click="joinGame()">Join</button>
+          </div>
           <div class="table-responsive">
             <table class="table table-striped ">
               <thead>
@@ -55,7 +61,7 @@
                   <th>Options</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody >
                 <tr>
                   <td>Game 1</td>
                   <td>3 x 6</td>
