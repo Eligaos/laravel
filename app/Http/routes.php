@@ -30,7 +30,7 @@ Route::get('gameLobby', 'GameLobbyController@lobby');
 // Authentication routes...
 Route::any('login', 'LoginRegisterController@showLoginView');
 Route::post('login/confirmation', ['as' => 'login-confirm', 'uses' => 'LoginRegisterController@login']);
-Route::post('gameLobby/createRoom', ['uses' => 'GameController@createRoom']);
+Route::post('gameLobby', ['uses' => 'GameController@createRoom']);
 
 
 // Registration routes...
