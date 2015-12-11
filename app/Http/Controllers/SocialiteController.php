@@ -28,8 +28,10 @@ class SocialiteController extends Controller
     public function getSocialAuthCallback($provider=null)
     {
         if($user = $this->socialite->with($provider)->user()){
-           // dd($user);
+            // dd($user);
             return Redirect::to('gameLobby');
+
+
         }else{
             return 'something went wrong';
         }

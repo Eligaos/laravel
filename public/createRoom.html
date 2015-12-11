@@ -6,6 +6,7 @@
 </head>
 <body>
 <form method="POST" action="gameLobby/createRoom">
+    <input type="hidden" name="_token" value="{!!  csrf_token()     !!}">
     <div>
         <label>Total Lines: {{ngDialogData.linesSlider.value}}</label>
         <rzslider name="lines" id="lines" rz-slider-model="ngDialogData.linesSlider.value"
@@ -56,7 +57,7 @@
         <input type="checkbox" id="bots" value="bots" ng-model="ngDialogData.bot">Play with Bots?
         <div ng-show="ngDialogData.bot">
             <label>Bots:</label>
-            <input class="form-control" type="number" name="nrBots" id="nrBots" ng-model="ngDialogData.nrBots" min="0" required>
+            <input class="form-control" type="number" name="nrBots" id="nrBots" ng-model="ngDialogData.nrBots" min="0">
         </div>
         <span class="error" id="msgError_Bot">{{ngDialogData.msgErrorBot}}</span>
     </div>

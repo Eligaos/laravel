@@ -43,7 +43,7 @@
                 <span style="font-weight: bold">Or Login with:</span>
         </div>
         <div id="social-login">
-            <button class="btn btn-xs btn-primary" type="submit">face</button>
+            <a href="/login/facebook"><button class="btn btn-xs btn-primary" type="button">face</button></a>
 
         </div>
     </form>

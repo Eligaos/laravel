@@ -16,8 +16,6 @@
       <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
       <link rel="stylesheet" type="text/css" href="css/ngDialog.min.css">
       <link rel="stylesheet" type="text/css" href="css/ngDialog-theme-default.min.css">
-
-
   </head>
 
   <body ng-controller="gameLobbyController">

@@ -1,4 +1,5 @@
 (function () {
+
     'use strict';
     document.getElementById("buttonCollapseSideBar").addEventListener("click", function () {
         var sideMenu = $('#sideMenu');
@@ -20,9 +21,10 @@
     /*
      CHECK THIS:
      https://jqueryui.com/tabs/#default */
-    $(".nav-tabs a").click(function () {
+    $('.nav-tabs a').click(function () {
         $(this).tab('show');
     });
+
 
 
     function gameLobbyController($scope, $log, ngDialog) {
