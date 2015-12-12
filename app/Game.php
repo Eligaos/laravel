@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Game extends Model
 {
     //
- //   protected $table = 'games';
+    protected $table = 'games';
 
-    protected $fillable = ['gameName', 'gameOwner','lines','columns','maxPlayers','joinPlayers','gameType','winner'];
+    protected $fillable = ['gameName', 'gameOwner','lines','columns','maxPlayers','joinedPlayers','isPrivate','status','winner','token'];
 }

@@ -30,7 +30,8 @@ Route::get('gameLobby', 'GameLobbyController@lobby');
 // Authentication routes...
 Route::any('login', 'LoginRegisterController@showLoginView');
 Route::post('login/confirmation', ['as' => 'login-confirm', 'uses' => 'LoginRegisterController@login']);
-Route::post('gameLobby', ['uses' => 'GameController@createRoom']);
+Route::post('gameLobby/createRoom', ['uses' => 'GameController@createRoom']);
+Route::get('gameLobby/showGames', ['uses' => 'GameController@showGames']);
 
 
 // Registration routes...
@@ -39,6 +40,7 @@ Route::any('register', ['as' => 'form-register', 'uses' => 'LoginRegisterControl
 Route::any('register/registration', ['as' => 'form-register', 'uses' => 'LoginRegisterController@registerAccount']);
 
 Route::any('logout', ['as' => 'logout', 'uses' => 'LoginRegisterController@logout']);
+
 
 //Social Login
 Route::get('/login/{provider?}',[
