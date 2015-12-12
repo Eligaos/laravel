@@ -31,7 +31,7 @@
     <label>Game Visibility:</label>
     <br>
 
-    <div aria-required="true">
+    <div ng-init="ngDialogData.content='public'">
         <input type="radio" id="private" name="private" value="private" ng-model="ngDialogData.content"> Private
         <br>
         <div ng-show="ngDialogData.content == 'private'">

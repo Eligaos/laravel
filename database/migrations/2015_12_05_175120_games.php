@@ -14,16 +14,26 @@ class Games extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             //$table->engine="InnoDB";
-            $table->increments('id');
+            $table->increments('gameID');
             $table->string('gameName')->unique();
             $table->string('gameOwner');
             $table->integer('lines');
             $table->integer('columns');
             $table->integer('maxPlayers');
             $table->integer('joinedPlayers');
-            $table->boolean('gameType');
+            $table->boolean('isPrivate');
+            $table->string('status');
             $table->string('winner')->nullable();
             $table->string('token');
+            $table->timestamps();
+        });
+
+        Schema::create('game_player', function (Blueprint $table) {
+            //$table->engine="InnoDB";
+            $table->primary(['gameID', 'playerID']);
+            $table->foreign('gameID')->references('gameID')->on('games');
+            $table->foreign('playerID')->references('playerID')->on('players');
+            $table->double('timePlaying',4,4);
             $table->timestamps();
         });
     }
@@ -36,5 +46,7 @@ class Games extends Migration
     public function down()
     {
         Schema::drop('games');
+        Schema::drop('game_player');
+
     }
 }
