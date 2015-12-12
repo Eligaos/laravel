@@ -13,8 +13,8 @@ class Players extends Migration
     public function up()
     {
         Schema::create('players', function (Blueprint $table) {
-            //$table->engine="InnoDB";
-            $table->integer('playerID');
+
+            $table->integer('playerID')->unsigned();
             $table->foreign('playerID')->references('id')->on('users');
             $table->string('status');
             $table->timestamps();
