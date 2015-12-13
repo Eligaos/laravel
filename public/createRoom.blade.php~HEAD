@@ -6,8 +6,8 @@
 </head>
 <body>
 <form method="POST" action="gameLobby/createRoom">
-    <input type="hidden" name="_token" value="{!! csrf_token()!!}">
-
+    <label for="gameName">Game Name:</label>
+    <input class="form-control" type="text" name="gameName" id="gameName" ng-model="ngDialogData.gameName" required>
     <div>
         <label>Total Lines: {{ngDialogData.linesSlider.value}}</label>
         <rzslider name="lines" id="lines" rz-slider-model="ngDialogData.linesSlider.value"
@@ -24,7 +24,7 @@
     </div>
 
     <label for="nrPlayer">Nº Players:</label>
-    <input class="form-control" type="number" name="nrPlayer" id="nrPlayer" ng-model="ngDialogData.playerValue" min="0"
+    <input class="form-control" type="number" name="nrPlayer" id="nrPlayer" ng-model="ngDialogData.nrPlayers" min="0"
            required>
     <span class="error" id="msgError_Players">{{ngDialogData.msgErrorPlayers}}</span>
     <br>
@@ -32,15 +32,15 @@
     <br>
 
     <div ng-init="ngDialogData.content='public'">
-        <input type="radio" id="private" name="private" value="private" ng-model="ngDialogData.content"> Private
+        <input type="radio" id="private" name="private" ng-value="1" ng-model="ngDialogData.isPrivate"> Private
         <br>
-        <div ng-show="ngDialogData.content == 'private'">
+        <div ng-show="ngDialogData.isPrivate == '1'">
             <label>Token: </label>
 
             <div class="row">
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input class="form-control" name="token" type="text" id="token" disabled>
+                        <input class="form-control" name="token" type="text" id="token" ng-model="ngDialogData.token" disabled>
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button">Copy</button>
                         </span>
@@ -49,7 +49,7 @@
             </div><!-- /.row -->
         </div>
 
-        <input type="radio" id="public" name="public" value="public" ng-model="ngDialogData.content" checked="checked"> Public
+        <input type="radio" id="public" name="public" ng-value="0" ng-model="ngDialogData.isPrivate" checked="checked"> Public
     </div>
     <span class="error" id="msgError_Visibility">{{ngDialogData.msgErrorVis}}</span>
     <br>
@@ -67,7 +67,7 @@
     <br>
 
     <div id="btnsCreateRoom">
-        <button class="btn btn-sm btn-primary" type="submit" ng-click="ngDialogData.createGame()">Create</button>
+        <button class="btn btn-sm btn-primary" type="button" ng-click="ngDialogData.createRoom()">Create</button>
         <button class="btn btn-sm btn-primary" type="button" ng-click="closeThisDialog('cancel')">Cancel</button>
     </div>
 </form>

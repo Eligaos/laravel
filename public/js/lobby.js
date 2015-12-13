@@ -26,7 +26,6 @@
     });
 
 
-
     function gameLobbyController($scope, $log, ngDialog) {
 
         $scope.linesSlider = {
@@ -75,6 +74,13 @@
                     $scope.msgErrorBot = ""
                 }
             }
+            return
+        }
+
+        $scope.createRoom = function() {
+            $('#formCreateRoom').submit();
+            console.log("asd");
+            $scope.diag.close();
         }
 
         $scope.resetErrorsDialog = function () {
@@ -87,9 +93,9 @@
             $scope.columnSlider.value = 2;
         }
 
-        $scope.createRoom = function () {
-            ngDialog.open({
-                template: 'createRoom.html',
+        $scope.createDialog = function () {
+            $scope.diag =  ngDialog.open({
+                template: 'createRoom.blade.php',
                 showClose: false,
                 closeByEscape: false,
                 data: $scope,
@@ -99,6 +105,9 @@
                         $scope.resetErrorsDialog();
                     }
                 }
+            });
+            $scope.diag.closePromise.then(function closed(){
+                console.log("adsasd");
             });
         }
 

@@ -23,7 +23,7 @@ class Games extends Migration
             $table->boolean('isPrivate');
             $table->string('status');
             $table->string('winner')->nullable();
-            $table->string('token');
+            $table->string('token')->nullable();
             $table->timestamps();
         });
 

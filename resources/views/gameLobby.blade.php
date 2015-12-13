@@ -42,15 +42,17 @@
       </nav>
       <div id="gamesList">
           <h1 class="page-header">Game Lobby</h1>
-           <button class="btn btn-lg btn-primary" type="button" name ng-click="createRoom()">Create Game</button>
+           <button class="btn btn-lg btn-primary" type="button" name ng-click="createDialog()">Create Game</button>
            <button class="btn btn-lg btn-primary" name=private value="private" ng-click="ngPrivate =! ngPrivate" type="button">Private Games</button>
 
+
           <div ng-show="ngPrivate">
-              <input class="form-control" type="number" name="nrBots" id="nrBots" ng-model="ngDialogData.nrBots" min="0" required>
-              <button class="btn btn-default" type="button" ng-click="joinGame()">Join</button>
+              <input class="form-control" type="text" name="joinP" id="joinP" required>
+              <button class="btn btn-default" type="button" ng-click="joinPrivateGame()">Join</button>
           </div>
+          <h3>Waiting for Players</h3>
           <div class="table-responsive">
-            <table class="table table-striped ">
+            <table class="table table-striped " id="gamesWaiting">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -76,92 +78,37 @@
                       <button class="btn btn-sm btn-info btn-block" type="submit">Details</button>
                       </td>
                 </tr>
-                <tr>
-                  <td>Game 3</td>
-                  <td>2 x 6</td>
-   				  <td>3 / 3</td>
-                  <td><button class="btn btn-sm btn-primary btn-block" type="submit">View</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                <tr>
-                  <td>Game 4</td>
-                  <td>2 x 6</td>
-     			  <td>3 / 4</td>
-                  <td><button class="btn btn-sm btn-primary btn-block" type="submit">Join</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                  <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                  <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                       </tr>
-                  <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                       </tr>
-                  <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                       </tr>
-                  <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                       </tr>
-                  <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                       </tr>
-                  <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-                       </tr>
-                  <tr>
-                  <td>Game 5</td>
-                  <td>2 x 6</td>
-     			  <td>4 / 4</td>
-     			  <td><button class="btn btn-sm btn-warning btn-block" type="submit">Rejoin</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button></td>
-                </tr>
-
               </tbody>
             </table>
+              <h3>Games Playing</h3>
+              <table class="table table-striped " id="gamesPlaying">
+                  <thead>
+                  <tr>
+                      <th>Name</th>
+                      <th>Size</th>
+                      <th>Players</th>
+                      <th>Options</th>
+                  </tr>
+                  </thead>
+                  <tbody >
+                  <tr>
+                      <td>Game 1</td>
+                      <td>3 x 6</td>
+                      <td>5 / 6</td>
+                      <td><button class="btn btn-sm btn-primary btn-block" type="submit">View</button>
+                          <button class="btn btn-sm btn-info btn-block" type="submit">Details</button>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>Game 2</td>
+                      <td>5 x 6</td>
+                      <td>1 / 2</td>
+                      <td><button class="btn btn-sm btn-primary btn-block" type="submit">View</button>
+                          <button class="btn btn-sm btn-info btn-block" type="submit">Details</button>
+                      </td>
+                  </tr>
+                  </tbody>
+              </table>
           </div>
         </div>
 
@@ -196,6 +143,16 @@
      </div>
    </div>
       </div>
+    <form method="POST" id="formCreateRoom" action="gameLobby/createRoom">
+        <input type="hidden" name="_token" value="{!!  csrf_token()!!}">
+        <input type="hidden" name="gameName" value="@{{gameName}}">
+        <input type="hidden" name="lines" value="@{{linesSlider.value}}">
+        <input type="hidden" name="columns" value="@{{columnSlider.value}}">
+        <input type="hidden" name="nrPlayers" value="@{{nrPlayers}}">
+        <input type="hidden" name="isPrivate" value="@{{isPrivate}}">
+        <input type="hidden" name="token" value="@{{token}}">
+        <input type="hidden" name="nrBots" value="@{{nrBots}}">
+    </form>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
