@@ -22,96 +22,82 @@
     <div class="container-fluid">
     <div class="row">
       <div id="sideMenu" class="col-sm-4 col-md-4 sidebar">
-          @if( isset($nickname))
+          @if(isset($nickname))
               <h3>Hello, {{$nickname}}</h3>
 
           @endif
- 	  <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div id="navbar" class="navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="#">Top 10</a></li>
-                 <li><a href="#">Profile</a></li>
-               <li><a href="logout">Logout</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </nav>
-      <div id="gamesList">
-          <h1 class="page-header">Game Lobby</h1>
-           <button class="btn btn-lg btn-primary" type="button" name ng-click="createDialog()">Create Game</button>
-           <button class="btn btn-lg btn-primary" name=private value="private" ng-click="ngPrivate =! ngPrivate" type="button">Private Games</button>
+          <nav class="navbar navbar-default">
+              <div class="container-fluid">
+                  <div id="navbar" class="navbar-collapse">
+                      <ul class="nav navbar-nav">
+                          <li class="active"><a href="/">Home</a></li>
+                          <li><a href="#">Top 10</a></li>
+                          <li><a href="#">Profile</a></li>
+                          <li><a href="logout">Logout</a></li>
+                      </ul>
+                      </li>
+                      </ul>
+                  </div><!--/.nav-collapse -->
+              </div><!--/.container-fluid -->
+          </nav>
+          <div id="gamesList">
+              <h1 class="page-header">Game Lobby</h1>
+              <button class="btn btn-lg btn-primary" type="button" name ng-click="createDialog()">Create Game</button>
+              <button class="btn btn-lg btn-primary" name=private value="private" ng-click="ngPrivate =! ngPrivate" type="button">Private Games</button>
 
 
-          <div ng-show="ngPrivate">
-              <input class="form-control" type="text" name="joinP" id="joinP" required>
-              <button class="btn btn-default" type="button" ng-click="joinPrivateGame()">Join</button>
+              <div ng-show="ngPrivate">
+                  <input class="form-control" type="text" name="joinP" id="joinP" required>
+                  <button class="btn btn-default" type="button" ng-click="joinPrivateGame()">Join</button>
+              </div>
+              <h3>Waiting for Players</h3>
+              <div class="table-responsive">
+                  <table class="table table-striped " id="gamesWaiting">
+                      <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Size</th>
+                          <th>Players</th>
+                          <th>Options</th>
+                      </tr>
+                      </thead>
+                      <tbody >
+
+                      @foreach($gamesWaiting as $game)
+                          <tr>
+                              <td>{{$game->gameName}}</td>
+                              <td>{{$game->lines}} x {{$game->columns}}</td>
+                              <td>{{$game->joinedPlayers}} / {{$game->maxPlayers}}</td>
+                              <td><button class="btn btn-sm btn-primary btn-block" type="button">Join</button></td>
+                          </tr>
+                      @endforeach
+
+                  </table>
+
+                  <h3>Games Playing</h3>
+                  <table class="table table-striped " id="gamesPlaying">
+                      <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Size</th>
+                          <th>Players</th>
+                          <th>Options</th>
+                      </tr>
+                      </thead>
+                      <tbody >
+
+                      @foreach($gamesPlaying as $game)
+                          <tr>
+                              <td>{{$game->gameName}}</td>
+                              <td>{{$game->lines}} x {{$game->columns}}</td>
+                              <td>{{$game->joinedPlayers}} / {{$game->maxPlayers}}</td>
+                              <td><button class="btn btn-sm btn-primary btn-block" type="button">View</button></td>
+                          </tr>
+                      @endforeach
+
+                  </table>
+              </div>
           </div>
-          <h3>Waiting for Players</h3>
-          <div class="table-responsive">
-            <table class="table table-striped " id="gamesWaiting">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Size</th>
-                  <th>Players</th>
-                  <th>Options</th>
-                </tr>
-              </thead>
-              <tbody >
-                <tr>
-                  <td>Game 1</td>
-                  <td>3 x 6</td>
-                  <td>5 / 6</td>
-                  <td><button class="btn btn-sm btn-primary btn-block" type="submit">Join</button>
-                  <button class="btn btn-sm btn-info btn-block" type="submit">Details</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Game 2</td>
-                  <td>5 x 6</td>
-  			      <td>1 / 2</td>
-                  <td><button class="btn btn-sm btn-primary btn-block" type="submit">Join</button>
-                      <button class="btn btn-sm btn-info btn-block" type="submit">Details</button>
-                      </td>
-                </tr>
-              </tbody>
-            </table>
-              <h3>Games Playing</h3>
-              <table class="table table-striped " id="gamesPlaying">
-                  <thead>
-                  <tr>
-                      <th>Name</th>
-                      <th>Size</th>
-                      <th>Players</th>
-                      <th>Options</th>
-                  </tr>
-                  </thead>
-                  <tbody >
-                  <tr>
-                      <td>Game 1</td>
-                      <td>3 x 6</td>
-                      <td>5 / 6</td>
-                      <td><button class="btn btn-sm btn-primary btn-block" type="submit">View</button>
-                          <button class="btn btn-sm btn-info btn-block" type="submit">Details</button>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>Game 2</td>
-                      <td>5 x 6</td>
-                      <td>1 / 2</td>
-                      <td><button class="btn btn-sm btn-primary btn-block" type="submit">View</button>
-                          <button class="btn btn-sm btn-info btn-block" type="submit">Details</button>
-                      </td>
-                  </tr>
-                  </tbody>
-              </table>
-          </div>
-        </div>
-
       </div>
     <div id="buttonCollapseSideBar" class="col-sm-1 col-md-1"><button class="btn btn-sm btn-primary" type="submit"><img src="img/menuClose.png"></button></div>
      <div id="mainArea" class="col-sm-7 col-md-7">

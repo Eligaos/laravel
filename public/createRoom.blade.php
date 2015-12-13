@@ -23,7 +23,7 @@
         <span class="error" id="msgError_Cols">{{ngDialogData.msgErrorCols}}</span>
     </div>
 
-    <label for="nrPlayer">N? Players:</label>
+    <label for="nrPlayer">Nº Players:</label>
     <input class="form-control" type="number" name="nrPlayer" id="nrPlayer" ng-model="ngDialogData.nrPlayers" min="0"
            required>
     <span class="error" id="msgError_Players">{{ngDialogData.msgErrorPlayers}}</span>

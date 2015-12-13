@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Game;
 use Illuminate\Support\Facades\Auth;
 
 class GameLobbyController extends Controller
@@ -15,10 +16,20 @@ class GameLobbyController extends Controller
     {
        if(Auth::user()){
 
-           $user = Auth::user();
+           $nickname = Auth::user()->nickname;
            \Debugbar::info(Auth::getRecallerName());
 
-           return view('gameLobby')->with('nickname', $user['nickname']);
+
+           //$title = "Utilizadores";
+          // $users = User::paginate(10);
+           $gamesWaiting = Game::where('status', 'LIKE', 'Waiting' )->orderBy('gameName', 'DESC')->get();
+
+           $gamesPlaying = Game::where('status', 'LIKE', 'Playing' )->orderBy('gameName', 'DESC')->get();
+
+
+         //  return view('guest_all.users-list', compact('users', 'title', 'featured'));
+
+           return view('gameLobby', compact('nickname', 'gamesWaiting', 'gamesPlaying'));
        }
 
     }
