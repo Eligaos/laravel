@@ -33,6 +33,7 @@ Route::post('login/confirmation', ['as' => 'login-confirm', 'uses' => 'LoginRegi
 Route::post('gameLobby/createRoom', ['uses' => 'GameController@createRoom']);
 Route::get('gameLobby/showGames', ['uses' => 'GameController@showGames']);
 
+Route::get('gameLobby/listGames', ['uses' => 'GameLobbyController@listGames']);
 
 // Registration routes...
 Route::any('register', ['as' => 'form-register', 'uses' => 'LoginRegisterController@showRegisterView']);

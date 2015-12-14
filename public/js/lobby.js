@@ -26,7 +26,7 @@
     });
 
 
-    function gameLobbyController($scope, $log, ngDialog) {
+    function gameLobbyController($scope, $log, $http , $interval, ngDialog) {
 
         $scope.linesSlider = {
             value: 2,
@@ -47,6 +47,19 @@
             }
         }
 
+        $scope.listGames = function() {
+            $interval(function () {
+                var url = 'gameLobby/listGames';
+                $http.get(url).then(function successCallback(response) {
+                    console.log(response);
+                    $scope.gamesWaiting = response.data.gamesWaiting;
+                    $scope.gamesPlaying = response.data.gamesPlaying;
+                }, function errorCallback(response) {
+                    console.log('There was an error on startGame request');
+                });
+            },3000);
+        }
+
         $scope.createGame = function () {
             if ($scope.check($scope.linesSlider.value, $scope.linesSlider.value)) {
                 if (!($scope.playerValue <= ($scope.linesSlider.value * $scope.linesSlider.value / 2))) {
@@ -62,19 +75,19 @@
                     $scope.msgErrorVis = "";
                 }
                 console.log($scope.bot)
-                if ($scope.bot == true){
+                if ($scope.bot == true) {
                     console.log($scope.nrBots)
                     console.log($scope.playerValue)
                     if ($scope.nrBots == undefined || !($scope.nrBots <= $scope.playerValue)) {
                         $scope.msgErrorBot = "Insert number of bots";
-                    }else{
+                    } else {
                         $scope.msgErrorBot = ""
                     }
-                }else{
+                } else {
                     $scope.msgErrorBot = ""
                 }
             }
-            return
+
         }
 
         $scope.createRoom = function() {
@@ -124,12 +137,11 @@
                 return false;
             }
             $scope.msgErrorLines = "";
-            $scope.msgErrorCols = ""
+            $scope.msgErrorCols = "";
             return true;
         }
     }
-
     angular.module('lobby', ['ngDialog', 'rzModule']);
-    angular.module('lobby').controller('gameLobbyController', ['$scope', '$log', 'ngDialog', gameLobbyController]);
+    angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', 'ngDialog', gameLobbyController]);
 
 })();

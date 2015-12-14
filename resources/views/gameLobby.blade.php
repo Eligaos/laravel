@@ -40,7 +40,7 @@
                   </div><!--/.nav-collapse -->
               </div><!--/.container-fluid -->
           </nav>
-          <div id="gamesList">
+          <div id="gamesList"  ng-init="listGames()">
               <h1 class="page-header">Game Lobby</h1>
               <button class="btn btn-lg btn-primary" type="button" name ng-click="createDialog()">Create Game</button>
               <button class="btn btn-lg btn-primary" name=private value="private" ng-click="ngPrivate =! ngPrivate" type="button">Private Games</button>
@@ -61,21 +61,19 @@
                           <th>Options</th>
                       </tr>
                       </thead>
-                      <tbody >
+                      <tbody  ng-repeat="game in gamesWaiting">
+                      <tr>
+                          <td>@{{ game.gameName}}</td>
+                          <td>@{{ game.lines}} x @{{ game.columns}}</td>
+                          <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
+                          <td><button class="btn btn-sm btn-primary btn-block" type="button">View</button></td>
+                      </tr>
 
-                      @foreach($gamesWaiting as $game)
-                          <tr>
-                              <td>{{$game->gameName}}</td>
-                              <td>{{$game->lines}} x {{$game->columns}}</td>
-                              <td>{{$game->joinedPlayers}} / {{$game->maxPlayers}}</td>
-                              <td><button class="btn btn-sm btn-primary btn-block" type="button">Join</button></td>
-                          </tr>
-                      @endforeach
-
+                      </tbody>
                   </table>
 
                   <h3>Games Playing</h3>
-                  <table class="table table-striped " id="gamesPlaying">
+                  <table class="table table-striped " id="gamesPlaying"">
                       <thead>
                       <tr>
                           <th>Name</th>
@@ -84,16 +82,23 @@
                           <th>Options</th>
                       </tr>
                       </thead>
-                      <tbody >
+                      <tbody  ng-repeat="game in gamesPlaying">
+                      <tr>
+                              <td>@{{ game.gameName}}</td>
+                              <td>@{{ game.lines}} x @{{ game.columns}}</td>
+                              <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
+                              <td><button class="btn btn-sm btn-primary btn-block" type="button">View</button></td>
+                      </tr>
 
-                      @foreach($gamesPlaying as $game)
+                      </tbody>
+{{--                      @foreach($gamesPlaying as $game)
                           <tr>
                               <td>{{$game->gameName}}</td>
                               <td>{{$game->lines}} x {{$game->columns}}</td>
                               <td>{{$game->joinedPlayers}} / {{$game->maxPlayers}}</td>
                               <td><button class="btn btn-sm btn-primary btn-block" type="button">View</button></td>
                           </tr>
-                      @endforeach
+                      @endforeach--}}
 
                   </table>
               </div>
