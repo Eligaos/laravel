@@ -23,18 +23,19 @@ class GameController extends Controller
             'token' => Input::get('token'),
             'status' => "Waiting",
         );
-        $gameCreated = Game::create($createGame);
 
+        $gameCreated = Game::create($createGame);
         return Redirect::to('gameLobby');
+
         /*$input = Request::all();
         Article.create($input);
         return $input;*/
     }
 
 
-    public function showGames(){
+    /*public function showGames(){
         $watingGames = Game::where('status','=',"Waiting")->get();
         dd($watingGames);
         return Redirect::to('gameLobby');
-    }
+    }*/
 }

@@ -55,7 +55,7 @@
     <br>
 
     <div>
-        <input type="checkbox" id="bots" value="bots" ng-model="ngDialogData.bot">Play with Bots?
+        <input type="checkbox" id="bots" name="bots" value="bots" ng-model="ngDialogData.bot">Play with Bots?
         <div ng-show="ngDialogData.bot">
             <label>Bots:</label>
 

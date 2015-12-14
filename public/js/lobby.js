@@ -62,24 +62,25 @@
 
         $scope.createGame = function () {
             if ($scope.check($scope.linesSlider.value, $scope.linesSlider.value)) {
-                if (!($scope.playerValue <= ($scope.linesSlider.value * $scope.linesSlider.value / 2))) {
+                if (!($scope.nrPlayers <= ($scope.linesSlider.value * $scope.linesSlider.value / 2))) {
                     $scope.msgErrorPlayers = "Insert correct number of players";
+                    return false;
                 } else {
                     $scope.msgErrorPlayers = "";
                 }
-
                 if (!($scope.content != undefined)) {
                     $scope.msgErrorVis = "Select Game Visibility";
-
+                    return false;
                 } else {
                     $scope.msgErrorVis = "";
                 }
                 console.log($scope.bot)
                 if ($scope.bot == true) {
                     console.log($scope.nrBots)
-                    console.log($scope.playerValue)
-                    if ($scope.nrBots == undefined || !($scope.nrBots <= $scope.playerValue)) {
+                    console.log($scope.nrPlayers)
+                    if ($scope.nrBots == undefined || !($scope.nrBots <= $scope.nrPlayers)) {
                         $scope.msgErrorBot = "Insert number of bots";
+                        return false;
                     } else {
                         $scope.msgErrorBot = ""
                     }
@@ -87,13 +88,15 @@
                     $scope.msgErrorBot = ""
                 }
             }
-
+            return true;
         }
 
         $scope.createRoom = function() {
-            $('#formCreateRoom').submit();
-            console.log("asd");
-            $scope.diag.close();
+            if($scope.createGame == true) {
+                $('#formCreateRoom').submit();
+                console.log("asd");
+                $scope.diag.close();
+            }
         }
 
         $scope.resetErrorsDialog = function () {

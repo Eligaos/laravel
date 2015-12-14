@@ -73,7 +73,7 @@
                   </table>
 
                   <h3>Games Playing</h3>
-                  <table class="table table-striped " id="gamesPlaying"">
+                  <table class="table table-striped " id="gamesPlaying">
                       <thead>
                       <tr>
                           <th>Name</th>
