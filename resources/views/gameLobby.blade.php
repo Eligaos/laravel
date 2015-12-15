@@ -66,7 +66,7 @@
                           <td>@{{ game.gameName}}</td>
                           <td>@{{ game.lines}} x @{{ game.columns}}</td>
                           <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                          <td><button class="btn btn-sm btn-primary btn-block" type="button">View</button></td>
+                          <td><button class="btn btn-sm btn-primary btn-block" type="button">Join</button></td>
                       </tr>
 
                       </tbody>

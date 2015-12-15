@@ -21,10 +21,24 @@ class GamesTableSeeder extends Seeder
                     'maxPlayers' => $faker->numberBetween(2,10),
                     'joinedPlayers' => $faker->numberBetween(0,2),
                     'isPrivate' => 'user'.$i,
-                    'status' => $faker->randomElement($array = array ('Playing','Waiting')),
+                    'status' => 'Waiting',
                     'winner' => null,
                 ));
             }
+
+        for ($i=0; $i < 5; $i++) {
+            Game::insert(array(
+                'gameName' => $faker->numerify('Game ###'),
+                'gameOwner' => 'user'.$i,
+                'lines' => $faker->numberBetween(2,10),
+                'columns' => $faker->numberBetween(2,10),
+                'maxPlayers' => 5,
+                'joinedPlayers' => 5,
+                'isPrivate' => 'user'.$i,
+                'status' => 'Playing',
+                'winner' => null,
+            ));
+        }
         }
 
 }
