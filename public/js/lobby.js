@@ -61,49 +61,51 @@
         }
 
         $scope.createGame = function () {
-            if ($scope.check($scope.linesSlider.value, $scope.linesSlider.value)) {
-                if (!($scope.nrPlayers <= ($scope.linesSlider.value * $scope.linesSlider.value / 2))) {
+            if ($scope.gameName == undefined) {
+                $scope.msgErrorGameName = "Insert a name for the Game";
+                return false;
+            }else{
+                $scope.msgErrorGameName = "";
+            }
+            if ($scope.check($scope.linesSlider.value, $scope.columnSlider.value)) {
+                if (!($scope.nrPlayers <= ($scope.linesSlider.value * $scope.columnSlider.value / 2))) {
                     $scope.msgErrorPlayers = "Insert correct number of players";
                     return false;
-                } else {
+                }else{
                     $scope.msgErrorPlayers = "";
                 }
-                if (!($scope.content != undefined)) {
-                    $scope.msgErrorVis = "Select Game Visibility";
-                    return false;
-                } else {
-                    $scope.msgErrorVis = "";
-                }
-                console.log($scope.bot)
                 if ($scope.bot == true) {
-                    console.log($scope.nrBots)
-                    console.log($scope.nrPlayers)
-                    if ($scope.nrBots == undefined || !($scope.nrBots <= $scope.nrPlayers)) {
+                    if ($scope.nrBots == undefined) {
                         $scope.msgErrorBot = "Insert number of bots";
                         return false;
-                    } else {
-                        $scope.msgErrorBot = ""
+                    }else{
+                        $scope.msgErrorBot = "";
+                    }if(!($scope.nrBots <= $scope.nrPlayers)){
+                        $scope.msgErrorBot = "Number of bots should be less than Max Players";
+                        return false;
+                    }else{
+                        $scope.msgErrorBot = "";
                     }
-                } else {
-                    $scope.msgErrorBot = ""
                 }
+                return true;
             }
-            return true;
         }
 
         $scope.createRoom = function() {
-            if($scope.createGame == true) {
+            if($scope.createGame()) {
                 $('#formCreateRoom').submit();
-                console.log("asd");
-                $scope.diag.close();
-            }
+                $scope.diag.close();            }
         }
 
-        $scope.resetErrorsDialog = function () {
+        $scope.resetDialog = function () {
+            $scope.gameName =undefined;
+            $scope.msgErrorGameName = "";
             $scope.msgErrorLines = "";
             $scope.msgErrorCols = "";
+            $scope.nrPlayers=undefined;
             $scope.msgErrorPlayers = "";
-            $scope.msgErrorVis = "";
+            $scope.bot= false;
+            $scope.nrBots= undefined;
             $scope.msgErrorBot = "";
             $scope.linesSlider.value = 2;
             $scope.columnSlider.value = 2;
@@ -118,12 +120,9 @@
                 closeByDocument: false,
                 preCloseCallback: function (value) {
                     if (value == "cancel") {
-                        $scope.resetErrorsDialog();
+                        $scope.resetDialog();
                     }
                 }
-            });
-            $scope.diag.closePromise.then(function closed(){
-                console.log("adsasd");
             });
         }
 

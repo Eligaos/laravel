@@ -8,6 +8,7 @@
 <form method="POST" action="gameLobby/createRoom">
     <label for="gameName">Game Name:</label>
     <input class="form-control" type="text" name="gameName" id="gameName" ng-model="ngDialogData.gameName" required>
+    <span class="error" id="msgError_gameName"> {{ngDialogData.msgErrorGameName}}</span>
     <div>
         <label>Total Lines: {{ngDialogData.linesSlider.value}}</label>
         <rzslider name="lines" id="lines" rz-slider-model="ngDialogData.linesSlider.value"
@@ -31,7 +32,7 @@
     <label>Game Visibility:</label>
     <br>
 
-    <div ng-init="ngDialogData.content='public'">
+    <div ng-init="ngDialogData.isPrivate='0'">
         <input type="radio" id="private" name="private" ng-value="1" ng-model="ngDialogData.isPrivate"> Private
         <br>
         <div ng-show="ngDialogData.isPrivate == '1'">
@@ -49,9 +50,8 @@
             </div><!-- /.row -->
         </div>
 
-        <input type="radio" id="public" name="public" ng-value="0" ng-model="ngDialogData.isPrivate" checked="checked"> Public
+        <input type="radio" id="public" name="public" ng-value="0" ng-model="ngDialogData.isPrivate"> Public
     </div>
-    <span class="error" id="msgError_Visibility">{{ngDialogData.msgErrorVis}}</span>
     <br>
 
     <div>
