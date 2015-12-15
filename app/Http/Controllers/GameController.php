@@ -8,6 +8,7 @@ use App\Game;
 use Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+
 class GameController extends Controller
 {
 
@@ -24,6 +25,9 @@ class GameController extends Controller
             'status' => "Waiting",
         );
 
+
+        Player::create(Auth::user()->id, "Waiting");
+        
         $gameCreated = Game::create($createGame);
         return Redirect::to('gameLobby');
 

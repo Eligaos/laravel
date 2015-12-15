@@ -27,7 +27,25 @@
 
 
     function gameLobbyController($scope, $log, $http , $interval, ngDialog) {
+        $scope.joinGame = function(id){
+            //  alert(id);
 
+            //var url = 'gameLobby/joinGame';
+           /* var params = {
+                id: id
+            };*/
+            $http({
+                method: 'POST',
+                data: id,
+                url: 'gameLobby/joinGame'
+            }).then(function successCallback(response) {
+                console.log(response);
+            }, function errorCallback(response) {
+                console.log('There was an error on startGame request');
+            });
+
+
+        }
         $scope.linesSlider = {
             value: 2,
             options: {
@@ -59,6 +77,8 @@
                 });
             },3000);
         }
+
+
 
         $scope.createGame = function () {
             if ($scope.gameName == undefined) {

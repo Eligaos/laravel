@@ -9,7 +9,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Game;
 use Illuminate\Support\Facades\Auth;
-
+use Symfony\Component\Console\Tests\Input\InputTest;
+use Input;
 class GameLobbyController extends Controller
 {
     public function lobby()
@@ -43,5 +44,25 @@ class GameLobbyController extends Controller
         }
     }
 
+
+    public function joinGame()
+    {
+
+      $gameID = Input::get('id');
+        $game = Game::find($gameID)->first();
+
+        if($game->joinedPlayers < $game->maxPlayer){
+            $userID = Auth::user()->id;
+
+
+
+
+        }
+
+
+
+
+
+    }
 
 }
