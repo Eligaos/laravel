@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Facades\Hash as Hash;
 use Illuminate\Support\Facades\Sessionsion as Session;
+use App\Player;
 
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
@@ -61,5 +62,9 @@ class User extends Model implements AuthenticatableContract,
 
         }
 
+    }
+
+    public function players(){
+        return $this->hasOne('App\Player', 'player_id')->get();
     }
 }

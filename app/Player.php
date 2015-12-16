@@ -3,17 +3,37 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class Player extends Model
 {
     protected $table = 'players';
-
-    protected $fillable = ['playerID', 'status'];
+    protected $primaryKey = 'player_id';
+    protected $fillable = ['player_id', 'status'];
 
     public function games(){
-
-        return $this->belongsToMany('App\Game', 'playerID')->get();
-
+        return $this->belongsToMany('App\Game', 'game_player','player_id', 'game_id');
     }
 
+    public function users(){
+        return $this->hasOne('App\User');
+    }
+
+
+    public static function createPlayer(){
+        $user = User::find(Auth::user()->id)->first();
+        $createPlayer = array(
+            'player_id' => $user->id,
+            'status' =>"Waiting",
+        );
+        return Player::create($createPlayer);
+    }
+
+    public static function createAndFind(){
+        if($player = Player::find(Auth::user()->id) == null){
+            Player::createPlayer();
+        }
+        return Player::find(Auth::user()->id);
+    }
 }

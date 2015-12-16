@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Game;
+use App\Player;
 use Input;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -13,27 +15,13 @@ class GameController extends Controller
 {
 
     public function createRoom(Request $request){
-        $createGame = array(
-            'gameName' => Input::get('gameName'),
-            'gameOwner' => Auth::user()->nickname,
-            'lines' => Input::get('lines'),
-            'columns' => Input::get('columns'),
-            'maxPlayers' => Input::get('nrPlayers'),
-            'joinedPlayers' => Input::get('nrBots'),
-            'isPrivate' => Input::get('isPrivate'),
-            'token' => Input::get('token'),
-            'status' => "Waiting",
-        );
-
-
-        Player::create(Auth::user()->id, "Waiting");
-        
+        $createGame = Game::prepareCreateGame(Input::all());
         $gameCreated = Game::create($createGame);
-        return Redirect::to('gameLobby');
 
-        /*$input = Request::all();
-        Article.create($input);
-        return $input;*/
+        $player = Player::createAndFind();
+        $gameCreated->attachPlayersToGame($player,$gameCreated->game_id);
+
+        return Redirect::to('gameLobby');
     }
 
 

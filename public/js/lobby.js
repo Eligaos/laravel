@@ -27,21 +27,38 @@
 
 
     function gameLobbyController($scope, $log, $http , $interval, ngDialog) {
+
         $scope.joinGame = function(id){
-            //  alert(id);
 
             //var url = 'gameLobby/joinGame';
-           /* var params = {
+            var params = {
                 id: id
-            };*/
+            };
             $http({
                 method: 'POST',
-                data: id,
+                data: params,
                 url: 'gameLobby/joinGame'
             }).then(function successCallback(response) {
-                console.log(response);
+
+              //  var name = ;
+              //  console.log(this);
+               //$(this).attr("disabled", false);
+                $('#game'+id).attr("disabled", true);
+
+           if(response.data.game.joinedPlayers == response.data.game.maxPlayers ){
+               $('#activeGames .active').removeClass('active');
+               $('#games-holder .active').removeClass('active');
+
+
+               $('#activeGames').append("<li  class='active'><a data-toggle='tab'' href=\'gameHolder" + response.data.game.game_id +"\'>"+response.data.game.gameName+"</a></li>");
+
+               $('#games-holder').append("<div id=\'gameHolder" + response.data.game.game_id+ "' class='tab-pane fade in active'><h3>" + response.data.game.gameName + "</h3></div><div></div>");
+               $('.gameHolder'+response.data.game.game_id).tab('show');
+             
+
+            }
             }, function errorCallback(response) {
-                console.log('There was an error on startGame request');
+             //   console.log('There was an error on startGame request');
             });
 
 
@@ -64,12 +81,16 @@
                 disabled: false
             }
         }
+        var createGame = function () {
+
+        }
+
 
         $scope.listGames = function() {
-            $interval(function () {
+           $interval(function () {
                 var url = 'gameLobby/listGames';
                 $http.get(url).then(function successCallback(response) {
-                    console.log(response);
+                  //  console.log(response);
                     $scope.gamesWaiting = response.data.gamesWaiting;
                     $scope.gamesPlaying = response.data.gamesPlaying;
                 }, function errorCallback(response) {

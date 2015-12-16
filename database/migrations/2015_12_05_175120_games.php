@@ -13,7 +13,7 @@ class Games extends Migration
     public function up()
     {
         Schema::create('games', function (Blueprint $table) {
-            $table->increments('gameID');
+            $table->increments('game_id');
             $table->string('gameName')->unique();
             $table->string('gameOwner');
             $table->integer('lines');
@@ -29,11 +29,13 @@ class Games extends Migration
 
         Schema::create('game_player', function (Blueprint $table) {
 
-            $table->primary(['gameID', 'playerID']);
-            $table->integer('playerID')->unsigned();
-            $table->integer('gameID')->unsigned();
-            $table->foreign('gameID')->references('gameID')->on('games');
-            $table->foreign('playerID')->references('playerID')->on('players');
+            $table->primary(['game_id', 'player_id']);
+            $table->integer('game_id')->unsigned();
+            $table->integer('player_id')->unsigned();
+
+            $table->foreign('game_id')->references('game_id')->on('games');
+            $table->foreign('player_id')->references('player_id')->on('players');
+            $table->integer('numberPairs');
             $table->double('timePlaying',4,4);
             $table->timestamps();
         });
@@ -46,9 +48,7 @@ class Games extends Migration
      */
     public function down()
     {
-
+        Schema::drop('game_player');
         Schema::drop('games');
-       Schema::drop('game_player');
-
     }
 }

@@ -22,9 +22,8 @@
     <div class="container-fluid">
     <div class="row">
       <div id="sideMenu" class="col-sm-4 col-md-4 sidebar">
-          @if(isset($nickname))
-              <h3>Hello, {{$nickname}}</h3>
-
+          @if(Auth::user() != null)
+              <h3>Hello, {{Auth::user()->nickname}}</h3>
           @endif
           <nav class="navbar navbar-default">
               <div class="container-fluid">
@@ -66,8 +65,8 @@
                           <td>@{{ game.gameName}}</td>
                           <td>@{{ game.lines}} x @{{ game.columns}}</td>
                           <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                          <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                          <td><button class="btn btn-sm btn-primary btn-block" href="gameLobby/joinGame" ng-click="joinGame(game.gameID)" type="button">Join</button></td>
+
+                          <td><button class="btn btn-sm btn-primary btn-block" id="game@{{game.game_id}}" ng-click="joinGame(game.game_id)" type="button">Join</button></td>
                       </tr>
 
                       </tbody>
@@ -98,29 +97,29 @@
       </div>
     <div id="buttonCollapseSideBar" class="col-sm-1 col-md-1"><button class="btn btn-sm btn-primary" type="submit"><img src="img/menuClose.png"></button></div>
      <div id="mainArea" class="col-sm-7 col-md-7">
-	     	<ul class="nav nav-tabs">
-	    <li class="active"><a href="#home">Home</a></li>
-	    <li><a href="#menu1">Menu 1</a></li>
-	    <li><a href="#menu2">Menu 2</a></li>
-	    <li><a href="#menu3">Menu 3</a></li>
+	     	<ul id="activeGames"class="nav nav-tabs">
+                @foreach($games as $key => $game)
+                    @if($key == 0 )
+                    <li class='active'><a data-toggle='tab' href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a></li>
+                    @else
+                        <li><a data-toggle='tab' href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a></li>
+                    @endif
+                @endforeach
 	  </ul>
-	  <div class="tab-content">
-	    <div id="home" class="tab-pane fade in active">
-	      <h3>HOME</h3>
-	      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-	    </div>
-	    <div id="menu1" class="tab-pane fade">
-	      <h3>Menu 1</h3>
-	      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-	    </div>
-	    <div id="menu2" class="tab-pane fade">
-	      <h3>Menu 2</h3>
-	      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-	    </div>
-	    <div id="menu3" class="tab-pane fade">
-	      <h3>Menu 3</h3>
-	      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-	    </div>
+	  <div id="games-holder" class="tab-content">
+          @foreach($games as $key => $game)
+                @if($key == 0 )
+                  <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active">
+                      <h3>{{$game->gameName}}</h3>
+                      <div>{{$key}}</div>
+                  </div>
+                @else
+                  <div id="gameHolder{{$game->game_id}}" class="tab-pane fade">
+                      <h3>{{$game->gameName}}</h3>
+                      <div>{{$key}}</div>
+                @endif
+
+          @endforeach
 	  </div>
 </div>
      </div>
@@ -144,6 +143,8 @@
     <script src="js/rzslider.js"></script>
     <script src="js/ngDialog.min.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script src="js/model.js"></script>
+    <script src="js/ng-main.js"></script>
     <script src="js/lobby.js"></script>
   </body>
 </html>

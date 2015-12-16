@@ -14,8 +14,8 @@ class Players extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
 
-            $table->integer('playerID')->unsigned();
-            $table->foreign('playerID')->references('id')->on('users');
+            $table->integer('player_id')->unsigned();
+            $table->foreign('player_id')->references('id')->on('users');
             $table->string('status');
             $table->timestamps();
         });
