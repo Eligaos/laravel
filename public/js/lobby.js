@@ -26,7 +26,7 @@
     });
 
 
-    function gameLobbyController($scope, $log, $http , $interval, ngDialog) {
+    function gameLobbyController($scope, $log, $http , $interval, modelsService, ngDialog) {
 
         $scope.joinGame = function(id){
 
@@ -43,20 +43,20 @@
               //  var name = ;
               //  console.log(this);
                //$(this).attr("disabled", false);
-                $('#game'+id).attr("disabled", true);
+             //   $('#game'+id).attr("disabled", true);
 
-           if(response.data.game.joinedPlayers == response.data.game.maxPlayers ){
-               $('#activeGames .active').removeClass('active');
-               $('#games-holder .active').removeClass('active');
+          //if(response.data.game.joinedPlayers == response.data.game.maxPlayers ){
+            /*  $('#activeGames .active').removeClass('active');
+              $('#games-holder .active').removeClass('active');
 
 
-               $('#activeGames').append("<li  class='active'><a data-toggle='tab'' href=\'gameHolder" + response.data.game.game_id +"\'>"+response.data.game.gameName+"</a></li>");
+              $('#activeGames').append("<li  class='active'><a data-toggle='tab'' href=\'gameHolder" + response.data.game.game_id +"\'>"+response.data.game.gameName+"</a></li>");
 
-               $('#games-holder').append("<div id=\'gameHolder" + response.data.game.game_id+ "' class='tab-pane fade in active'><h3>" + response.data.game.gameName + "</h3></div><div></div>");
-               $('.gameHolder'+response.data.game.game_id).tab('show');
-             
+              $('#games-holder').append("<div id=\'gameHolder" + response.data.game.game_id+ "' class='tab-pane fade in active'><h3>" + response.data.game.gameName + "</h3><table id='gameBoard'> <tbody > <tr ng-repeat='line in tilesHolder"+response.data.game.game_id+"'> <td ng-repeat='cols in line'><img ng-click='tileClick(cols)' ng-src='img/@{{image(cols)}}.png'></td> </tr> <tbody></table><div></div></div>");
+              $('.gameHolder'+response.data.game.game_id).tab('show');
+              createGame(response.data.game);*/
 
-            }
+           // }
             }, function errorCallback(response) {
              //   console.log('There was an error on startGame request');
             });
@@ -81,22 +81,76 @@
                 disabled: false
             }
         }
-        var createGame = function () {
+        $scope.startGame = function (gameID) {
+            var params = {
+                id: gameID
+            };
+            $http({
+                method: 'GET',
+                data: params,
+                url: 'gameLobby/startGame/'+gameID
+            }).then(function successCallback(response) {
 
+                var game = response.data.game;
+                var gameHolder = "gameHolder" + game.game_id;
+                var modelHolder = "modelHolder" + game.game_id;
+                var tilesHolder = "tilesHolder" + game.game_id;
+
+                $scope.gameHolder = modelsService.game(game.lines, game.columns);
+                $scope.modelHolder = modelsService;
+                $scope.tilesHolder = insertPieces(createBoard(game.lines, game.columns ,$scope.modelHolder, $scope.gameHolder),game.lines, game.columns);
+                //console.log($scope.tilesHolder);
+            }, function errorCallback(response) {
+                //   console.log('There was an error on startGame request');
+            });
         }
 
+        var createBoard = function(lines, columns,model,game){
+            var pieces = game.getBoard().arrayNumbers(lines*columns);
+            for (var i = 0; i < pieces.length; i++) {
+                game.getBoard().addTile(model.tile(pieces[i]));
+            }
+            return game.getBoard().getTiles();
+        }
+
+        var insertPieces = function(arrayPieces, lines, columns){
+            var pieces = [[]];
+            var counter = 0;
+            for (var i = 0; i < lines; i++) {
+                pieces[i] = [];
+                for (var j = 0; j < columns; j++) {
+                    pieces[i][j] = arrayPieces[counter];
+
+                    counter++;
+                }
+            }
+            return pieces;
+        }
+
+        $scope.tileClick = function(tile){
+            console.log("touch");
+                $scope.gameHolder.tileTouch(tile);
+              //  $scope.moves= $scope.game.getMoves();
+
+        }
+        $scope.getImage = function(cols) {
+            if(cols.state == "visible"){
+                return "/img/"+cols.id+".png";
+            }
+           return "/img/"+cols.state+".png";
+        }
 
         $scope.listGames = function() {
-           $interval(function () {
+          $interval(function () {
                 var url = 'gameLobby/listGames';
                 $http.get(url).then(function successCallback(response) {
-                  //  console.log(response);
                     $scope.gamesWaiting = response.data.gamesWaiting;
                     $scope.gamesPlaying = response.data.gamesPlaying;
+                    $scope.gamesStarting = response.data.gamesStarting;
                 }, function errorCallback(response) {
                     console.log('There was an error on startGame request');
                 });
-            },3000);
+           },3000);
         }
 
 
@@ -184,7 +238,7 @@
             return true;
         }
     }
-    angular.module('lobby', ['ngDialog', 'rzModule']);
-    angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', 'ngDialog', gameLobbyController]);
+    angular.module('lobby', ['modelsService', 'ngDialog', 'rzModule']);
+    angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', 'modelsService', 'ngDialog', gameLobbyController]);
 
 })();

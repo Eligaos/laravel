@@ -72,6 +72,27 @@
                       </tbody>
                   </table>
 
+                  <h3>Games Waiting to Start</h3>
+                  <table class="table table-striped " id="gamesStarting">
+                      <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Size</th>
+                          <th>Players</th>
+                          <th>Options</th>
+                      </tr>
+                      </thead>
+                      <tbody  ng-repeat="game in gamesStarting">
+                      <tr>
+                          <td>@{{ game.gameName}}</td>
+                          <td>@{{ game.lines}} x @{{ game.columns}}</td>
+                          <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
+                          <td><button class="btn btn-sm btn-primary btn-block" id="@{{game.game_id}}"  ng-click="startGame(game.game_id);" type="button">Start</button></td>
+                      </tr>
+
+                      </tbody>
+                  </table>
+
                   <h3>Games Playing</h3>
                   <table class="table table-striped " id="gamesPlaying">
                       <thead>
@@ -87,7 +108,7 @@
                               <td>@{{ game.gameName}}</td>
                               <td>@{{ game.lines}} x @{{ game.columns}}</td>
                               <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                              <td><button class="btn btn-sm btn-primary btn-block" id="@{{ game.gameID}}"  href="gameLobby/viewGame" type="submit">View</button></td>
+                              <td><button class="btn btn-sm btn-primary btn-block" id="@{{ game.game_id}}"  href="gameLobby/viewGame" type="submit">View</button></td>
                       </tr>
 
                       </tbody>
@@ -111,14 +132,29 @@
                 @if($key == 0 )
                   <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active">
                       <h3>{{$game->gameName}}</h3>
-                      <div>{{$key}}</div>
+                      <div>
+                          <table id="gameBoard{{$game->game_id}}">
+                              <tbody>
+                              <tr ng-repeat="line in tilesHolder">
+                                  <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="@{{getImage(cols)}}" alt="img"></td>
+                              </tr>
+
+                              </tbody>
+                          </table>
+                      </div>
                   </div>
                 @else
                   <div id="gameHolder{{$game->game_id}}" class="tab-pane fade">
                       <h3>{{$game->gameName}}</h3>
-                      <div>{{$key}}</div>
+                      <div><table id="gameBoard{{$game->game_id}}">
+                              <tbody >
+                              <tr ng-repeat="line in tilesHolder{{$game->game_id}}">
+                                  <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="img/@{{image(cols)}}.png"></td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
                 @endif
-
           @endforeach
 	  </div>
 </div>
