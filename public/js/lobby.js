@@ -26,7 +26,7 @@
     });
 
 
-    function gameLobbyController($scope, $log, $http , $interval, modelsService, ngDialog) {
+    function gameLobbyController($scope, $log, $http , $interval, $parse, modelsService, ngDialog ) {
 
         $scope.joinGame = function(id){
 
@@ -92,14 +92,25 @@
             }).then(function successCallback(response) {
 
                 var game = response.data.game;
-                var gameHolder = "gameHolder" + game.game_id;
-                var modelHolder = "modelHolder" + game.game_id;
-                var tilesHolder = "tilesHolder" + game.game_id;
+                var gameHolder = "gameHolder" + gameID;
+                var modelHolder = "modelHolder" + gameID;
+                var tilesHolder = "tilesHolder" + gameID;
 
-                $scope.gameHolder = modelsService.game(game.lines, game.columns);
-                $scope.modelHolder = modelsService;
-                $scope.tilesHolder = insertPieces(createBoard(game.lines, game.columns ,$scope.modelHolder, $scope.gameHolder),game.lines, game.columns);
-                //console.log($scope.tilesHolder);
+                var modelGameHolder = $parse(gameHolder);
+                var modelModelHolder = $parse(modelHolder);
+                var modelTilesHolder = $parse(tilesHolder);
+
+
+
+                var modelGameHolderAux = modelGameHolder.assign($scope,modelsService.game(game.lines, game.columns));
+                var modelHolderAux = modelModelHolder.assign($scope,modelsService);
+
+                console.log(modelHolderAux);
+                console.log(modelGameHolderAux);
+
+                modelTilesHolder.assign($scope,insertPieces(createBoard(game.lines, game.columns ,modelHolderAux, modelGameHolderAux),game.lines, game.columns));
+                console.log($scope.tilesHolder11);
+
             }, function errorCallback(response) {
                 //   console.log('There was an error on startGame request');
             });
@@ -128,8 +139,12 @@
         }
 
         $scope.tileClick = function(tile){
-            console.log("touch");
-                $scope.gameHolder.tileTouch(tile);
+            var gameHolder = "gameHolder" + id;
+            var modelGameHolder = $parse(gameHolder);
+            modelGameHolder.assign($scope,modelsService.game(game.lines, game.columns));
+            console.log("touch" + modelGameHolder);
+
+           $scope.gameHolder.tileTouch(tile);
               //  $scope.moves= $scope.game.getMoves();
 
         }
@@ -239,6 +254,6 @@
         }
     }
     angular.module('lobby', ['modelsService', 'ngDialog', 'rzModule']);
-    angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', 'modelsService', 'ngDialog', gameLobbyController]);
+    angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', '$parse', 'modelsService', 'ngDialog', gameLobbyController]);
 
 })();

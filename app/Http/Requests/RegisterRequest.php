@@ -26,7 +26,7 @@ class RegisterRequest extends Request
         return [
             'nickname' => 'required|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:4',
+            'password' => 'required|min:3',
             'password_confirmation' => 'required|same:password',
         ];
     }

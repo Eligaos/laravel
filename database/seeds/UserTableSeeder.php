@@ -18,17 +18,16 @@ class UserTableSeeder extends Seeder
         User::insert(array(
             'nickname' => "user",
             'email' => "user@gmail.com",
-            'password' => bcrypt("1234"),
+            'password' => bcrypt("123"),
             'remember_token' => str_random(10),
         ));
 
 
         for ($i=0; $i < 5; $i++) {
             User::insert(array(
-                'nickname' => $faker->unique()->userName,
+                'nickname' => $faker->unique()->numerify('User ###'),
                 'email' => $faker->email,
-                'password' => bcrypt(str_random(10)),
-                'remember_token' => str_random(10),
+                'password' => bcrypt("123")
             ));
         }
     }

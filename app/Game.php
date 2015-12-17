@@ -9,7 +9,6 @@ class Game extends Model
 {
     //
     protected $table = 'games';
-
     protected $fillable = ['gameName', 'gameOwner','lines','columns','maxPlayers','joinedPlayers','isPrivate','status','winner','token'];
     protected $primaryKey = 'game_id';
 
@@ -44,9 +43,6 @@ class Game extends Model
             'token' => $input['token'],
             'status' => "Waiting",
         );
-
         return $createGame;
     }
-
-
 }

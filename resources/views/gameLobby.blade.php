@@ -135,8 +135,8 @@
                       <div>
                           <table id="gameBoard{{$game->game_id}}">
                               <tbody>
-                              <tr ng-repeat="line in tilesHolder">
-                                  <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="@{{getImage(cols)}}" alt="img"></td>
+                              <tr ng-repeat="line in tilesHolder{{$game->game_id}}">
+                                  <td ng-repeat="cols in line"><img ng-click="tileClick(cols,{{$game->game_id}})" ng-src="@{{getImage(cols)}}" alt="img"></td>
                               </tr>
 
                               </tbody>

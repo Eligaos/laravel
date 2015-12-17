@@ -72,7 +72,6 @@ class GameLobbyController extends Controller
                 $game->joinedPlayers += 1;
                 if($game->joinedPlayers == $game->maxPlayers){
                     $game->status = "Starting";
-
                 }
                 $game->save();
             }

@@ -16,6 +16,7 @@ class Games extends Migration
             $table->increments('game_id');
             $table->string('gameName')->unique();
             $table->string('gameOwner');
+           // $table->foreign('gameOwner')->references('nickname')->on('users');
             $table->integer('lines');
             $table->integer('columns');
             $table->integer('maxPlayers');
@@ -28,11 +29,9 @@ class Games extends Migration
         });
 
         Schema::create('game_player', function (Blueprint $table) {
-
             $table->primary(['game_id', 'player_id']);
             $table->integer('game_id')->unsigned();
             $table->integer('player_id')->unsigned();
-
             $table->foreign('game_id')->references('game_id')->on('games');
             $table->foreign('player_id')->references('player_id')->on('players');
             $table->integer('numberPairs');
