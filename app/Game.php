@@ -19,7 +19,7 @@ class Game extends Model
 
     }
 
-    public function attachPlayersToGame($player, $game_id){
+    public function attachPlayersToGame($player){
         $this->players()->attach($player->player_id);
         $joinedPlayers = $this->players()->count();
         if ($joinedPlayers == $this->maxPlayers){
