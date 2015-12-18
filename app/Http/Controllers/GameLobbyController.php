@@ -83,8 +83,7 @@ class GameLobbyController extends Controller
 
     public function startGame($id)
     {
-
-        \Debugbar::info($id + "hey");
+        \Debugbar::info($id);
         $game = Game::find($id);
       //  $players = DB::select( DB::raw("SELECT game_id FROM game_player gp join games g on gp.game_id = g.game_id join players p on gp.player_id = p.player_id"));
 
@@ -94,6 +93,7 @@ class GameLobbyController extends Controller
                 $players->status = "Playing";
                 $players->save();
             }*/
+
             $game->status = "Playing";
             $game->save();
         }
