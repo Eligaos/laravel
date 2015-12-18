@@ -13,11 +13,11 @@ class Player extends Model
     protected $fillable = ['player_id', 'status'];
 
     public function games(){
-        return $this->belongsToMany('App\Game', 'game_player','player_id', 'game_id');
+        return $this->belongsToMany('App\Game', 'game_player')->withPivot(['numberPairs','timePlaying'])->withTimestamps();
     }
 
-    public function users(){
-        return $this->hasOne('App\User');
+    public function user(){
+        return $this->belongsTo('App\User');
     }
 
 

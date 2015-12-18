@@ -64,7 +64,7 @@ class User extends Model implements AuthenticatableContract,
 
     }
 
-    public function players(){
-        return $this->hasOne('App\Player', 'player_id')->get();
+    public function player(){
+        return $this->hasOne('App\Player', 'player_id');
     }
 }

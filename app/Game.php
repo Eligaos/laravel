@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class Game extends Model
 {
@@ -14,18 +15,20 @@ class Game extends Model
 
     public function players(){
 
-        return $this->belongsToMany('App\Player', 'game_player', 'player_id', 'game_id');
+        return $this->belongsToMany('App\Player', 'game_player')->withPivot(['numberPairs','timePlaying'])->withTimestamps();
 
     }
 
     public function attachPlayersToGame($player, $game_id){
-
-        $this->players()->attach(['game_id' => $game_id], ['player_id' => $player->player_id]);
-
+        $this->players()->attach($player->player_id);
+        $joinedPlayers = $this->players()->count();
+        if ($joinedPlayers == $this->maxPlayers){
+            $this->status = "Starting";
+            $this->save();
+        }
     }
 
     public static function prepareCreateGame($input){
-
         if($input['nrBots'] >= $input['nrPlayers']){
             $input['nrBots'] -= 1;
         }else{

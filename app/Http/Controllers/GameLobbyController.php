@@ -13,6 +13,7 @@ use App\Player;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Tests\Input\InputTest;
 use Input;
+use DB;
 
 class GameLobbyController extends Controller
 {
@@ -83,14 +84,18 @@ class GameLobbyController extends Controller
     public function startGame($id)
     {
 
-        \Debugbar::info($id);
+        \Debugbar::info($id + "hey");
         $game = Game::find($id);
+        $players = DB::select( DB::raw("SELECT game_id FROM game_player gp join games g on gp.game_id = g.game_id join players p on gp.player_id = p.player_id"));
 
-        \Debugbar::info($game);
+        \Debugbar::info($players);
         if($game != null){
+            for($i=0; i<$players; $i++){
+                $players->status = "Playing";
+                $players->save();
+            }
             $game->status = "Playing";
             $game->save();
-
         }
 
         return response()->json(['game' => $game]);

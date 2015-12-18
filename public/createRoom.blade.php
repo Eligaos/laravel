@@ -25,7 +25,7 @@
     </div>
 
     <label for="nrPlayer">Nº Players:</label>
-    <input class="form-control" type="number" name="nrPlayer" id="nrPlayer" ng-model="ngDialogData.nrPlayers" min="0"
+    <input class="form-control" type="number" name="nrPlayer" id="nrPlayer" ng-model="ngDialogData.nrPlayers" min="1"
            required>
     <span class="error" id="msgError_Players">{{ngDialogData.msgErrorPlayers}}</span>
     <br>

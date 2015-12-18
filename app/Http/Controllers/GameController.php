@@ -15,10 +15,12 @@ class GameController extends Controller
 {
 
     public function createRoom(Request $request){
+        $player = Auth::user()->player;
+
         $createGame = Game::prepareCreateGame(Input::all());
         $gameCreated = Game::create($createGame);
 
-        $player = Player::createAndFind();
+
         $gameCreated->attachPlayersToGame($player,$gameCreated->game_id);
 
         return Redirect::to('gameLobby');
