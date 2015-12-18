@@ -130,13 +130,13 @@
 	  <div id="games-holder" class="tab-content">
           @foreach($games as $key => $game)
                 @if($key == 0 )
-                  <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active">
+                  <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active" ng-controller="gameController" ng-init="setup({{$game->game_id}})">
                       <h3>{{$game->gameName}}</h3>
                       <div>
                           <table id="gameBoard{{$game->game_id}}">
                               <tbody>
-                              <tr ng-repeat="line in tilesHolder{{$game->game_id}}">
-                                  <td ng-repeat="cols in line"><img ng-click="tileClick(cols,{{$game->game_id}})" ng-src="@{{getImage(cols)}}" alt="img"></td>
+                              <tr ng-repeat="line in tilesHolder">
+                                  <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="@{{getImage(cols)}}" alt="img"></td>
                               </tr>
 
                               </tbody>
@@ -148,7 +148,7 @@
                       <h3>{{$game->gameName}}</h3>
                       <div><table id="gameBoard{{$game->game_id}}">
                               <tbody >
-                              <tr ng-repeat="line in tilesHolder{{$game->game_id}}">
+                              <tr ng-repeat="line in tilesHolder">
                                   <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="img/@{{image(cols)}}.png"></td>
                               </tr>
                               </tbody>

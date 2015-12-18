@@ -29,11 +29,11 @@ class Games extends Migration
         });
 
         Schema::create('game_player', function (Blueprint $table) {
-            $table->primary(['game_id', 'player_id']);
+            $table->primary(['game_id', 'user_id']);
             $table->integer('game_id')->unsigned();
-            $table->integer('player_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->foreign('game_id')->references('game_id')->on('games');
-            $table->foreign('player_id')->references('player_id')->on('players');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('numberPairs');
             $table->double('timePlaying',4,4);
             $table->timestamps();

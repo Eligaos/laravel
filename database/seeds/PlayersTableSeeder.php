@@ -14,12 +14,12 @@ class PlayersTableSeeder extends Seeder
     public function run()
     {
         //$faker = Faker::create('pt_PT');
-        $userCount = User::all()->count();
+        /*$userCount = User::all()->count();
         for ($i=0; $i < 5; $i++) {
             Player::insert(array(
                 'player_id'=> rand(1,$userCount),
                 'status'=> 'Waiting'
             ));
-        }
+        }*/
     }
 }

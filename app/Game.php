@@ -13,19 +13,20 @@ class Game extends Model
     protected $fillable = ['gameName', 'gameOwner','lines','columns','maxPlayers','joinedPlayers','isPrivate','status','winner','token'];
     protected $primaryKey = 'game_id';
 
-    public function players(){
+    public function users(){
 
-        return $this->belongsToMany('App\Player', 'game_player')->withPivot(['numberPairs','timePlaying'])->withTimestamps();
+        return $this->belongsToMany('App\User', 'game_player')->withPivot(['numberPairs','timePlaying'])->withTimestamps();
 
     }
 
-    public function attachPlayersToGame($player, $game_id){
-        $this->players()->attach($player->player_id);
-        $joinedPlayers = $this->players()->count();
+    public function attachPlayersToGame(){
+        $this->users()->attach( Auth::user()->id);
+     /*   $joinedPlayers = $this->users()->count();
+
         if ($joinedPlayers == $this->maxPlayers){
             $this->status = "Starting";
             $this->save();
-        }
+        }*/
     }
 
     public static function prepareCreateGame($input){

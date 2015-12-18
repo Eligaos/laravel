@@ -9,7 +9,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Game;
-use App\Player;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Tests\Input\InputTest;
 use Input;
@@ -28,16 +27,16 @@ class GameLobbyController extends Controller
         //   $gamesPlaying = Game::where('status', 'LIKE', 'Playing' )->orderBy('gameName', 'DESC')->get();
          //  return view('guest_all.users-list', compact('users', 'title', 'featured'));
          //  return view('gameLobby', compact('nickname', 'gamesWaiting', 'gamesPlaying'));
-          $player = Player::find(Auth::user()->id);
+        //  $player = Player::find(Auth::user()->id);
            $games = [];
-           if($player != null){
-               $gamesT = $player->games()->get();
+         //  if($player != null){
+               $gamesT = Auth::user()->games()->get();
                foreach($gamesT as $t){
                    if($t->joinedPlayers == $t->maxPlayers){
                        array_push($games, $t);
                    }
                }
-           }
+       //    }
 
           return view('gameLobby', compact('games'));
 
@@ -68,8 +67,9 @@ class GameLobbyController extends Controller
         \Debugbar::info($game->joinedPlayers);
         if($game != null){
             if($game->joinedPlayers < $game->maxPlayers){
-                $player = Player::createAndFind();
-                $game->attachPlayersToGame($player, $gameID['id']);
+                $user = Auth::user()->user;
+
+                $game->attachPlayersToGame($user);
                 $game->joinedPlayers += 1;
                 if($game->joinedPlayers == $game->maxPlayers){
                     $game->status = "Starting";
@@ -86,14 +86,14 @@ class GameLobbyController extends Controller
 
         \Debugbar::info($id + "hey");
         $game = Game::find($id);
-        $players = DB::select( DB::raw("SELECT game_id FROM game_player gp join games g on gp.game_id = g.game_id join players p on gp.player_id = p.player_id"));
+      //  $players = DB::select( DB::raw("SELECT game_id FROM game_player gp join games g on gp.game_id = g.game_id join players p on gp.player_id = p.player_id"));
 
-        \Debugbar::info($players);
+     //   \Debugbar::info($players);
         if($game != null){
-            for($i=0; i<$players; $i++){
+         /*   for($i=0; i<$players; $i++){
                 $players->status = "Playing";
                 $players->save();
-            }
+            }*/
             $game->status = "Playing";
             $game->save();
         }
