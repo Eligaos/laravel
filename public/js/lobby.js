@@ -25,8 +25,120 @@
         $(this).tab('show');
     });
 
-    function gameController($scope, $log, $http , $interval, $parse, modelsService, ngDialog ) {
-        $scope.joinGame = function(id){
+    function gameController($scope, $log, $http , $interval,  modelsService ) {
+
+
+        $scope.startGame = function () {
+
+        }
+        $scope.init = function (gameID) {
+            var params = {
+                id: gameID
+            };
+            $http({
+                method: 'GET',
+                data: params,
+                url: 'gameLobby/startGame/' + gameID
+            }).then(function successCallback(response) {
+
+                var game = response.data.game;
+                //  var gameHolder = "gameHolder" + game.game_id;
+                // var modelHolder = "modelHolder" + game.game_id;
+                // var tilesHolder = "tilesHolder" + game.game_id;
+
+                $scope.gameHolder = modelsService.game(game.lines, game.columns);
+                $scope.modelHolder = modelsService;
+                $scope.tilesHolder = insertPieces(createBoard(game.lines, game.columns, $scope.modelHolder, $scope.gameHolder), game.lines, game.columns);
+                console.log($scope.tilesHolder);
+                /* var game = response.data.game;
+                 var gameHolder = "gameHolder" + gameID;
+                 var modelHolder = "modelHolder" + gameID;
+                 var tilesHolder = "tilesHolder" + gameID;
+
+                 var modelGameHolder = $parse(gameHolder);
+                 var modelModelHolder = $parse(modelHolder);
+                 var modelTilesHolder = $parse(tilesHolder);
+
+
+
+                 var modelGameHolderAux = modelGameHolder.assign($scope,modelsService.game(game.lines, game.columns));
+                 var modelHolderAux = modelModelHolder.assign($scope,modelsService);
+
+                 console.log(modelHolderAux);
+                 console.log(modelGameHolderAux);
+
+                 modelTilesHolder.assign($scope,insertPieces(createBoard(game.lines, game.columns ,modelHolderAux, modelGameHolderAux),game.lines, game.columns));
+                 console.log($scope.tilesHolder11);*/
+
+            }, function errorCallback(response) {
+                //   console.log('There was an error on startGame request');
+            });
+        }
+
+      $scope.image = function(tile){
+        if(tile.getState() == "visible"){
+            return tile.getID();
+        }
+        return tile.getState();
+      }
+        $scope.tileClick = function (tile) {
+            $scope.gameHolder.tileTouch(tile);
+
+        }
+        $scope.getImage = function (cols) {
+            if (cols.state == "visible") {
+             return "img/" + cols.id + ".png";
+             }
+             return "img/" + cols.state + ".png";
+        }
+
+
+
+    var createBoard = function(lines, columns,model,game){
+        var pieces = game.getBoard().arrayNumbers(lines*columns);
+        for (var i = 0; i < pieces.length; i++) {
+            game.getBoard().addTile(model.tile(pieces[i]));
+        }
+        return game.getBoard().getTiles();
+    }
+
+    var insertPieces = function(arrayPieces, lines, columns){
+        var pieces = [[]];
+        var counter = 0;
+        for (var i = 0; i < lines; i++) {
+            pieces[i] = [];
+            for (var j = 0; j < columns; j++) {
+                pieces[i][j] = arrayPieces[counter];
+
+                counter++;
+            }
+        }
+        return pieces;
+     }
+    }
+    function gameLobbyController($scope, $log, $http , $interval, $parse, modelsService, ngDialog ) {
+
+
+        $scope.linesSlider = {
+            value: 2,
+            options: {
+                floor: 2,
+                ceil: 10,
+                showTicks: true,
+                disabled: false
+            }
+        };
+        $scope.columnSlider = {
+            value: 2,
+            options: {
+                floor: 2,
+                ceil: 10,
+                showTicks: true,
+                disabled: false
+            }
+        }
+
+        $scope.joinGame = function (id) {
 
             //var url = 'gameLobby/joinGame';
             var params = {
@@ -59,119 +171,10 @@
                 //   console.log('There was an error on startGame request');
             });
 
-            var createBoard = function(lines, columns,model,game){
-                var pieces = game.getBoard().arrayNumbers(lines*columns);
-                for (var i = 0; i < pieces.length; i++) {
-                    game.getBoard().addTile(model.tile(pieces[i]));
-                }
-                return game.getBoard().getTiles();
-            }
-
-            var insertPieces = function(arrayPieces, lines, columns){
-                var pieces = [[]];
-                var counter = 0;
-                for (var i = 0; i < lines; i++) {
-                    pieces[i] = [];
-                    for (var j = 0; j < columns; j++) {
-                        pieces[i][j] = arrayPieces[counter];
-
-                        counter++;
-                    }
-                }
-                return pieces;
-            }
-
-            $scope.tileClick = function(tile){
-                /* var gameHolder = "gameHolder" + id;
-                 var modelGameHolder = $parse(gameHolder);
-                 modelGameHolder.assign($scope,modelsService.game(game.lines, game.columns));
-                 console.log("touch" + modelGameHolder);
-
-                 $scope.gameHolder.tileTouch(tile);
-                 //  $scope.moves= $scope.game.getMoves();*/
-
-                $scope.gameHolder.tileTouch(tile);
-
-            }
-            $scope.getImage = function(cols) {
-                if(cols.state == "visible"){
-                    return "/img/"+cols.id+".png";
-                }
-                return "/img/"+cols.state+".png";
-            }
-
-
         }
-        $scope.startGame = function (gameID) {
-            var params = {
-                id: gameID
-            };
-            $http({
-                method: 'GET',
-                data: params,
-                url: 'gameLobby/startGame/'+gameID
-            }).then(function successCallback(response) {
-
-                var game = response.data.game;
-                //  var gameHolder = "gameHolder" + game.game_id;
-                // var modelHolder = "modelHolder" + game.game_id;
-                // var tilesHolder = "tilesHolder" + game.game_id;
-
-                $scope.gameHolder = modelsService.game(game.lines, game.columns);
-                $scope.modelHolder = modelsService;
-                $scope.tilesHolder = insertPieces(createBoard(game.lines, game.columns ,$scope.modelHolder, $scope.gameHolder),game.lines, game.columns);
-
-                /* var game = response.data.game;
-                 var gameHolder = "gameHolder" + gameID;
-                 var modelHolder = "modelHolder" + gameID;
-                 var tilesHolder = "tilesHolder" + gameID;
-
-                 var modelGameHolder = $parse(gameHolder);
-                 var modelModelHolder = $parse(modelHolder);
-                 var modelTilesHolder = $parse(tilesHolder);
-
-
-
-                 var modelGameHolderAux = modelGameHolder.assign($scope,modelsService.game(game.lines, game.columns));
-                 var modelHolderAux = modelModelHolder.assign($scope,modelsService);
-
-                 console.log(modelHolderAux);
-                 console.log(modelGameHolderAux);
-
-                 modelTilesHolder.assign($scope,insertPieces(createBoard(game.lines, game.columns ,modelHolderAux, modelGameHolderAux),game.lines, game.columns));
-                 console.log($scope.tilesHolder11);*/
-
-            }, function errorCallback(response) {
-                //   console.log('There was an error on startGame request');
-            });
-        }
-    }
-
-    function gameLobbyController($scope, $log, $http , $interval, $parse, modelsService, ngDialog ) {
-
-
-        $scope.linesSlider = {
-            value: 2,
-            options: {
-                floor: 2,
-                ceil: 10,
-                showTicks: true,
-                disabled: false
-            }
-        };
-        $scope.columnSlider = {
-            value: 2,
-            options: {
-                floor: 2,
-                ceil: 10,
-                showTicks: true,
-                disabled: false
-            }
-        }
-
 
         $scope.listGames = function() {
-            //$interval(function () {
+            $interval(function () {
             var url = 'gameLobby/listGames';
             $http.get(url).then(function successCallback(response) {
                 $scope.gamesWaiting = response.data.gamesWaiting;
@@ -180,7 +183,7 @@
             }, function errorCallback(response) {
                 console.log('There was an error on startGame request');
             });
-            //},3000);
+            },3000);
         }
 
 
@@ -270,6 +273,6 @@
     }
     angular.module('lobby', ['modelsService', 'ngDialog', 'rzModule']);
     angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', '$parse', 'modelsService', 'ngDialog', gameLobbyController]);
-    angular.module('lobby').controller('GameController', ['$scope', '$log','$http','$interval', 'modelsService', gameController]);
+    angular.module('lobby').controller('gameController', ['$scope', '$log','$http','$interval', 'modelsService', gameController]);
 
 })();

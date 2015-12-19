@@ -87,7 +87,7 @@
                           <td>@{{ game.gameName}}</td>
                           <td>@{{ game.lines}} x @{{ game.columns}}</td>
                           <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                          <td><button class="btn btn-sm btn-primary btn-block" id="@{{game.game_id}}"  ng-click="startGame(game.game_id);" type="button">Start</button></td>
+                          <td><button class="btn btn-sm btn-primary btn-block" ng-click="startGame()">Start</button></td>
                       </tr>
 
                       </tbody>
@@ -108,7 +108,7 @@
                               <td>@{{ game.gameName}}</td>
                               <td>@{{ game.lines}} x @{{ game.columns}}</td>
                               <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                              <td><button class="btn btn-sm btn-primary btn-block" id="@{{ game.game_id}}"  href="gameLobby/viewGame" type="submit">View</button></td>
+                              <td><button class="btn btn-sm btn-primary btn-block" href="gameLobby/viewGame/@{{ game.game_id}}" type="submit">View</button></td>
                       </tr>
 
                       </tbody>
@@ -130,10 +130,10 @@
 	  <div id="games-holder" class="tab-content">
           @foreach($games as $key => $game)
                 @if($key == 0 )
-                  <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active" ng-controller="gameController" ng-init="setup({{$game->game_id}})">
+                  <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active" >
                       <h3>{{$game->gameName}}</h3>
                       <div>
-                          <table id="gameBoard{{$game->game_id}}">
+                          <table ng-controller="gameController" ng-init="init({{$game->game_id}})">
                               <tbody>
                               <tr ng-repeat="line in tilesHolder">
                                   <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="@{{getImage(cols)}}" alt="img"></td>
@@ -146,10 +146,10 @@
                 @else
                   <div id="gameHolder{{$game->game_id}}" class="tab-pane fade">
                       <h3>{{$game->gameName}}</h3>
-                      <div><table id="gameBoard{{$game->game_id}}">
+                      <div><table ng-controller="gameController"  ng-init="init({{$game->game_id}})">
                               <tbody >
                               <tr ng-repeat="line in tilesHolder">
-                                  <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="img/@{{image(cols)}}.png"></td>
+                                  <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="@{{getImage(cols)}}" alt="img"></td>
                               </tr>
                               </tbody>
                           </table>

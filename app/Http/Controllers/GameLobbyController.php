@@ -20,7 +20,6 @@ class GameLobbyController extends Controller
     {
        if(Auth::user()){
            $nickname = Auth::user()->nickname;
-           \Debugbar::info(Auth::getRecallerName());
           //$title = "Utilizadores";
           // $users = User::paginate(10);
          //  $gamesWaiting = Game::where('status', 'LIKE', 'Waiting' )->orderBy('gameName', 'DESC')->get();
@@ -47,7 +46,6 @@ class GameLobbyController extends Controller
     {
         if(Auth::user()){
             $nickname = Auth::user()->nickname;
-
             //$title = "Utilizadores";
             // $users = User::paginate(10);
             $gamesWaiting = Game::where('status', 'LIKE', 'Waiting' )->orderBy('gameName', 'DESC')->get();
