@@ -45,11 +45,10 @@
                 //  var gameHolder = "gameHolder" + game.game_id;
                 // var modelHolder = "modelHolder" + game.game_id;
                 // var tilesHolder = "tilesHolder" + game.game_id;
+				
+				$scope.game= modelsService.game(game.lines, game.columns);
 
-                $scope.gameHolder = modelsService.game(game.lines, game.columns);
-                $scope.modelHolder = modelsService;
-                $scope.tilesHolder = insertPieces(createBoard(game.lines, game.columns, $scope.modelHolder, $scope.gameHolder), game.lines, game.columns);
-                console.log($scope.tilesHolder);
+		
                 /* var game = response.data.game;
                  var gameHolder = "gameHolder" + gameID;
                  var modelHolder = "modelHolder" + gameID;
@@ -82,8 +81,7 @@
         return tile.getState();
       }
         $scope.tileClick = function (tile) {
-            $scope.gameHolder.tileTouch(tile);
-
+            $scope.game.tileTouch(tile);
         }
         $scope.getImage = function (cols) {
             if (cols.state == "visible") {
@@ -93,28 +91,6 @@
         }
 
 
-
-    var createBoard = function(lines, columns,model,game){
-        var pieces = game.getBoard().arrayNumbers(lines*columns);
-        for (var i = 0; i < pieces.length; i++) {
-            game.getBoard().addTile(model.tile(pieces[i]));
-        }
-        return game.getBoard().getTiles();
-    }
-
-    var insertPieces = function(arrayPieces, lines, columns){
-        var pieces = [[]];
-        var counter = 0;
-        for (var i = 0; i < lines; i++) {
-            pieces[i] = [];
-            for (var j = 0; j < columns; j++) {
-                pieces[i][j] = arrayPieces[counter];
-
-                counter++;
-            }
-        }
-        return pieces;
-     }
     }
     function gameLobbyController($scope, $log, $http , $interval, $parse, modelsService, ngDialog ) {
 

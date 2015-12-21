@@ -1,28 +1,7 @@
 (function() {
 	'use strict';
 
-	var createBoard = function(lines, columns,model,game){
-		var pieces = game.getBoard().arrayNumbers(lines*columns);
-		for (var i = 0; i < pieces.length; i++) {
-			game.getBoard().addTile(model.tile(pieces[i]));
-		}
-		return game.getBoard().getTiles();
-	}
-
-	var insertPieces = function(arrayPieces, lines, columns){
-		var pieces = [[]];
-		var counter = 0;
-		for (var i = 0; i < lines; i++) {
-			pieces[i] = [];
-			for (var j = 0; j < columns; j++) {
-				pieces[i][j] = arrayPieces[counter];
-
-				counter++;
-			}
-		}
-		return pieces;
-	}
-
+	
 function gameController($scope, $interval, $http, modelsService, ngDialog) {
 
 
@@ -128,9 +107,7 @@ $scope.gameStart = function(lines, columns){
 			$scope.msgErrorCols = "";		
 			enableSlider();
 			$scope.game=modelsService.game(lines, columns);
-			$scope.model=modelsService;
-			$scope.tiles= insertPieces(createBoard(lines, columns,$scope.model, $scope.game),lines, columns);
-
+			console.log($scope.game);
 			$scope.intervalPromiseTimer = $interval(function(){	
 				$scope.timer++;
 			},1000);

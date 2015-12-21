@@ -1,13 +1,33 @@
 var model = (function() {
 	'use strict';
 
+
+
 	function modelsServiceFactory(){
+		var insertPieces = function(board, lines, columns){
+			var arrayPieces = board.arrayNumbers(lines*columns);
+			for (var i = 0; i < arrayPieces.length; i++) {
+				board.addTile(new Tile(arrayPieces[i], i) );
+			}
+			var pieces = [[]];
+			var counter = 0;
+			for (var i = 0; i < lines; i++) {
+				pieces[i] = [];
+				for (var j = 0; j < columns; j++) {
+					pieces[i][j] = board.tiles[counter];
+
+					counter++;
+				}
+			}	
+			return pieces;
+		}
 
 		/*-------------------------PEÇA----------------------------------*/
-		var Tile = function(id) {
+		var Tile = function(id, index) {
 			this.id = id;
 			this.state = "hidden";
 			this.flipped = false;
+			this.index = index;
 
 			Tile.prototype.flip = function(){
 				 this.flipped= !this.flipped;
@@ -75,8 +95,8 @@ var model = (function() {
 	/*-------------------------GAME----------------------------------*/
 
 	var Game = function(lines,columns){
-		this.board = new Board(lines,columns);
-			//board.createBoard(lines,columns);
+		    this.board = new Board(lines,columns);
+			this.tiles = insertPieces(this.board, lines, columns);
 			this.firstTile = undefined;
 			this.secondTile = undefined;
 			this.pieces;
@@ -161,14 +181,6 @@ var model = (function() {
 		}
 
 		return {
-			tile: function(id){
-				return new Tile(id);
-			},
-
-			board: function(lines,columns){
-				return new Board(lines,columns);
-			},
-
 			game: function(lines, columns){
 				return new Game(lines, columns);
 			}
