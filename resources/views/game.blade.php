@@ -42,7 +42,7 @@
  			<div id="main" >
  				<table id="gameBoard">
  					<tbody >
- 						<tr ng-repeat="line in tiles">
+ 						<tr ng-repeat="line in game.tiles">
  							<td ng-repeat="cols in line">
  								<flippy
  								ng-if = "cols.getState() != 'empty'"

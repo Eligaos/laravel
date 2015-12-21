@@ -135,7 +135,7 @@
                       <div>
                           <table ng-controller="gameController" ng-init="init({{$game->game_id}})">
                               <tbody>
-                              <tr ng-repeat="line in tilesHolder">
+                              <tr ng-repeat="line in game.tiles">
                                   <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="@{{getImage(cols)}}" alt="img"></td>
                               </tr>
 
@@ -148,7 +148,7 @@
                       <h3>{{$game->gameName}}</h3>
                       <div><table ng-controller="gameController"  ng-init="init({{$game->game_id}})">
                               <tbody >
-                              <tr ng-repeat="line in tilesHolder">
+                              <tr ng-repeat="line in game.tiles">
                                   <td ng-repeat="cols in line"><img ng-click="tileClick(cols)" ng-src="@{{getImage(cols)}}" alt="img"></td>
                               </tr>
                               </tbody>
