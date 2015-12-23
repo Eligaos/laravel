@@ -1,5 +1,8 @@
 (function () {
-
+    var socket = io.connect('http://grp20.dad:3000');
+    socket.emit('chat', function(){
+        console.log("entrei");
+    });
     'use strict';
     document.getElementById("buttonCollapseSideBar").addEventListener("click", function () {
         var sideMenu = $('#sideMenu');
@@ -25,7 +28,20 @@
         $(this).tab('show');
     });
 
-    function gameController($scope, $log, $http , $interval,  modelsService ) {
+function chatController($scope, $log, $http ,modelsService){
+    var socket = io.connect('http://grp20.dad:3000');
+    $scope.sendMessage = function(name){
+        $('#chatForm').submit(function(){
+            socket.emit('chatInput', $('#m').val(), name);
+            $('#m').val('');
+            return false;
+        });
+    }
+    socket.on('chatOutput', function(msg,name){
+        $('#messages').append($('<li>').text(name + ": "+msg));
+    });
+}
+    function gameController($scope, $log, $http , $interval,  modelsService) {
 
 
         $scope.startGame = function () {
@@ -250,5 +266,6 @@
     angular.module('lobby', ['modelsService', 'ngDialog', 'rzModule']);
     angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', '$parse', 'modelsService', 'ngDialog', gameLobbyController]);
     angular.module('lobby').controller('gameController', ['$scope', '$log','$http','$interval', 'modelsService', gameController]);
+    angular.module('lobby').controller('chatController', ['$scope', '$log','$http', 'modelsService', chatController]);
 
 })();

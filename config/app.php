@@ -138,6 +138,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Illuminate\Html\HtmlServiceProvider::class,
        // Collective\Html\HtmlServiceProvider::class,
         /*
          * Application Service Providers...
@@ -197,6 +198,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Socialize' => Laravel\Socialite\Facades\Socialite::class,
+        'Html'      => Illuminate\Html\HtmlFacade::class,
+        'Form'      => Illuminate\Html\FormFacade::class,
     ],
 
 ];
