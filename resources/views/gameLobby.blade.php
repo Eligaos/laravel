@@ -45,8 +45,7 @@
                 <button class="btn btn-lg btn-primary" name=private value="private" ng-click="ngPrivate =! ngPrivate"
                         type="button">Private Games
                 </button>
-
-
+			
                 <div ng-show="ngPrivate">
                     <input class="form-control" type="text" name="joinP" id="joinP" required>
                     <button class="btn btn-default" type="button" ng-click="joinPrivateGame()">Join</button>

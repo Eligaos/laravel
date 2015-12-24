@@ -21,6 +21,8 @@
             mainArea.toggleClass('col-sm-7');
         }
     });
+	
+	
     /*
      CHECK THIS:
      https://jqueryui.com/tabs/#default */
