@@ -16,7 +16,6 @@
 			return pieces;
 		}
 
-	
 		/*-------------------------PEÇA----------------------------------*/
 		var Tile = function(id, index) {
 			this.id = id;
