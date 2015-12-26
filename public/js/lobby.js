@@ -60,64 +60,71 @@
 
     function gameController($scope, $log, $http , $interval,  modelsService) {
         var protocol = location.protocol;
-    var port = '8080';
-    var url = protocol + '//' + window.location.hostname + ':' + port;
-    var socket = io.connect(url, {reconnect: true});
+        var port = '8080';
+        var url = protocol + '//' + window.location.hostname + ':' + port;
+        var socket = io.connect(url, {reconnect: true});
 
-    $scope.startGame = function () {
+        $scope.startGame = function () {
 
-    }
-    $scope.init = function (userID,gameID) {
-        var params = {
-            id: gameID
-        };
-        $http({
-            method: 'GET',
-            data: params,
-            url: 'gameLobby/startGame/' + gameID
-        }).then(function successCallback(response) {
+        }
+        $scope.init = function (gameID) {
+            var params = {
+                id: gameID
+            };
+            $http({
+                method: 'GET',
+                data: params,
+                url: 'gameLobby/startGame/' + gameID
+            }).then(function successCallback(response) {
 
-            var game = response.data.game;
-            $scope.game= modelsService.game(game.lines, game.columns);
+                var game = response.data.game;
+				$scope.game= modelsService.game(game.lines, game.columns);
+                socket.emit("startGame", gameID, game.lines, game.columns);
 
-            socket.emit("startGame",userID, gameID, game.lines, game.columns);
 
-
-        }, function errorCallback(response) {
-            //   console.log('There was an error on startGame request');
+            }, function errorCallback(response) {
+                //   console.log('There was an error on startGame request');
+            });
+        }
+        socket.on('refreshGame', function(data){
+            console.log( data);
+            $scope.game = data;
+            $scope.$apply();
         });
-    }
-    socket.on('refreshGame', function(data){
-        console.log(data);
-        $scope.game = data;
-        $scope.$apply();
 
-    });
-
-    $scope.image = function(tile){
+      $scope.image = function(tile){
         if(tile.getState() == "visible"){
             return tile.getID();
         }
         return tile.getState();
-    }
+      }
 
-    $scope.tileClick = function (userID, gameID, tile) {
-        if( $scope.game.playerTurn == userID){
+        $scope.tileClick = function (gameID, tile) {
             socket.emit("playMove", gameID, tile);
+            var timeout;
+            clearTimeout(timeout);
+            if ($scope.game.firstTile.id != $scope.game.secondTile.id) {
+                timeout = setTimeout(function ()
+                    {
+                        $scope.game.hideTiles()},
+                    2000);
 
+                console.log(tile);
+                $scope.game.tileTouch(tile);
+            }
         }
-    }
-
-    $scope.getImage = function (cols) {
-        if (cols.state == "visible") {
-            return "img/" + cols.id + ".png";
+        $scope.getImage = function (cols) {
+            if (cols.state == "visible") {
+             return "img/" + cols.id + ".png";
+             }
+             return "img/" + cols.state + ".png";
         }
-        return "img/" + cols.state + ".png";
+
+
     }
-
-
-}
     function gameLobbyController($scope, $log, $http , $interval, $parse, modelsService, ngDialog ) {
+
+
         $scope.linesSlider = {
             value: 2,
             options: {
