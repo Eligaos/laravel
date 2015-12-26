@@ -122,7 +122,6 @@
                                 </button>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -146,36 +145,23 @@
                 @foreach($games as $key => $game)
                     @if($key == 0 )
                         <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active">
-                            <h3>{{$game->gameName}}</h3>
-
-                            <div>
-                                <table ng-controller="gameController" ng-init="init({{$game->game_id}})">
-                                    <tbody>
-                                    <tr ng-repeat="line in game.tiles">
-                                        <td ng-repeat="cols in line"><img ng-click="tileClick(cols)"
-                                                                          ng-src="@{{getImage(cols)}}" alt="img"></td>
-                                    </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     @else
                         <div id="gameHolder{{$game->game_id}}" class="tab-pane fade">
+                    @endif
                             <h3>{{$game->gameName}}</h3>
 
                             <div>
-                                <table ng-controller="gameController" ng-init="init({{$game->game_id}})">
+                                <table ng-controller="gameController" ng-init="init({{Auth::user()->id}}, {{$game->game_id}})">
                                     <tbody>
                                     <tr ng-repeat="line in game.tiles">
-                                        <td ng-repeat="cols in line"><img ng-click="tileClick(cols)"
+                                        <td ng-repeat="cols in line"><img ng-click="tileClick({{Auth::user()->id}}, {{$game->game_id}}, cols)"
                                                                           ng-src="@{{getImage(cols)}}" alt="img"></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            @endif
-                            @endforeach
+
+                @endforeach
                         </div>
             </div>
         </div>
