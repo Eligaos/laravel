@@ -49,9 +49,9 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.on('chatInput', function (msg,name) {
-        console.log("cheguei");
-        io.emit('chatOutput', msg,name);
+    socket.on('chatInput', function (name,msg) {
+        console.log('ChatNS-Client send a chat message = ' + msg);
+        io.emit('chatOutput', name,msg);
     });
 });
 

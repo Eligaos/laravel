@@ -45,7 +45,7 @@
                 <button class="btn btn-lg btn-primary" name=private value="private" ng-click="ngPrivate =! ngPrivate"
                         type="button">Private Games
                 </button>
-			
+
                 <div ng-show="ngPrivate">
                     <input class="form-control" type="text" name="joinP" id="joinP" required>
                     <button class="btn btn-default" type="button" ng-click="joinPrivateGame()">Join</button>
@@ -181,14 +181,16 @@
         </div>
     </div>
 </div>
-
-<ul ng-controller="chatController" id="messages">
-<lable id="chatMessage"></lable>
-<form action="" id="chatForm">
-    <input id="m" autocomplete="off"/>
-    <button ng-click="sendMessage('{{Auth::user()->nickname}}')">Send</button>
-</form>
-</ul>
+<div id="chatZone" ng-controller="chatController">
+    <lable id="chatMessage"></lable>
+    <form action="#" method="get" id="chatForm">
+        <input id="m" autocomplete="off" ng-model="chatMsg"
+               ng-keypress="sendMessage($event,'{{Auth::user()->nickname}}')">
+    </form>
+    <ul id="messages">
+        <li ng-repeat="m in chatMessages track by $index">{{m}}</li>
+    </ul>
+</div>
 <form method="POST" id="formCreateRoom" action="gameLobby/createRoom">
     <input type="hidden" name="_token" value="{!!  csrf_token()!!}">
     <input type="hidden" name="gameName" value="@{{gameName}}">

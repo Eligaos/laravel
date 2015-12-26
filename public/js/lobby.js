@@ -25,20 +25,39 @@
     $('.nav-tabs a').click(function () {
         $(this).tab('show');
     });
+    function chatController($scope, $log, $http ,modelsService) {
+        var protocol = location.protocol;
+        var port = '8080';
+        var url = protocol + '//' + window.location.hostname + ':' + port;
+        var socketChat = io.connect(url, {reconnect: true});
 
-function chatController($scope, $log, $http ,modelsService){
-    var socket = io.connect('http://grp20.dad:3000');
-    $scope.sendMessage = function(name){
-        $('#chatForm').submit(function(){
-            socket.emit('chatInput', $('#m').val(), name);
-            $('#m').val('');
-            return false;
+        $scope.chatMsg = "";
+        $scope.chatMessages = [];
+        $scope.sendMessage = function ($event, playerName) {
+            if ($event.keyCode == 13) {
+                console.log('msgChat to All ', playerName, $scope.chatMsg);
+                socketChat.emit("chatInput", playerName, $scope.chatMsg);
+                $scope.chatMsg = "";
+            }
+        };
+        /*
+         $scope.sendMessage = function(name){
+         $('#chatForm').submit(function(){
+         socket.emit('chatInput', $('#m').val(), name);
+         $('#m').val('');
+         return false;
+         });
+         }*/
+        socketChat.on('chatOutput', function (msg, name) {
+            console.log('newChatMsg', name, msg);
+            if ($scope.chatMessages.length > 6)
+                $scope.chatMessages.shift();
+            $scope.chatMessages.push(name + ": " + msg);
+            console.log($scope.chatMessages);
+            $scope.$apply();
         });
     }
-    socket.on('chatOutput', function(msg,name){
-        $('#messages').append($('<li>').text(name + ": "+msg));
-    });
-}
+
     function gameController($scope, $log, $http , $interval,  modelsService) {
         var protocol = location.protocol;
         var port = '8080';
