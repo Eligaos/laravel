@@ -1,8 +1,4 @@
 (function () {
-    var socket = io.connect('http://grp20.dad:3000');
-    socket.emit('chat', function(){
-        console.log("entrei");
-    });
     'use strict';
     document.getElementById("buttonCollapseSideBar").addEventListener("click", function () {
         var sideMenu = $('#sideMenu');
@@ -44,7 +40,10 @@ function chatController($scope, $log, $http ,modelsService){
     });
 }
     function gameController($scope, $log, $http , $interval,  modelsService) {
-
+        var protocol = location.protocol;
+        var port = '8080';
+        var url = protocol + '//' + window.location.hostname + ':' + port;
+        var socket = io.connect(url, {reconnect: true});
 
         $scope.startGame = function () {
 
@@ -60,37 +59,19 @@ function chatController($scope, $log, $http ,modelsService){
             }).then(function successCallback(response) {
 
                 var game = response.data.game;
-                //  var gameHolder = "gameHolder" + game.game_id;
-                // var modelHolder = "modelHolder" + game.game_id;
-                // var tilesHolder = "tilesHolder" + game.game_id;
-				
 				$scope.game= modelsService.game(game.lines, game.columns);
+                socket.emit("startGame", gameID, game.lines, game.columns);
 
-		
-                /* var game = response.data.game;
-                 var gameHolder = "gameHolder" + gameID;
-                 var modelHolder = "modelHolder" + gameID;
-                 var tilesHolder = "tilesHolder" + gameID;
-
-                 var modelGameHolder = $parse(gameHolder);
-                 var modelModelHolder = $parse(modelHolder);
-                 var modelTilesHolder = $parse(tilesHolder);
-
-
-
-                 var modelGameHolderAux = modelGameHolder.assign($scope,modelsService.game(game.lines, game.columns));
-                 var modelHolderAux = modelModelHolder.assign($scope,modelsService);
-
-                 console.log(modelHolderAux);
-                 console.log(modelGameHolderAux);
-
-                 modelTilesHolder.assign($scope,insertPieces(createBoard(game.lines, game.columns ,modelHolderAux, modelGameHolderAux),game.lines, game.columns));
-                 console.log($scope.tilesHolder11);*/
 
             }, function errorCallback(response) {
                 //   console.log('There was an error on startGame request');
             });
         }
+        socket.on('refreshGame', function(data){
+            console.log( data);
+            $scope.game = data;
+            $scope.$apply();
+        });
 
       $scope.image = function(tile){
         if(tile.getState() == "visible"){
@@ -98,8 +79,20 @@ function chatController($scope, $log, $http ,modelsService){
         }
         return tile.getState();
       }
-        $scope.tileClick = function (tile) {
-            $scope.game.tileTouch(tile);
+
+        $scope.tileClick = function (gameID, tile) {
+            socket.emit("playMove", gameID, tile);
+            var timeout;
+            clearTimeout(timeout);
+            if ($scope.game.firstTile.id != $scope.game.secondTile.id) {
+                timeout = setTimeout(function ()
+                    {
+                        $scope.game.hideTiles()},
+                    2000);
+
+                console.log(tile);
+                $scope.game.tileTouch(tile);
+            }
         }
         $scope.getImage = function (cols) {
             if (cols.state == "visible") {
@@ -144,23 +137,6 @@ function chatController($scope, $log, $http ,modelsService){
                 url: 'gameLobby/joinGame'
             }).then(function successCallback(response) {
 
-                //  var name = ;
-                //  console.log(this);
-                //$(this).attr("disabled", false);
-                //   $('#game'+id).attr("disabled", true);
-
-                //if(response.data.game.joinedPlayers == response.data.game.maxPlayers ){
-                /*  $('#activeGames .active').removeClass('active');
-                 $('#games-holder .active').removeClass('active');
-
-
-                 $('#activeGames').append("<li  class='active'><a data-toggle='tab'' href=\'gameHolder" + response.data.game.game_id +"\'>"+response.data.game.gameName+"</a></li>");
-
-                 $('#games-holder').append("<div id=\'gameHolder" + response.data.game.game_id+ "' class='tab-pane fade in active'><h3>" + response.data.game.gameName + "</h3><table id='gameBoard'> <tbody > <tr ng-repeat='line in tilesHolder"+response.data.game.game_id+"'> <td ng-repeat='cols in line'><img ng-click='tileClick(cols)' ng-src='img/@{{image(cols)}}.png'></td> </tr> <tbody></table><div></div></div>");
-                 $('.gameHolder'+response.data.game.game_id).tab('show');
-                 createGame(response.data.game);*/
-
-                // }
             }, function errorCallback(response) {
                 //   console.log('There was an error on startGame request');
             });
