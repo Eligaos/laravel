@@ -40,17 +40,12 @@ io.on('connection', function (socket) {
     });
 
     socket.on('playMove',function(gameId, tile){
-        console.log('\n----------------------------------------------------\n');
-        console.log('Client requested "playMove" - gameId = ' + gameId + ' move= ', tile.index);
-
         games[gameId].tileTouch(tile);
-
         io.in(gameId).emit('refreshGame', games[gameId]);
 
     });
 
     socket.on('chatInput', function (name,msg) {
-        console.log('ChatNS-Client send a chat message = ' + msg);
         io.emit('chatOutput', name,msg);
     });
 });

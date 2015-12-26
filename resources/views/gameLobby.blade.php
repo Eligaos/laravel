@@ -183,12 +183,12 @@
 </div>
 <div id="chatZone" ng-controller="chatController">
     <lable id="chatMessage"></lable>
-    <form action="#" method="get" id="chatForm">
+    <form action="#" id="chatForm">
         <input id="m" autocomplete="off" ng-model="chatMsg"
                ng-keypress="sendMessage($event,'{{Auth::user()->nickname}}')">
     </form>
     <ul id="messages">
-        <li ng-repeat="m in chatMessages track by $index">{{m}}</li>
+        <li ng-repeat="m in chatMessages track by $index">@{{ m }}</li>
     </ul>
 </div>
 <form method="POST" id="formCreateRoom" action="gameLobby/createRoom">

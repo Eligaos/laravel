@@ -48,7 +48,7 @@
          return false;
          });
          }*/
-        socketChat.on('chatOutput', function (msg, name) {
+        socketChat.on('chatOutput', function (name,msg) {
             console.log('newChatMsg', name, msg);
             if ($scope.chatMessages.length > 6)
                 $scope.chatMessages.shift();
