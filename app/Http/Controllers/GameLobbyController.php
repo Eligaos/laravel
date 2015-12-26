@@ -30,7 +30,7 @@ class GameLobbyController extends Controller
            $games = [];
          //  if($player != null){
                $gamesT = Auth::user()->games()->get();
-               foreach($gamesT as $t){
+              foreach($gamesT as $t){
                    if($t->joinedPlayers == $t->maxPlayers){
                        array_push($games, $t);
                    }

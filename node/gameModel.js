@@ -91,6 +91,9 @@
 	var Game = function(lines,columns){
 		    this.board = new Board(lines,columns);
 			this.tiles = insertPieces(this.board, lines, columns);
+            this.gameID = undefined;
+            this.gamePlayers = [];
+			this.playerTurn = undefined;
 			this.firstTile = undefined;
 			this.secondTile = undefined;
 			this.pieces;
@@ -103,9 +106,6 @@
 			}
 
 			Game.prototype.tileTouch =function(tile){
-             //   console.log(this.board);
-            //    console.log(this.tiles);
-
                 if (this.board.getTileByIndex(tile.index).getState() == "hidden") {
 					if (this.firstTile == undefined){
 						this.firstTile = this.board.getTileByIndex(tile.index);
@@ -118,46 +118,50 @@
 					}else if(this.secondTile == undefined){
 						this.secondTile = this.board.getTileByIndex(tile.index);
 						this.secondTile.setState("visible");
-                        console.log("estado segundo: " + this.secondTile.getState());
 						this.secondTile.flipped = this.board.getTileByIndex(tile.index).flip();
 						this.moves++
 						return this.compare();
-					} else{
+					}/* else{
 						this.hideTiles();	
 						this.moves++	
 						this.firstTile = this.board.getTileByIndex(tile.index);
 						this.firstTile.setState("visible");
 						this.firstTile.flipped = this.board.getTileByIndex(tile.index).flip();
 						clearTimeout(this.timeout);
-					}          
+					}*/
 				}
 			}
 
 			Game.prototype.compare = function(){
-                console.log("first-" +this.firstTile.id + "second:" + this.secondTile.id )
 				if (this.firstTile.id == this.secondTile.id) {
-					this.tilesMatch();			
+					this.tilesMatch();
 					return true;
 				} else if (this.firstTile.id != this.secondTile.id) {
 					var that = this;
-                    console.log("hey");
-					/*this.timeout =  setTimeout(function(){
-						that.hideTiles()
+
+					setTimeout(function(){
+						that.hideTiles();
+                        return false;
 					}
-					, 2000);*/
-					return false;
+					, 1000);
 				}
-				return false;
 			}
 
-			Game.prototype.hideTiles = function() {				
-				this.firstTile.flipped = !this.firstTile.flipped;
-				this.secondTile.flipped = !this.secondTile.flipped;
+			Game.prototype.hideTiles = function() {
+                console.log("mismatch1");
+                this.firstTile.flipped = false;
+				this.secondTile.flipped = false;
 				this.firstTile.state = "hidden";
-				this.secondTile.state = "hidden";;
+				this.secondTile.state = "hidden";
 				this.firstTile = undefined;
 				this.secondTile = undefined;
+                console.log("mismatch2");
+                var player = this.gamePlayers.shift();
+                this.gamePlayers.push(player);
+                this.playerTurn = this.gamePlayers[0];
+                console.log(this.gamePlayers);
 			}
+
 			Game.prototype.tilesMatch= function () {
 				this.firstTile.state = "empty";
 				this.secondTile.state = "empty";

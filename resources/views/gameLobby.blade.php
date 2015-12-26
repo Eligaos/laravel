@@ -122,7 +122,6 @@
                                 </button>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -149,13 +148,14 @@
                             <h3>{{$game->gameName}}</h3>
 
                             <div>
-                                <table ng-controller="gameController" ng-init="init({{$game->game_id}})">
+                                <table ng-controller="gameController" ng-init="init({{Auth::user()->id}}, {{$game->game_id}})">
                                     <tbody>
                                     <tr ng-repeat="line in game.tiles">
-                                        <td ng-repeat="cols in line"><img ng-click="tileClick(cols)"
-                                                                          ng-src="@{{getImage(cols)}}" alt="img"></td>
+                                        <td ng-repeat="cols in line">
+                                            <img ng-click="tileClick({{Auth::user()->id}}, {{$game->game_id}}, cols)"
+                                                                          ng-src="@{{getImage(cols)}}" alt="img">
+                                        </td>
                                     </tr>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -165,22 +165,26 @@
                             <h3>{{$game->gameName}}</h3>
 
                             <div>
-                                <table ng-controller="gameController" ng-init="init({{$game->game_id}})">
+                                <table ng-controller="gameController" ng-init="init({{Auth::user()->id}}, {{$game->game_id}})">
                                     <tbody>
                                     <tr ng-repeat="line in game.tiles">
-                                        <td ng-repeat="cols in line"><img ng-click="tileClick(cols)"
-                                                                          ng-src="@{{getImage(cols)}}" alt="img"></td>
+                                        <td ng-repeat="cols in line">
+                                            <img ng-click="tileClick({{Auth::user()->id}}, {{$game->game_id}}, cols)"
+                                                 ng-src="@{{getImage(cols)}}" alt="img">
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            @endif
-                            @endforeach
                         </div>
+                    @endif
+                @endforeach
             </div>
         </div>
     </div>
 </div>
+
+
 <div id="chatZone" ng-controller="chatController">
     <lable id="chatMessage"></lable>
     <form action="#" id="chatForm">
