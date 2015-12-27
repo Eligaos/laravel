@@ -4,8 +4,8 @@
         var sideMenu = $('#sideMenu');
         var mainArea = $('#mainArea');
         if (sideMenu.hasClass("hiddenSidebar") === true) {
-            mainArea.toggleClass('col-md-7');
-            mainArea.toggleClass('col-sm-7');
+            mainArea.toggleClass('col-md-8');
+            mainArea.toggleClass('col-sm-8');
             sideMenu.toggleClass('hiddenSidebar');
             $('#buttonCollapseSideBar button img').attr("src", "img/menuClose.png");
             sideMenu.toggle("slow");
@@ -13,8 +13,8 @@
             sideMenu.toggleClass('hiddenSidebar');
             $('#buttonCollapseSideBar button img').attr("src", "img/menuOpen.png");
             sideMenu.toggle("slow");
-            mainArea.toggleClass('col-md-7');
-            mainArea.toggleClass('col-sm-7');
+            mainArea.toggleClass('col-md-8');
+            mainArea.toggleClass('col-sm-8');
         }
     });
 	
@@ -22,9 +22,11 @@
     /*
      CHECK THIS:
      https://jqueryui.com/tabs/#default */
+
     $('.nav-tabs a').click(function () {
         $(this).tab('show');
     });
+
     function chatController($scope, $log, $http ,modelsService) {
         var protocol = location.protocol;
         var port = '8080';
@@ -40,14 +42,6 @@
                 $scope.chatMsg = "";
             }
         };
-        /*
-         $scope.sendMessage = function(name){
-         $('#chatForm').submit(function(){
-         socket.emit('chatInput', $('#m').val(), name);
-         $('#m').val('');
-         return false;
-         });
-         }*/
         socketChat.on('chatOutput', function (name,msg) {
             console.log('newChatMsg', name, msg);
             if ($scope.chatMessages.length > 6)
@@ -59,10 +53,11 @@
     }
 
     function gameController($scope, $log, $http , $interval,  modelsService) {
+
         var protocol = location.protocol;
-    var port = '8080';
-    var url = protocol + '//' + window.location.hostname + ':' + port;
-    var socket = io.connect(url, {reconnect: true});
+        var port = '8080';
+        var url = protocol + '//' + window.location.hostname + ':' + port;
+        var socket = io.connect(url, {reconnect: true});
 
     $scope.startGame = function () {
 
@@ -79,9 +74,7 @@
 
             var game = response.data.game;
             $scope.game= modelsService.game(game.lines, game.columns);
-
             socket.emit("startGame",userID, gameID, game.lines, game.columns);
-
 
         }, function errorCallback(response) {
             //   console.log('There was an error on startGame request');
@@ -101,10 +94,9 @@
         return tile.getState();
     }
 
-    $scope.tileClick = function (userID, gameID, tile) {
-        if( $scope.game.playerTurn == userID){
-            socket.emit("playMove", gameID, tile);
-
+    $scope.tileClick = function (user, gameID, tile) {
+        if( $scope.game.playerTurn == user){
+            socket.emit("playMove", user, gameID, tile);
         }
     }
 
@@ -117,6 +109,7 @@
 
 
 }
+
     function gameLobbyController($scope, $log, $http , $interval, $parse, modelsService, ngDialog ) {
         $scope.linesSlider = {
             value: 2,
@@ -138,7 +131,10 @@
         }
 
         $scope.joinGame = function (id) {
-
+            var protocol = location.protocol;
+            var port = '8080';
+            var url = protocol + '//' + window.location.hostname + ':' + port;
+            var socket = io.connect(url, {reconnect: true});
             //var url = 'gameLobby/joinGame';
             var params = {
                 id: id
@@ -148,7 +144,7 @@
                 data: params,
                 url: 'gameLobby/joinGame'
             }).then(function successCallback(response) {
-
+                socket.emit("joinGame", id);
             }, function errorCallback(response) {
                 //   console.log('There was an error on startGame request');
             });

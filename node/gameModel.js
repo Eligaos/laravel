@@ -105,40 +105,36 @@
 				return this.board;
 			}
 
-			Game.prototype.tileTouch =function(tile){
+			Game.prototype.tileTouch =function(tile, playerPosition){
                 if (this.board.getTileByIndex(tile.index).getState() == "hidden") {
 					if (this.firstTile == undefined){
 						this.firstTile = this.board.getTileByIndex(tile.index);
 						this.firstTile.setState("visible");
-                        console.log(this.firstTile);
+                      //  console.log(this.firstTile);
 						this.firstTile.flipped = this.board.getTileByIndex(tile.index).flip();
 						this.secondTile = undefined;
-						this.moves++;
 
 					}else if(this.secondTile == undefined){
 						this.secondTile = this.board.getTileByIndex(tile.index);
 						this.secondTile.setState("visible");
 						this.secondTile.flipped = this.board.getTileByIndex(tile.index).flip();
-						this.moves++
-						return this.compare();
-					}/* else{
-						this.hideTiles();	
-						this.moves++	
-						this.firstTile = this.board.getTileByIndex(tile.index);
-						this.firstTile.setState("visible");
-						this.firstTile.flipped = this.board.getTileByIndex(tile.index).flip();
-						clearTimeout(this.timeout);
-					}*/
+						return this.compare(playerPosition);
+					}
 				}
 			}
 
-			Game.prototype.compare = function(){
+			Game.prototype.compare = function(playerPosition){
 				if (this.firstTile.id == this.secondTile.id) {
 					this.tilesMatch();
+                    this.gamePlayers[playerPosition]["moves"]++;
+                    this.gamePlayers[playerPosition]["pairs"]++;
+					this.moves++;
+
 					return true;
 				} else if (this.firstTile.id != this.secondTile.id) {
 					var that = this;
-
+					this.moves++;
+                    this.gamePlayers[playerPosition]["moves"]++;
 					setTimeout(function(){
 						that.hideTiles();
                         return false;
@@ -155,10 +151,9 @@
 				this.secondTile.state = "hidden";
 				this.firstTile = undefined;
 				this.secondTile = undefined;
-                console.log("mismatch2");
                 var player = this.gamePlayers.shift();
                 this.gamePlayers.push(player);
-                this.playerTurn = this.gamePlayers[0];
+                this.playerTurn = this.gamePlayers[0]['nickname'];
                 console.log(this.gamePlayers);
 			}
 
@@ -186,15 +181,8 @@
 			}
 		}
 		
-module.exports = {
-			game: function(lines, columns){
-				return new Game(lines, columns);
-			},
-    tile: function(id){
-        return new Tile(id);
-    },
-
-    board: function(lines,columns){
-        return new Board(lines,columns);
+    module.exports = {
+                game: function(lines, columns){
+                    return new Game(lines, columns);
+                }
     }
-}

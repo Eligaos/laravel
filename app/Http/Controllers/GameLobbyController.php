@@ -48,12 +48,14 @@ class GameLobbyController extends Controller
             $nickname = Auth::user()->nickname;
             //$title = "Utilizadores";
             // $users = User::paginate(10);
+
+            $gamesIamPlaying = Auth::user()->games()->where('status', 'LIKE', 'Playing' )->get();
             $gamesWaiting = Game::where('status', 'LIKE', 'Waiting' )->orderBy('gameName', 'DESC')->get();
             $gamesPlaying = Game::where('status', 'LIKE', 'Playing' )->orderBy('gameName', 'DESC')->get();
             $gamesStarting = Game::where('status', 'LIKE', 'Starting')->where('gameOwner', 'LIKE', $nickname)->orderBy('gameName', 'DESC')->get();
             //  return view('guest_all.users-list', compact('users', 'title', 'featured'));
             //return view('gameLobby', compact('nickname', 'gamesWaiting', 'gamesPlaying'));
-            return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesWaiting' => $gamesWaiting, 'gamesStarting' => $gamesStarting]);
+            return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesWaiting' => $gamesWaiting, 'gamesStarting' => $gamesStarting, 'gamesIamPlaying' => $gamesIamPlaying]);
         }
     }
 

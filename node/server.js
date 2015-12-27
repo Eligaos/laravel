@@ -19,9 +19,19 @@ var io = io.listen(server, {
 server.listen(port);
 
 var games = [];
-var gamePlayers = [[]];
 
 console.log('Server listening on port ' + port);
+
+
+function checkPlayerInGame(gameId, userID){
+    for (var i = 0, len =  games[gameId].gamePlayers.length; i < len; i++) {
+        if( games[gameId].gamePlayers[i]["nickname"] == userID){
+            return i;
+        }
+    }
+    return -1;
+}
+
 
 io.on('connection', function (socket) {
 
@@ -34,23 +44,26 @@ io.on('connection', function (socket) {
         if(games[gameId] == undefined) {
             games[gameId] = gameMod.game(lines,columns);
             games[gameId].gameID = gameId;
-            games[gameId].gamePlayers.push(userID);
-            games[gameId].playerTurn = games[gameId].gamePlayers[0];
+            var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
+            games[gameId].gamePlayers.push(player);
+            games[gameId].playerTurn = games[gameId].gamePlayers[0]["nickname"];
         }
-        if(games[gameId].gamePlayers.indexOf(userID) == -1){
-            games[gameId].gamePlayers.push(userID);
+        if(checkPlayerInGame(gameId, userID) == -1){
+            var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
+            games[gameId].gamePlayers.push(player);
         }
-        //games[gameId].playerTurn = games[gameId].gamePlayers[0];
         console.log(games[gameId].gamePlayers);
         io.in(gameId).emit('refreshGame', games[gameId]);
 
     });
 
-    socket.on('playMove',function(gameId, tile){
+    socket.on('playMove',function(user, gameId, tile){
         console.log('\n----------------------------------------------------\n');
         console.log('Client requested "playMove" - gameId = ' + gameId + ' move= ', tile.index);
 
-        games[gameId].tileTouch(tile);
+       var playerPosition =  checkPlayerInGame(gameId, user);
+        console.log(playerPosition);
+        games[gameId].tileTouch(tile, playerPosition);
 
         io.in(gameId).emit('refreshGame', games[gameId]);
         setTimeout(function(){
@@ -60,19 +73,21 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.on('hideTiles',function(gameId){
+    socket.on('joinGame',function(gameId){
         console.log('\n----------------------------------------------------\n');
-        console.log('Client requested "hideTiles"');
+        console.log('Client requested "joinGame" - gameId = ' + gameId);
 
-        games[gameId].hideTiles(games[gameId].firstTile, games[gameId].secondTile);
+        socket.join(gameId);
 
         io.in(gameId).emit('refreshGame', games[gameId]);
-
     });
 
+    socket.on('showGame',function(gameId){
+        console.log('\n---------------ShowGame------------------------\n');
+        io.in(gameId).emit('refreshGame', games[gameId]);
+    });
 
     socket.on('chatInput', function (msg,name) {
-        console.log("cheguei");
         io.emit('chatOutput', msg,name);
     });
 });
