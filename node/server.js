@@ -83,17 +83,6 @@ io.on('connection', function (socket) {
 
     });
 
-<<<<<<< HEAD
-    socket.on('checkEndGame', function (gameId) {
-        if (games[gameId].endGame()) {
-            console.log("The end!");
-            socket.emit('endGame');
-            io.in(gameId).emit('refreshGame', games[gameId]);
-        }
-    });
-=======
->>>>>>> origin/master
-
     socket.on('joinGame', function (gameId) {
         console.log('\n----------------------------------------------------\n');
         console.log('Client requested "joinGame" - gameId = ' + gameId);
