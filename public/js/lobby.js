@@ -102,6 +102,20 @@
                     var tab = "#game" + $scope.game.gameID;
                     $(gameHolder).remove();
                     $(tab).remove();
+                    var params = {
+                        id: $scope.game.gameID,
+                        winner : winner.nickname
+                    };
+                    $http({
+                        method: 'POST',
+                        data: params,
+                        url: 'gameLobby/endGame/'
+                    }).then(function successCallback(response) {
+                        //cenas
+
+                    }, function errorCallback(response) {
+                        //   console.log('There was an error on startGame request');
+                    });
                 }
             });
         });
@@ -146,6 +160,10 @@
                 }
             }
 
+            $scope.startGame = function(user, gameID){
+                gameController.init(user, gameID);
+                window.location.reload(true);
+            }
             $scope.joinGame = function (id) {
                 var protocol = location.protocol;
                 var port = '8080';
@@ -215,6 +233,7 @@
 
             $scope.createRoom = function () {
                 if ($scope.createGame()) {
+
                     $('#formCreateRoom').submit();
                     $scope.diag.close();
                 }

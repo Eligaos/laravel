@@ -27,14 +27,14 @@ class GameLobbyController extends Controller
          //  return view('guest_all.users-list', compact('users', 'title', 'featured'));
          //  return view('gameLobby', compact('nickname', 'gamesWaiting', 'gamesPlaying'));
         //  $player = Player::find(Auth::user()->id);
-           $games = [];
+          // $games = [];
          //  if($player != null){
-               $gamesT = Auth::user()->games()->get();
-              foreach($gamesT as $t){
+               $games = Auth::user()->games()->where('status', 'LIKE', 'Playing' )->get();
+             /* foreach($gamesT as $t){
                    if($t->joinedPlayers == $t->maxPlayers){
                        array_push($games, $t);
                    }
-               }
+               }*/
        //    }
 
           return view('gameLobby', compact('games'));
@@ -100,5 +100,14 @@ class GameLobbyController extends Controller
 
         return response()->json(['game' => $game]);
     }
+
+    public function endGame(){
+        $vars = Input::all();
+        $game = Game::find($vars['id']);
+        $game->status = "Finished";
+        $game->winner = $vars['winner'];
+        $game->save();
+    }
+
 
 }

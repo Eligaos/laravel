@@ -45,6 +45,7 @@ Route::any('logout', ['as' => 'logout', 'uses' => 'LoginRegisterController@logou
 
 Route::post('gameLobby/joinGame', ['uses' => 'GameLobbyController@joinGame']);
 Route::post('gameLobby/viewGame', ['uses' => 'GameLobbyController@viewGame']);
+Route::post('gameLobby/endGame', ['uses' => 'GameLobbyController@endGame']);
 
 //Social Login
 Route::get('/login/{provider?}',[

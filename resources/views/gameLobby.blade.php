@@ -79,7 +79,7 @@
                         <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
                         <td>
                             <button class="btn btn-sm btn-primary btn-block" id="game@{{game.game_id}}"
-                                    onclick="window.location.reload(true);" type="button">Start
+                                    ng-click="startGame('{{Auth::user()->nickname}}', game.game_id)" type="button">Start
                             </button>
                         </td>
                     </tr>

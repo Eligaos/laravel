@@ -20,6 +20,10 @@ class GameController extends Controller
         $gameCreated = Game::create($createGame);
 
         $gameCreated->attachPlayersToGame();
+        if($gameCreated->joinedPlayers == $gameCreated->maxPlayers){
+            $gameCreated->status= "Starting";
+            $gameCreated->save();
+        }
 
         return Redirect::to('gameLobby');
     }
