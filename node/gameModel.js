@@ -129,7 +129,6 @@
                     this.gamePlayers[playerPosition]["moves"]++;
                     this.gamePlayers[playerPosition]["pairs"]++;
 					this.moves++;
-
 					return true;
 				} else if (this.firstTile.id != this.secondTile.id) {
 					var that = this;
@@ -173,8 +172,21 @@
 				return this.moves;
 			}
 
+	/*	Game.prototype.getPlayerMorePairs = function(){
+			console.log("gamePlayers" + this.gamePlayers.length);
+			//console.log("MAX"+Math.max.apply( Math, this.gamePlayers ));
+			for (var i = 0 ; i < this.gamePlayers.length; i++) {
+
+				//console.log("MAX"+Math.max.apply( Math, this.gamePlayers[i]["pairs"] ));
+				//console.log("este gajo" + this.gamePlayers[i]["pairs"]);
+			}
+			//return Math.max.apply( Math, this.gamePlayers )
+		}*/
+
 			Game.prototype.endGame = function(){
+				//this.getPlayerMorePairs();
 				if(this.remainingTiles == 0){
+					//console.log(this.getPlayerMorePairs());
 					return true;
 				}
 				return false;
