@@ -1,12 +1,12 @@
 var app = require('express')();
-var http =  require('http');
+var http = require('http');
 var io = require('socket.io')(http);
 var gameMod = require('./gameModel');
 var port = 8080;
 
 
 //start http
-var server = http.createServer(function(req, res){
+var server = http.createServer(function (req, res) {
 });
 var io = io.listen(server, {
     log: false,
@@ -23,9 +23,9 @@ var games = [];
 console.log('Server listening on port ' + port);
 
 
-function checkPlayerInGame(gameId, userID){
-    for (var i = 0, len =  games[gameId].gamePlayers.length; i < len; i++) {
-        if( games[gameId].gamePlayers[i]["nickname"] == userID){
+function checkPlayerInGame(gameId, userID) {
+    for (var i = 0, len = games[gameId].gamePlayers.length; i < len; i++) {
+        if (games[gameId].gamePlayers[i]["nickname"] == userID) {
             return i;
         }
     }
@@ -34,20 +34,20 @@ function checkPlayerInGame(gameId, userID){
 
 
 io.on('connection', function (socket) {
-    socket.on('startGame',function(userID, gameId, lines,columns){
+    socket.on('startGame', function (userID, gameId, lines, columns) {
         console.log('\n----------------------------------------------------\n');
         console.log('Client requested "startGame" - gameId = ' + gameId);
 
         socket.join(gameId);
 
-        if(games[gameId] == undefined) {
-            games[gameId] = gameMod.game(lines,columns);
+        if (games[gameId] == undefined) {
+            games[gameId] = gameMod.game(lines, columns);
             games[gameId].gameID = gameId;
             var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
             games[gameId].gamePlayers.push(player);
             games[gameId].playerTurn = games[gameId].gamePlayers[0]["nickname"];
         }
-        if(checkPlayerInGame(gameId, userID) == -1){
+        if (checkPlayerInGame(gameId, userID) == -1) {
             var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
             games[gameId].gamePlayers.push(player);
         }
@@ -56,31 +56,36 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.on('playMove',function(user, gameId, tile){
+    socket.on('playMove', function (user, gameId, tile) {
         console.log('\n----------------------------------------------------\n');
         console.log('Client requested "playMove" - gameId = ' + gameId + ' move= ', tile.index);
-
-       var playerPosition =  checkPlayerInGame(gameId, user);
+        var time = 0;
+        var playerPosition = checkPlayerInGame(gameId, user);
         console.log(playerPosition);
+        if (games[gameId].getTurn() == 0) {
+           time =  setInterval(function(){
+               games[gameId].gamePlayers[playerPosition]["time"]++;
+            },1000);
+        }
         games[gameId].tileTouch(tile, playerPosition);
 
         io.in(gameId).emit('refreshGame', games[gameId]);
-        setTimeout(function(){
+        setTimeout(function () {
                 io.in(gameId).emit('refreshGame', games[gameId]);
             }
             , 1000);
 
     });
 
-    socket.on('checkEndGame', function(gameId){
-       if(games[gameId].endGame()){
-           console.log("The end!");
-           socket.emit('endGame');
-           io.in(gameId).emit('refreshGame', games[gameId]);
-       }
+    socket.on('checkEndGame', function (gameId) {
+        if (games[gameId].endGame()) {
+            console.log("The end!");
+            socket.emit('endGame');
+            io.in(gameId).emit('refreshGame', games[gameId]);
+        }
     });
 
-    socket.on('joinGame',function(gameId){
+    socket.on('joinGame', function (gameId) {
         console.log('\n----------------------------------------------------\n');
         console.log('Client requested "joinGame" - gameId = ' + gameId);
 
@@ -89,13 +94,13 @@ io.on('connection', function (socket) {
         io.in(gameId).emit('refreshGame', games[gameId]);
     });
 
-    socket.on('showGame',function(gameId){
+    socket.on('showGame', function (gameId) {
         console.log('\n---------------ShowGame------------------------\n');
         io.in(gameId).emit('refreshGame', games[gameId]);
     });
 
-    socket.on('chatInput', function (msg,name) {
-        io.emit('chatOutput', msg,name);
+    socket.on('chatInput', function (msg, name) {
+        io.emit('chatOutput', msg, name);
     });
 });
 

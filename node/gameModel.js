@@ -93,10 +93,11 @@
 			this.tiles = insertPieces(this.board, lines, columns);
             this.gameID = undefined;
             this.gamePlayers = [];
+			this.turn = 0;
 			this.playerTurn = undefined;
 			this.firstTile = undefined;
 			this.secondTile = undefined;
-			this.pieces;
+			//this.pieces;
 			this.timeout;
 			this.remainingTiles = lines*columns;
 			this.moves = 0;
@@ -106,6 +107,7 @@
 			}
 
 			Game.prototype.tileTouch =function(tile, playerPosition){
+
                 if (this.board.getTileByIndex(tile.index).getState() == "hidden") {
 					if (this.firstTile == undefined){
 						this.firstTile = this.board.getTileByIndex(tile.index);
@@ -152,6 +154,8 @@
 				this.secondTile = undefined;
                 var player = this.gamePlayers.shift();
                 this.gamePlayers.push(player);
+				this.turn++;
+
                 this.playerTurn = this.gamePlayers[0]['nickname'];
                 console.log(this.gamePlayers);
 			}
@@ -171,6 +175,10 @@
 			Game.prototype.getMoves = function(){
 				return this.moves;
 			}
+
+		Game.prototype.getTurn = function(){
+			return this.turn;
+		}
 
 	/*	Game.prototype.getPlayerMorePairs = function(){
 			console.log("gamePlayers" + this.gamePlayers.length);
