@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>The winner is {{ngDialogData.winner}}</h1>
-    <button class="btn btn-sm btn-primary" type="button">OK</button>
+    <h1>The winner is {{ngDialogData.winner.nickname}}</h1>
+    <button class="btn btn-sm btn-primary" type="button" ng-click="closeThisDialog()">OK</button>
 </body>
 </html>

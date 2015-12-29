@@ -59,9 +59,6 @@
         var url = protocol + '//' + window.location.hostname + ':' + port;
         var socket = io.connect(url, {reconnect: true});
 
-        $scope.startGame = function () {
-
-        }
         $scope.init = function (userID, gameID) {
             var params = {
                 id: gameID
@@ -74,6 +71,7 @@
 
                 var game = response.data.game;
                 $scope.game = modelsService.game(game.lines, game.columns);
+                console.log("start game!!");
                 socket.emit("startGame", userID, gameID, game.lines, game.columns);
 
             }, function errorCallback(response) {
@@ -84,22 +82,26 @@
                 //   console.log(data);
                 $scope.game = data;
                 //  console.log($scope.game.gameID);
-                socket.emit('checkEndGame', $scope.game.gameID);
                 /* if($scope.game.playerTurn == data.playerTurn){ //not working
                  $(#'nickPlayer').css('color', 'red');
                  }*/
                 $scope.$apply();
             }
         );
-        socket.on('endGame', function () {
+
+        socket.on('endGame', function (winner) {
+            $scope.winner = winner;
             $scope.diag = ngDialog.open({
                 template: 'endGame.blade.php',
                 showClose: false,
                 closeByEscape: false,
                 data: $scope,
                 closeByDocument: false,
-                preCloseCallback: function (value) {
-                    //guardar na bd
+                preCloseCallback: function () {
+                    var gameHolder = "#gameHolder" + $scope.game.gameID;
+                    var tab = "#game" + $scope.game.gameID;
+                    $(gameHolder).remove();
+                    $(tab).remove();
                 }
             });
         });

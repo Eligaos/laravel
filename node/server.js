@@ -35,8 +35,8 @@ function checkPlayerInGame(gameId, userID) {
 
 io.on('connection', function (socket) {
     socket.on('startGame', function (userID, gameId, lines, columns) {
-        console.log('\n----------------------------------------------------\n');
-        console.log('Client requested "startGame" - gameId = ' + gameId);
+       // console.log('\n----------------------------------------------------\n');
+       // console.log('Client requested "startGame" - gameId = ' + gameId);
 
         socket.join(gameId);
 
@@ -51,14 +51,15 @@ io.on('connection', function (socket) {
             var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
             games[gameId].gamePlayers.push(player);
         }
-        console.log(games[gameId].gamePlayers);
+        console.log("start game" + games[gameId].gamePlayers);
         io.in(gameId).emit('refreshGame', games[gameId]);
 
     });
 
     socket.on('playMove', function (user, gameId, tile) {
         console.log('\n----------------------------------------------------\n');
-        console.log('Client requested "playMove" - gameId = ' + gameId + ' move= ', tile.index);
+      //  console.log('Client requested "playMove" - gameId = ' + gameId + ' move= ', tile.index);
+        console.log("Manhoso");
         var time = 0;
         var playerPosition = checkPlayerInGame(gameId, user);
         console.log(playerPosition);
@@ -67,20 +68,18 @@ io.on('connection', function (socket) {
                games[gameId].gamePlayers[playerPosition]["time"]++;
             },1000);
         }
+        //clear
         games[gameId].tileTouch(tile, playerPosition);
-
         io.in(gameId).emit('refreshGame', games[gameId]);
+        if(games[gameId].endGame() == true){
+            //encontrar o vencedor
+            var winner = games[gameId].getWinner();
+            io.in(gameId).emit('endGame', winner);
+        }
         setTimeout(function () {
                 io.in(gameId).emit('refreshGame', games[gameId]);
-
-                if(games[gameId].endGame() == true){
-
-                    //encontrar o vencedor
-                    io.in(gameId).emit('endGame');
-                }
             }
             , 1000);
-
     });
 
     socket.on('joinGame', function (gameId) {

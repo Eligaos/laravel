@@ -41,7 +41,7 @@
                 <h3 class="page-header">Chat</h3>
                 <div id="chatZone" ng-controller="chatController">
                     <lable id="chatMessage"></lable>
-                    <form action="#" id="chatForm">
+                    <form id="chatForm">
                         <input id="m" autocomplete="off" ng-model="chatMsg"
                                ng-keypress="sendMessage($event,'{{Auth::user()->nickname}}')">
                     </form>
@@ -149,10 +149,10 @@
             <ul id="activeGames" class="nav nav-tabs">
                 @foreach($games as $key => $game)
                     @if($key == 0 )
-                        <li class='active'><a data-toggle='tab'
+                        <li id="game{{$game->game_id}}" class='active'><a data-toggle='tab'
                                               href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a></li>
                     @else
-                        <li><a data-toggle='tab' href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a></li>
+                        <li id="game{{$game->game_id}}"><a data-toggle='tab' href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a></li>
                     @endif
                 @endforeach
             </ul>

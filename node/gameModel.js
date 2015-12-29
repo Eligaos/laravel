@@ -156,7 +156,7 @@ var Game = function (lines, columns) {
         this.turn++;
 
         this.playerTurn = this.gamePlayers[0]['nickname'];
-        console.log(this.gamePlayers);
+        console.log("hide tiles" + this.gamePlayers);
     }
 
     Game.prototype.tilesMatch = function () {
@@ -185,13 +185,14 @@ var Game = function (lines, columns) {
 
         for (var i = 0, len = this.gamePlayers.length; i < len; i++) {
             if (this.gamePlayers[i]["pairs"] >= topPlayer["pairs"]) {
-                if (this.gamePlayers[i]["pairs"] == topPlayer["pairs"]) {
+                topPlayer = this.gamePlayers[i]; //temp cod
+             /*   if (this.gamePlayers[i]["pairs"] == topPlayer["pairs"]) {
                     if (this.gamePlayers[i]["time"] > topPlayer["time"]) {
                         topPlayer = this.gamePlayers[i];
-                    }
+
                 } else {
                     topPlayer = this.gamePlayers[i];
-                }
+                }*/
             }
         }
         return topPlayer;
@@ -200,6 +201,7 @@ var Game = function (lines, columns) {
     Game.prototype.endGame = function () {
         //this.getPlayerMorePairs();
         if (this.remainingTiles == 0) {
+
             //console.log(this.getPlayerMorePairs());
             return true;
         }
