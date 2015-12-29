@@ -72,11 +72,18 @@ io.on('connection', function (socket) {
         io.in(gameId).emit('refreshGame', games[gameId]);
         setTimeout(function () {
                 io.in(gameId).emit('refreshGame', games[gameId]);
+
+                if(games[gameId].endGame() == true){
+
+                    //encontrar o vencedor
+                    io.in(gameId).emit('endGame');
+                }
             }
             , 1000);
 
     });
 
+<<<<<<< HEAD
     socket.on('checkEndGame', function (gameId) {
         if (games[gameId].endGame()) {
             console.log("The end!");
@@ -84,6 +91,8 @@ io.on('connection', function (socket) {
             io.in(gameId).emit('refreshGame', games[gameId]);
         }
     });
+=======
+>>>>>>> origin/master
 
     socket.on('joinGame', function (gameId) {
         console.log('\n----------------------------------------------------\n');
@@ -91,7 +100,7 @@ io.on('connection', function (socket) {
 
         socket.join(gameId);
 
-        io.in(gameId).emit('refreshGame', games[gameId]);
+        //io.in(gameId).emit('refreshGame', games[gameId]);
     });
 
     socket.on('showGame', function (gameId) {

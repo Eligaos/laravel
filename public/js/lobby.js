@@ -59,6 +59,7 @@
         var url = protocol + '//' + window.location.hostname + ':' + port;
         var socket = io.connect(url, {reconnect: true});
 
+<<<<<<< HEAD
         $scope.startGame = function () {
 
         }
@@ -115,6 +116,58 @@
                 socket.emit("playMove", user, gameID, tile);
             }
 
+=======
+    $scope.startGame = function () {
+        alert("start");
+        location.reload();
+    }
+    $scope.init = function (userID,gameID) {
+
+        var params = {
+            id: gameID
+        };
+        $http({
+            method: 'GET',
+            data: params,
+            url: 'gameLobby/startGame/' + gameID
+        }).then(function successCallback(response) {
+
+            var game = response.data.game;
+            $scope.game= modelsService.game(game.lines, game.columns);
+            socket.emit("startGame",userID, gameID, game.lines, game.columns);
+
+        }, function errorCallback(response) {
+            //   console.log('There was an error on startGame request');
+        });
+    }
+    socket.on('refreshGame', function(data){
+     //   console.log(data);
+        $scope.game = data;
+        $scope.$apply();
+
+    });
+
+        socket.on('endGame', function(){
+            $scope.diag =  ngDialog.open({
+                template: 'endGame.blade.php',
+                showClose: false,
+                closeByEscape: false,
+                data: $scope,
+                closeByDocument: false,
+                preCloseCallback: function (value) {
+                    //guardar na bd
+                }
+            });
+            $scope.game = data;
+            $scope.$apply();
+
+        });
+
+    
+    $scope.tileClick = function (user, gameID, tile) {
+        if( $scope.game.playerTurn == user){
+            socket.emit("playMove", user, gameID, tile);
+>>>>>>> origin/master
         }
 
         $scope.getImage = function (cols) {
