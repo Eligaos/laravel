@@ -52,7 +52,7 @@
         });
     }
 
-    function gameController($scope, $log, $http , $interval,  modelsService) {
+    function gameController($scope, $log, $http , $interval,  modelsService, ngDialog) {
 
         var protocol = location.protocol;
         var port = '8080';
@@ -81,8 +81,26 @@
         });
     }
     socket.on('refreshGame', function(data){
-        console.log(data);
+     //   console.log(data);
+
         $scope.game = data;
+      //  console.log($scope.game.gameID);
+        socket.emit('checkEndGame', $scope.game.gameID);
+        socket.on('endGame', function(){
+            $scope.diag =  ngDialog.open({
+                template: 'endGame.blade.php',
+                showClose: false,
+                closeByEscape: false,
+                data: $scope,
+                closeByDocument: false,
+                preCloseCallback: function (value) {
+                    //guardar na bd
+                }
+            });
+        });
+       /* if($scope.game.playerTurn == data.playerTurn){ //not working
+            $(#'nickPlayer').css('color', 'red');
+        }*/
         $scope.$apply();
 
     });
@@ -106,7 +124,6 @@
         }
         return "img/" + cols.state + ".png";
     }
-
 
 }
 
@@ -200,7 +217,8 @@
         $scope.createRoom = function() {
             if($scope.createGame()) {
                 $('#formCreateRoom').submit();
-                $scope.diag.close();            }
+                $scope.diag.close();
+            }
         }
 
         $scope.resetDialog = function () {
@@ -251,7 +269,7 @@
     }
     angular.module('lobby', ['modelsService', 'ngDialog', 'rzModule']);
     angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', '$parse', 'modelsService', 'ngDialog', gameLobbyController]);
-    angular.module('lobby').controller('gameController', ['$scope', '$log','$http','$interval', 'modelsService', gameController]);
+    angular.module('lobby').controller('gameController', ['$scope', '$log','$http','$interval', 'modelsService','ngDialog', gameController]);
     angular.module('lobby').controller('chatController', ['$scope', '$log','$http', 'modelsService', chatController]);
 
 })();

@@ -34,7 +34,6 @@ function checkPlayerInGame(gameId, userID){
 
 
 io.on('connection', function (socket) {
-
     socket.on('startGame',function(userID, gameId, lines,columns){
         console.log('\n----------------------------------------------------\n');
         console.log('Client requested "startGame" - gameId = ' + gameId);
@@ -71,6 +70,14 @@ io.on('connection', function (socket) {
             }
             , 1000);
 
+    });
+
+    socket.on('checkEndGame', function(gameId){
+       if(games[gameId].endGame()){
+           console.log("The end!");
+           socket.emit('endGame');
+           io.in(gameId).emit('refreshGame', games[gameId]);
+       }
     });
 
     socket.on('joinGame',function(gameId){

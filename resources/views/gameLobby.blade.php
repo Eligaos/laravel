@@ -173,7 +173,7 @@
                                                 </thead>
                                                 <tbody ng-repeat="player in game.gamePlayers">
                                                 <tr>
-                                                    <td>@{{ player.nickname }}</td>
+                                                    <td id="playerNick">@{{ player.nickname }}</td>
                                                     <td>@{{ player.pairs }}</td>
                                                     <td>@{{ player.moves }}</td>
                                                     <td>@{{ player.time }}</td>
