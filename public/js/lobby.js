@@ -84,10 +84,11 @@
     }
     socket.on('refreshGame', function(data){
      //   console.log(data);
-
         $scope.game = data;
-      //  console.log($scope.game.gameID);
-        socket.emit('checkEndGame', $scope.game.gameID);
+        $scope.$apply();
+
+    });
+
         socket.on('endGame', function(){
             $scope.diag =  ngDialog.open({
                 template: 'endGame.blade.php',
@@ -99,21 +100,12 @@
                     //guardar na bd
                 }
             });
+            $scope.game = data;
+            $scope.$apply();
+
         });
-       /* if($scope.game.playerTurn == data.playerTurn){ //not working
-            $(#'nickPlayer').css('color', 'red');
-        }*/
-        $scope.$apply();
 
-    });
-
-    $scope.image = function(tile){
-        if(tile.getState() == "visible"){
-            return tile.getID();
-        }
-        return tile.getState();
-    }
-
+    
     $scope.tileClick = function (user, gameID, tile) {
         if( $scope.game.playerTurn == user){
             socket.emit("playMove", user, gameID, tile);

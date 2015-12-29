@@ -110,7 +110,6 @@
 					if (this.firstTile == undefined){
 						this.firstTile = this.board.getTileByIndex(tile.index);
 						this.firstTile.setState("visible");
-                      //  console.log(this.firstTile);
 						this.firstTile.flipped = this.board.getTileByIndex(tile.index).flip();
 						this.secondTile = undefined;
 
@@ -143,13 +142,13 @@
 			}
 
 			Game.prototype.hideTiles = function() {
-                console.log("mismatch1");
                 this.firstTile.flipped = false;
 				this.secondTile.flipped = false;
 				this.firstTile.state = "hidden";
 				this.secondTile.state = "hidden";
 				this.firstTile = undefined;
 				this.secondTile = undefined;
+
                 var player = this.gamePlayers.shift();
                 this.gamePlayers.push(player);
                 this.playerTurn = this.gamePlayers[0]['nickname'];
@@ -172,16 +171,24 @@
 				return this.moves;
 			}
 
-	/*	Game.prototype.getPlayerMorePairs = function(){
-			console.log("gamePlayers" + this.gamePlayers.length);
-			//console.log("MAX"+Math.max.apply( Math, this.gamePlayers ));
-			for (var i = 0 ; i < this.gamePlayers.length; i++) {
+		Game.prototype.getWinner = function(){
+            var topPlayer;
+            topPlayer =  this.gamePlayers[0];
 
-				//console.log("MAX"+Math.max.apply( Math, this.gamePlayers[i]["pairs"] ));
-				//console.log("este gajo" + this.gamePlayers[i]["pairs"]);
+			for (var i = 0, len =  this.gamePlayers.length; i < len; i++) {
+				if(this.gamePlayers[i]["pairs"] >= topPlayer["pairs"]){
+                    if(this.gamePlayers[i]["pairs"] == topPlayer["pairs"]){
+                            if(this.gamePlayers[i]["time"] > topPlayer["time"]){
+                                topPlayer = this.gamePlayers[i];
+                            }
+                    }else{
+                        topPlayer = this.gamePlayers[i];
+                    }
+
+				}
 			}
-			//return Math.max.apply( Math, this.gamePlayers )
-		}*/
+            return topPlayer;
+		 }
 
 			Game.prototype.endGame = function(){
 				//this.getPlayerMorePairs();

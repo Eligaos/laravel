@@ -67,18 +67,17 @@ io.on('connection', function (socket) {
         io.in(gameId).emit('refreshGame', games[gameId]);
         setTimeout(function(){
                 io.in(gameId).emit('refreshGame', games[gameId]);
+
+                if(games[gameId].endGame() == true){
+
+                    //encontrar o vencedor
+                    io.in(gameId).emit('endGame');
+                }
             }
             , 1000);
 
     });
 
-    socket.on('checkEndGame', function(gameId){
-       if(games[gameId].endGame()){
-           console.log("The end!");
-           socket.emit('endGame');
-           io.in(gameId).emit('refreshGame', games[gameId]);
-       }
-    });
 
     socket.on('joinGame',function(gameId){
         console.log('\n----------------------------------------------------\n');
