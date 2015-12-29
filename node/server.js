@@ -79,7 +79,7 @@ io.on('connection', function (socket) {
 
         socket.join(gameId);
 
-        io.in(gameId).emit('refreshGame', games[gameId]);
+        //io.in(gameId).emit('refreshGame', games[gameId]);
     });
 
     socket.on('showGame',function(gameId){

@@ -60,9 +60,11 @@
         var socket = io.connect(url, {reconnect: true});
 
     $scope.startGame = function () {
-
+        alert("start");
+        location.reload();
     }
     $scope.init = function (userID,gameID) {
+
         var params = {
             id: gameID
         };

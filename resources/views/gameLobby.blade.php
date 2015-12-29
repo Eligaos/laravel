@@ -61,6 +61,32 @@
                     <input class="form-control" type="text" name="joinP" id="joinP" required>
                     <button class="btn btn-default" type="button" ng-click="joinPrivateGame()">Join</button>
                 </div>
+
+                <h3>My Created Games Waiting to Start</h3>
+                <table class="table table-striped" id="gamesStarting">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Players</th>
+                        <th>Options</th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="game in gamesStarting">
+                    <tr>
+                        <td>@{{ game.gameName}}</td>
+                        <td>@{{ game.lines}} x @{{ game.columns}}</td>
+                        <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary btn-block" id="game@{{game.game_id}}"
+                                    onclick="window.location.reload(true);" type="button">Start
+                            </button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
                 <h3>Waiting for Players</h3>
 
                 <div class="table-responsive">
@@ -83,29 +109,6 @@
                                 <button class="btn btn-sm btn-primary btn-block" id="game@{{game.game_id}}"
                                         ng-click="joinGame(game.game_id, '{{Auth::user()->nickname}}')" type="button">Join
                                 </button>
-                            </td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-
-                    <h3>Games Waiting to Start</h3>
-                    <table class="table table-striped " id="gamesStarting">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Players</th>
-                            <th>Options</th>
-                        </tr>
-                        </thead>
-                        <tbody ng-repeat="game in gamesStarting">
-                        <tr>
-                            <td>@{{ game.gameName}}</td>
-                            <td>@{{ game.lines}} x @{{ game.columns}}</td>
-                            <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                            <td>
-                                <button class="btn btn-sm btn-primary btn-block" ng-click="startGame()">Start</button>
                             </td>
                         </tr>
 
