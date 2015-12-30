@@ -44,10 +44,10 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input class="form-control" name="token" type="text" id="token"   disabled>
+                        <input class="form-control" name="token" type="text" id="token" >
                         <!--ng-model="ngDialogData.token"-->
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" data-clipboard-target="#token"><img class="clippy"
+                            <button class="btn btn-default" type="button"  data-clipboard-action="copy" data-clipboard-target="#token"><img class="clippy"
                                         src="img/clippy.svg" width="13" alt="Copy to clipboard"></button>
                         </span>
                     </div><!-- /input-group -->

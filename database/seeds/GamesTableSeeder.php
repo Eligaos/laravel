@@ -18,7 +18,7 @@ class GamesTableSeeder extends Seeder
         $max_nicks = count($usersNick);*/
         for ($i=0; $i < 5; $i++) {
                 Game::insert(array(
-                    'gameName' => $faker->numerify('Game ###'),
+                    'gameName' => $faker->numerify('Game#####'),
                    //'gameOwner' => $faker->randomElement($usersNick),
                     'gameOwner' => $faker->lastName,
                     'lines' => $faker->numberBetween(2,10),

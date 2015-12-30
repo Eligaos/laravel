@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Contracts\Factory as Socialite;
+use App\User;
+use Illuminate\Support\Facades\Auth as Auth;
 
 class SocialiteController extends Controller
 {
@@ -28,14 +30,33 @@ class SocialiteController extends Controller
     public function getSocialAuthCallback($provider=null)
     {
         if($user = $this->socialite->with($provider)->user()){
+
+            $authUser = $this->findOrCreateUser($user);
+
+            Auth::login($authUser, true);
+
             // dd($user);
             return Redirect::to('gameLobby');
-
 
         }else{
             return 'something went wrong';
         }
     }
 
+    private function findOrCreateUser($facebookUser)
+    {
+
+        $authUser = User::where('facebook_id', $facebookUser->id)->first();
+
+        if ($authUser){
+            return $authUser;
+        }
+
+        return User::create([
+            'nickname' => $facebookUser->name,
+            'email' => $facebookUser->email,
+            'facebook_id' => $facebookUser->id
+        ]);
+    }
 
 }
