@@ -25,6 +25,7 @@ Route::get('game', function () {
 
 Route::get('gameLobby', 'GameLobbyController@lobby');
 
+Route::get('gameLobby/top10',['uses' => 'GameLobbyController@top10']);
 
 // Authentication routes...
 Route::any('login', 'LoginRegisterController@showLoginView');

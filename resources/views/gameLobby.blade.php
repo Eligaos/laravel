@@ -30,7 +30,7 @@
                         <div id="navbar" class="navbar-collapse">
                             <ul class="nav navbar-nav">
                                 <li class="active"><a href="/">Home</a></li>
-                                <li><a href="#">Top 10</a></li>
+                                <li><a href="#top10" data-toggle="collapse" data-parent="#accordionid"> TOP 10 </a></li>
                                 <li><a href="logout">Logout</a></li>
                             </ul>
                             </li>
@@ -125,7 +125,24 @@
             <button class="btn btn-sm btn-primary" type="submit"><img src="img/menuClose.png"></button>
         </div>
         <div id="mainArea" class="col-sm-8 col-md-8">
-
+            <div id="top10" class="collapse" style="width: 50%;" >
+                <div class="accordion-inner">
+                    <h3>Top10</h3>
+                    <table class="table table-striped " id="top10">
+                        <thead>
+                        <tr>
+                            <th>Players</th>
+                            <th>Wins</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="top in top10">
+                        <tr>
+                            <td>@{{ top.Player}}</td>
+                            <td>@{{ top.Wins}} </td>
+                        </tr>
+                        </tbody>
+                    </table></div>
+            </div>
             <ul id="activeGames" class="nav nav-tabs">
                 @foreach($games as $key => $game)
                     @if($key == 0 )

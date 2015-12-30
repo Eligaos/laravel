@@ -210,6 +210,7 @@
         $scope.listGames = function () {
             $interval(function () {
                 var url = 'gameLobby/listGames';
+                var urltop10= 'gameLobby/top10';
                 $http.get(url).then(function successCallback(response) {
                     $scope.gamesWaiting = response.data.gamesWaiting;
                     $scope.gamesPlaying = response.data.gamesPlaying;
@@ -217,7 +218,15 @@
                 }, function errorCallback(response) {
                     console.log('There was an error on startGame request');
                 });
-            }, 3000);
+
+                $http.get(urltop10).then(function successCallback(response) {
+                    $scope.top10 = response.data.top10;
+                }, function errorCallback(response) {
+                    console.log('There was an error to request top10 players');
+                });
+
+            },3000);
+
         }
 
 
