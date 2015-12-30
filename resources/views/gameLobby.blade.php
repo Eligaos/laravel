@@ -50,6 +50,9 @@
                     </ul>
                 </div><hr>
                 <h2 class="page-header">Game Lobby</h2>
+                    <div style="text-align: center; visibility: hidden;" id="error">
+                        <span class="alert alert-info"> @{{ error }}</span>
+                    </div>
             <div id="gamesList" ng-init="listGames()">
                 <div class="textAlignCenter">
                 <button class="btn btn-lg btn-primary" type="button" name ng-click="createDialog()">Create Game</button>
@@ -58,40 +61,11 @@
                 </button>
                 </div>
                 <div ng-show="ngPrivate">
-                    @if( Session::get('errors'))
-                        <div style="text-align: center">
-                            <span class="alert alert-info"> {{ Session::get('errors') }}</span>
-                        </div>
-                    @endif
+
                     <input class="form-control" type="text" name="joinP" id="joinP" required>
-                    <button class="btn btn-default" type="button"  ng-click="joinGame(-1)">Join</button>
+                    <button class="btn btn-sm btn-primary btn-block" type="button"  ng-click="joinGame(-1)">Join</button>
                     </tbody>
                 </div>
-
-                <h3>My Created Games Waiting to Start</h3>
-                <table class="table table-striped" id="gamesStarting">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Players</th>
-                        <th>Options</th>
-                    </tr>
-                    </thead>
-                    <tbody ng-repeat="game in gamesStarting">
-                    <tr>
-                        <td>@{{ game.gameName}}</td>
-                        <td>@{{ game.lines}} x @{{ game.columns}}</td>
-                        <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary btn-block" ng-controller="gameController" id="game@{{game.game_id}}"
-                                    ng-init="startGame('{{Auth::user()->nickname}}', game.game_id)" type="button">Start
-                            </button>
-                        </td>
-                    </tr>
-
-                    </tbody>
-                </table>
 
                 <h3>Waiting for Players</h3>
 

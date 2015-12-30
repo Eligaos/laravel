@@ -18,12 +18,11 @@ Route::get('game', function () {
     return view('game');
 });
 
-
-
 /*Route::get('gameLobby', function () {
     echo("User".Auth::user());
     //return view('gameLobby');
 });*/
+
 Route::get('gameLobby', 'GameLobbyController@lobby');
 
 

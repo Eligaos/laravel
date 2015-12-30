@@ -34,7 +34,6 @@ class LoginRegisterController extends Controller
               return Redirect::to('gameLobby');
         }
         Session::flash('error', 'Login failed check your nickname and/or password');
-
         return Redirect::to('login');
     }
 
