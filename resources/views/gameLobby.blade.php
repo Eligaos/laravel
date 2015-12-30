@@ -150,6 +150,7 @@
             <button class="btn btn-sm btn-primary" type="submit"><img src="img/menuClose.png"></button>
         </div>
         <div id="mainArea" class="col-sm-8 col-md-8">
+<<<<<<< HEAD
 
             <div id="top10" class="collapse" style="width: 50%;" >
                 <div class="accordion-inner">
@@ -170,6 +171,26 @@
             </table></div>
             </div>
 
+=======
+            <div id="top10" class="collapse" style="width: 50%;" >
+                <div class="accordion-inner">
+                    <h3>Top10</h3>
+                    <table class="table table-striped " id="top10">
+                        <thead>
+                        <tr>
+                            <th>Players</th>
+                            <th>Wins</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="top in top10">
+                        <tr>
+                            <td>@{{ top.Player}}</td>
+                            <td>@{{ top.Wins}} </td>
+                        </tr>
+                        </tbody>
+                    </table></div>
+            </div>
+>>>>>>> origin/master
             <ul id="activeGames" class="nav nav-tabs">
                 @foreach($games as $key => $game)
                     @if($key == 0 )

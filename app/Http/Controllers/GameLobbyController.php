@@ -97,6 +97,14 @@ class GameLobbyController extends Controller
         return response()->json(['game' => $game]);
     }
 
+    public function top10(){
+        if (Auth::user()){
+            $playersTop10 = DB::select( DB::raw("select winner as 'Player', count(*) as 'Wins' from games WHERE status = 'finished' group by winner ORDER BY 2 DESC ;"));
+            return response()->json(['top10'=> $playersTop10]);
+
+        }
+    }
+
     public function startGame($id)
     {
         \Debugbar::info($id);
