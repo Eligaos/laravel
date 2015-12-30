@@ -58,8 +58,10 @@
                 </button>
                 </div>
                 <div ng-show="ngPrivate">
+                    <tbody ng-repeat="game in gamesWaiting">
                     <input class="form-control" type="text" name="joinP" id="joinP" required>
-                    <button class="btn btn-default" type="button" ng-click="joinPrivateGame()">Join</button>
+                    <button class="btn btn-default" type="button"  ng-click="joinGame(game.game_id)">Join</button>
+                    </tbody>
                 </div>
 
                 <h3>My Created Games Waiting to Start</h3>
@@ -303,6 +305,7 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
+<script src="js/clipboard.js"></script>
 <script src="js/socket.io-1.3.7.js"></script>
 <script src="js/jquery-2.1.4.js"></script>
 <script src="js/angular.js"></script>

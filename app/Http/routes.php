@@ -44,6 +44,7 @@ Route::any('register/registration', ['as' => 'form-register', 'uses' => 'LoginRe
 Route::any('logout', ['as' => 'logout', 'uses' => 'LoginRegisterController@logout']);
 
 Route::post('gameLobby/joinGame', ['uses' => 'GameLobbyController@joinGame']);
+//Route::post('gameLobby/joinPrivateGame', ['uses' => 'GameLobbyController@joinPrivateGame']);
 Route::post('gameLobby/viewGame', ['uses' => 'GameLobbyController@viewGame']);
 Route::post('gameLobby/endGame', ['uses' => 'GameLobbyController@endGame']);
 

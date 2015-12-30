@@ -49,6 +49,8 @@ class GameLobbyController extends Controller
             //$title = "Utilizadores";
             // $users = User::paginate(10);
 
+            //FAZER PARA OS TOKENS!!
+
             $gamesIamPlaying = Auth::user()->games()->where('status', 'LIKE', 'Playing' )->get();
             $gamesWaiting = Game::where('status', 'LIKE', 'Waiting' )->orderBy('gameName', 'DESC')->get();
             $gamesPlaying = Game::where('status', 'LIKE', 'Playing' )->orderBy('gameName', 'DESC')->get();
@@ -66,16 +68,21 @@ class GameLobbyController extends Controller
         $game = Game::find($gameID['id']);
         \Debugbar::info($game->joinedPlayers);
         if($game != null){
-            if($game->joinedPlayers < $game->maxPlayers){
+            dd($game->token);
+            if($game->token == $gameID['token']){
+                dd("I'm in :)");
+            if($game->joinedPlayers < $game->maxPlayers) {
                 $user = Auth::user()->user;
 
                 $game->attachPlayersToGame($user);
                 $game->joinedPlayers += 1;
-                if($game->joinedPlayers == $game->maxPlayers){
+                if ($game->joinedPlayers == $game->maxPlayers) {
                     $game->status = "Starting";
                 }
-                $game->save();
+                //$game->save();
             }
+            }
+            return false;
         }
 
         return response()->json(['game' => $game]);

@@ -9,6 +9,7 @@
     <label for="gameName">Game Name:</label>
     <input class="form-control" type="text" name="gameName" id="gameName" ng-model="ngDialogData.gameName" required>
     <span class="error" id="msgError_gameName"> {{ngDialogData.msgErrorGameName}}</span>
+
     <div>
         <label>Total Lines: {{ngDialogData.linesSlider.value}}</label>
         <rzslider name="lines" id="lines" rz-slider-model="ngDialogData.linesSlider.value"
@@ -33,24 +34,29 @@
     <br>
 
     <div ng-init="ngDialogData.isPrivate='0'">
-        <input type="radio" id="private" name="private" ng-value="1" ng-model="ngDialogData.isPrivate"> Private
+        <input type="radio" id="private" name="private" ng-value="1" ng-model="ngDialogData.isPrivate"
+               ng-change="ngDialogData.makeToken()"> Private
         <br>
+
         <div ng-show="ngDialogData.isPrivate == '1'">
             <label>Token: </label>
 
             <div class="row">
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input class="form-control" name="token" type="text" id="token" ng-model="ngDialogData.token" disabled>
+                        <input class="form-control" name="token" type="text" id="token"   disabled>
+                        <!--ng-model="ngDialogData.token"-->
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Copy</button>
+                            <button class="btn btn-default" type="button" data-clipboard-target="#token"><img class="clippy"
+                                        src="img/clippy.svg" width="13" alt="Copy to clipboard"></button>
                         </span>
                     </div><!-- /input-group -->
                 </div><!-- /.col-lg-6 -->
             </div><!-- /.row -->
         </div>
 
-        <input type="radio" id="public" name="public" ng-value="0" ng-model="ngDialogData.isPrivate"> Public
+        <input type="radio" id="public" name="public" ng-value="0" ng-model="ngDialogData.isPrivate"
+               ng-change="ngDialogData.resetToken()"> Public
     </div>
     <br>
 
@@ -59,7 +65,8 @@
         <div ng-show="ngDialogData.bot">
             <label>Bots:</label>
 
-            <input class="form-control" type="number" name="nrBots" id="nrBots" ng-model="ngDialogData.nrBots" min="0" ng-required="ngDialogData.bot == 'bots'">
+            <input class="form-control" type="number" name="nrBots" id="nrBots" ng-model="ngDialogData.nrBots" min="0"
+                   ng-required="ngDialogData.bot == 'bots'">
 
         </div>
         <span class="error" id="msgError_Bot">{{ngDialogData.msgErrorBot}}</span>
