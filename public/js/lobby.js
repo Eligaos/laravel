@@ -173,6 +173,7 @@
         $scope.listGames = function() {
             $interval(function () {
             var url = 'gameLobby/listGames';
+            var urltop10= 'gameLobby/top10';
             $http.get(url).then(function successCallback(response) {
                 $scope.gamesWaiting = response.data.gamesWaiting;
                 $scope.gamesPlaying = response.data.gamesPlaying;
@@ -180,7 +181,23 @@
             }, function errorCallback(response) {
                 console.log('There was an error on startGame request');
             });
+
+                $http.get(urltop10).then(function successCallback(response) {
+                $scope.top10 = response.data.top10;
+            }, function errorCallback(response) {
+                console.log('There was an error to request top10 players');
+            });
+
             },3000);
+        }
+
+        $scope.top10 = function() {
+            var urltop10= 'gameLobby/top10';
+            $http.get(urltop10).then(function successCallback(response) {
+                $scope.top10 = response.data.top10;
+            }, function errorCallback(response) {
+                console.log('There was an error to request top10 players');
+            });
         }
 
 
@@ -252,6 +269,8 @@
             });
         }
 
+
+
         $scope.check = function (lines, columns) {
             var tilesCount = lines * columns;
             if ((tilesCount) > 80) {
@@ -272,6 +291,7 @@
     angular.module('lobby', ['modelsService', 'ngDialog', 'rzModule']);
     angular.module('lobby').controller('gameLobbyController', ['$scope', '$log','$http','$interval', '$parse', 'modelsService', 'ngDialog', gameLobbyController]);
     angular.module('lobby').controller('gameController', ['$scope', '$log','$http','$interval', 'modelsService','ngDialog', gameController]);
-    angular.module('lobby').controller('chatController', ['$scope', '$log','$http', 'modelsService', chatController]);
+    angular.module('lobby').controller('chatController', ['$scope', '$log','$http', 'modelsService', chatController])
+
 
 })();
