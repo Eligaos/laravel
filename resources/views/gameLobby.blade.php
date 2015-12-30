@@ -78,8 +78,8 @@
                         <td>@{{ game.lines}} x @{{ game.columns}}</td>
                         <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary btn-block" id="game@{{game.game_id}}"
-                                    ng-click="startGame('{{Auth::user()->nickname}}', game.game_id)" type="button">Start
+                            <button class="btn btn-sm btn-primary btn-block" ng-controller="gameController" id="game@{{game.game_id}}"
+                                    ng-init="startGame('{{Auth::user()->nickname}}', game.game_id)" type="button">Start
                             </button>
                         </td>
                     </tr>

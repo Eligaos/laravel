@@ -59,6 +59,15 @@
         var url = protocol + '//' + window.location.hostname + ':' + port;
         var socket = io.connect(url, {reconnect: true});
 
+
+        $scope.startGame = function(user, gameID){
+             $scope.init(user, gameID);
+            setTimeout(function () {
+                    window.location.reload(true);
+                }
+                , 1000);
+
+        }
         $scope.init = function (userID, gameID) {
             var params = {
                 id: gameID
@@ -71,6 +80,7 @@
 
                 var game = response.data.game;
                 $scope.game = modelsService.game(game.lines, game.columns);
+                $scope.game.gameID = gameID;
                 console.log("start game!!");
                 socket.emit("startGame", userID, gameID, game.lines, game.columns);
 
@@ -79,45 +89,52 @@
             });
         }
         socket.on('refreshGame', function (data) {
-                //   console.log(data);
-                $scope.game = data;
-                //  console.log($scope.game.gameID);
+           if($scope.game.gameID == data.gameID){
+               console.log("refresh");
+                  $scope.game = data;
+                  $scope.$apply();
+           }
+            //  console.log($scope.game.gameID);
                 /* if($scope.game.playerTurn == data.playerTurn){ //not working
                  $(#'nickPlayer').css('color', 'red');
                  }*/
-                $scope.$apply();
+
             }
         );
 
-        socket.on('endGame', function (winner) {
-            $scope.winner = winner;
-            $scope.diag = ngDialog.open({
-                template: 'endGame.blade.php',
-                showClose: false,
-                closeByEscape: false,
-                data: $scope,
-                closeByDocument: false,
-                preCloseCallback: function () {
-                    var gameHolder = "#gameHolder" + $scope.game.gameID;
-                    var tab = "#game" + $scope.game.gameID;
-                    $(gameHolder).remove();
-                    $(tab).remove();
-                    var params = {
-                        id: $scope.game.gameID,
-                        winner : winner.nickname
-                    };
-                    $http({
-                        method: 'POST',
-                        data: params,
-                        url: 'gameLobby/endGame/'
-                    }).then(function successCallback(response) {
-                        //cenas
+        socket.on('endGame', function (winner, data) {
+            if($scope.game.gameID == data.gameID){
+                $scope.winner = winner;
+                $scope.diag = ngDialog.open({
+                    template: 'endGame.blade.php',
+                    showClose: false,
+                    closeByEscape: false,
+                    data: $scope,
+                    closeByDocument: false,
+                    preCloseCallback: function () {
+                        var gameHolder = "#gameHolder" + $scope.game.gameID;
+                        var tab = "#game" + $scope.game.gameID;
+                        $(gameHolder).remove();
+                        $(tab).remove();
+                        var params = {
+                            id: $scope.game.gameID,
+                            winner : winner.nickname
+                        };
+                        $http({
+                            method: 'POST',
+                            data: params,
+                            url: 'gameLobby/endGame/'
+                        }).then(function successCallback(response) {
+                            //cenas
 
-                    }, function errorCallback(response) {
-                        //   console.log('There was an error on startGame request');
-                    });
-                }
-            });
+                        }, function errorCallback(response) {
+                            //   console.log('There was an error on startGame request');
+                        });
+                    }
+                });
+            }
+
+
         });
 
 
@@ -160,10 +177,7 @@
                 }
             }
 
-            $scope.startGame = function(user, gameID){
-                gameController.init(user, gameID);
-                window.location.reload(true);
-            }
+
             $scope.joinGame = function (id) {
                 var protocol = location.protocol;
                 var port = '8080';
