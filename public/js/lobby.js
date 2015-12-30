@@ -159,6 +159,7 @@
 
         function gameLobbyController($scope, $log, $http, $interval, $parse, modelsService, ngDialog) {
             new Clipboard('.btn'); //instanciar o script do clipboard
+
             $scope.linesSlider = {
                 value: 2,
                 options: {
@@ -179,8 +180,12 @@
             }
 
             $scope.joinGame = function (id) {
-                console.log("ID" + id);
-                var protocol = location.protocol;
+                console.log("ID 1" + id);
+                /*if(id == undefined){
+                    id = -1;
+                    console.log("ID 2" + id);
+                }*/
+                    var protocol = location.protocol;
                 var port = '8080';
                 var url = protocol + '//' + window.location.hostname + ':' + port;
                 var socket = io.connect(url, {reconnect: true});

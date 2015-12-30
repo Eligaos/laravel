@@ -58,9 +58,13 @@
                 </button>
                 </div>
                 <div ng-show="ngPrivate">
-                    <tbody ng-repeat="game in gamesWaiting">
+                    @if( Session::get('errors'))
+                        <div style="text-align: center">
+                            <span class="alert alert-info"> {{ Session::get('errors') }}</span>
+                        </div>
+                    @endif
                     <input class="form-control" type="text" name="joinP" id="joinP" required>
-                    <button class="btn btn-default" type="button"  ng-click="joinGame(game.game_id)">Join</button>
+                    <button class="btn btn-default" type="button"  ng-click="joinGame(-1)">Join</button>
                     </tbody>
                 </div>
 
