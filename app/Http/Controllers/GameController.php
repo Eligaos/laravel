@@ -21,7 +21,7 @@ class GameController extends Controller
 
         $gameCreated->attachPlayersToGame();
         if($gameCreated->joinedPlayers == $gameCreated->maxPlayers){
-            $gameCreated->status= "Starting";
+            $gameCreated->status= "Playing";
             $gameCreated->save();
         }
 

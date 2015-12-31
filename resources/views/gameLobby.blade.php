@@ -266,8 +266,24 @@
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
-                                                        <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
-                                                             ng-src="@{{getImage(cols)}}" alt="img">
+                                                        @{{cols.flipped}}
+                                                        <flippy
+                                                                ng-if = "cols.state != 'empty'"
+                                                                class="fancy"
+                                                                ng-class="{flipped:cols.flipped}"
+                                                                ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
+                                                                flip-duration="500"
+                                                                timing-function="ease-in-out">
+                                                            <flippy-front>
+                                                                <img ng-src="img/hidden.png"/>
+                                                            </flippy-front>
+
+                                                            <flippy-back>
+                                                                <img ng-src="img/@{{cols.id}}.png"/>
+                                                            </flippy-back>
+
+                                                        </flippy>
+                                                        <img ng-if= "cols.state == 'empty'" ng-src="img/empty.png"/>
                                                     </td>
                                                 </tr>
                                                 </tbody>

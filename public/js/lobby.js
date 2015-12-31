@@ -337,10 +337,38 @@
         }
     }
 
-    angular.module('lobby', ['modelsService', 'ngDialog', 'rzModule']);
+    angular.module('lobby', ['modelsService', 'ngDialog', 'rzModule','angular-flippy']);
     angular.module('lobby').controller('gameLobbyController', ['$scope', '$log', '$http', '$interval', '$parse', 'modelsService', 'ngDialog', gameLobbyController]);
     angular.module('lobby').controller('gameController', ['$scope', '$log', '$http', '$interval', 'modelsService', 'ngDialog', gameController]);
     angular.module('lobby').controller('chatController', ['$scope', '$log', '$http', 'modelsService', chatController]);
+    angular.module('angular-flippy', [])
+        .directive('flippy', function() {
+            console.log("dasd");
+            return {
+                restrict: 'EA',
+                link: function($scope, $elem, $attrs) {
+                    var options = {
+                        flipDuration: ($attrs.flipDuration) ? $attrs.flipDuration : 400,
+                        timingFunction: 'ease-in-out',
+                    };
+                    // setting flip options
+                    angular.forEach(['flippy-front', 'flippy-back'], function(name) {
+                        var el = $elem.find(name);
+                        if (el.length == 1) {
+                            angular.forEach(['', '-ms-', '-webkit-'], function(prefix) {
+                                angular.element(el[0]).css(prefix + 'transition', 'all ' + options.flipDuration/1000 + 's ' + options.timingFunction);
+                            });
+                        }
+                    });
+                    //behaviour for flipping effect.
+                    $scope.flip = function() {
+                        $elem.toggleClass('flipped');
+                    }
+
+                }
+            };
+        });
+
 
 })
 ();
