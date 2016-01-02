@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Sessionsion as Session;
 use App\Player;
 
 class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+    AuthorizableContract,
+    CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
@@ -40,31 +40,51 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
-   public static function createUser($input)
-   {
-       $passHashed = Hash::make($input['password']);
-       $input['password'] = $passHashed;
-       $user = User::create($input);
-       $user->save();
-   }
+    public static function createUser($input)
+    {
+        $passHashed = Hash::make($input['password']);
+        $input['password'] = $passHashed;
+        $user = User::create($input);
+        $user->save();
+    }
 
-    public static function validateUser($input)
+    public static function createGuest()
+    {
+        $nickname = "Guest";
+        $possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for ($i = 0; $i < 5; $i++) {
+            $nickname .= $possible[rand(0, strlen($possible))];
+        }
+        $email= $nickname ."@guest.com";
+        //$passHashed = Hash::make("");
+        //$password = $passHashed;
+        $password = "";
+
+        $user = User::create(['nickname' => $nickname, 'password' => $password, 'email' => $email]);
+        $user->save();
+        return $user;
+    }
+
+   /* public static function validateUser($input)
     {
         $user = User::where("nickname", '=', $input['nickname'])->first();
-        if($user){
-            if(Hash::check($input['password'], $user->password)){
+        if ($user) {
+            if (Hash::check($input['password'], $user->password)) {
                 return $user;
-            }else{
+            } else {
                 return "Password is not correct";
             }
-        }else{
+        } else {
             return "The nickname is not registered";
 
         }
 
-    }
-    public function games(){
-        return $this->belongsToMany('App\Game', 'game_player')->withPivot(['numberPairs','timePlaying'])->withTimestamps();
+    }*/
+
+    public function games()
+    {
+        return $this->belongsToMany('App\Game', 'game_player')->withPivot(['numberPairs', 'timePlaying'])->withTimestamps();
     }
 
 }

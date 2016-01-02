@@ -17,15 +17,19 @@ class GameController extends Controller
     public function createRoom(Request $request){
 
         $createGame = Game::prepareCreateGame(Input::all());
-        $gameCreated = Game::create($createGame);
+        if(Game::where('gameName','=',$createGame['gameName'])->where('status', 'not like', 'Finished')->first() != null) {
 
+            return Redirect::to('gameLobby')->with('message', 'Game Already Exists!');
+
+        }
+        $gameCreated = Game::create($createGame);
         $gameCreated->attachPlayersToGame();
         if($gameCreated->joinedPlayers == $gameCreated->maxPlayers){
-            $gameCreated->status= "Starting";
+            $gameCreated->status= "Playing";
             $gameCreated->save();
         }
 
-        return Redirect::to('gameLobby');
+        return Redirect::to('gameLobby')->with('message', 'Game Created!');
     }
 
 

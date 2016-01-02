@@ -37,8 +37,7 @@ class GameLobbyController extends Controller
                   }
               }*/
             //    }
-            if(count(Input::all()) > 0){
-                //dd();
+            if (count(Input::all()) > 0) {
                 Session::reflash();
             }
 
@@ -56,34 +55,31 @@ class GameLobbyController extends Controller
 
             //FAZER PARA OS TOKENS!!
 
-            $gamesIamPlaying = Auth::user()->games()->where('status', 'LIKE', 'Playing')->get();
-            $gamesWaiting = Game::where('status', 'LIKE', 'Waiting')->orderBy('gameName', 'DESC')->get();
-            $gamesPlaying = Game::where('status', 'LIKE', 'Playing')->orderBy('gameName', 'DESC')->get();
-            $gamesStarting = Game::where('status', 'LIKE', 'Starting')->where('gameOwner', 'LIKE', $nickname)->orderBy('gameName', 'DESC')->get();
+            $gamesWaiting = Game::where('status', 'LIKE', 'Waiting')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
+            $gamesPlaying = Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
             //  return view('guest_all.users-list', compact('users', 'title', 'featured'));
             //return view('gameLobby', compact('nickname', 'gamesWaiting', 'gamesPlaying'));
-            return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesWaiting' => $gamesWaiting, 'gamesStarting' => $gamesStarting, 'gamesIamPlaying' => $gamesIamPlaying]);
+            return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesWaiting' => $gamesWaiting]);
         }
     }
 
 
     public function joinGame()
     {
-
         $gameID = Input::all();
-
         if ($gameID['id'] == -1) {
-            $game = Game::find($gameID['token']);
-            $this->insertInGame($game);
-        }else {
+            $game = Game::where('token','NOT LIKE', "")->where('token', '=', $gameID['token'])->first();
+            $error = $this->insertInGame($game);
+        } else {
             $game = Game::find($gameID['id']);
-            \Debugbar::info($game->joinedPlayers);
-            $this->insertInGame($game);
+            $error = $this->insertInGame($game);
         }
-        return response()->json(['game' => $game]);
+        return response()->json(['game' => $game, 'error' => $error]);
+
     }
 
-    public function insertInGame($game){
+    public function insertInGame($game)
+    {
         if ($game != null) {
 
             if ($game->joinedPlayers < $game->maxPlayers) {
@@ -92,13 +88,20 @@ class GameLobbyController extends Controller
                 $game->attachPlayersToGame($user);
                 $game->joinedPlayers += 1;
                 if ($game->joinedPlayers == $game->maxPlayers) {
-                    $game->status = "Starting";
+                    $game->status = "Playing";
                 }
                 $game->save();
             }
+            return "Joined";
         }
-        Session::flash('errors', 'Game with this token not found');
-        return Redirect::to('gameLobby');
+        return "Game with this token not found";
+    }
+
+    public function top10(){
+        if (Auth::user()){
+            $playersTop10 = DB::select( DB::raw("select winner as 'Player', count(*) as 'Wins' from games WHERE status = 'finished' group by winner ORDER BY 2 DESC ;"));
+            return response()->json(['top10'=> $playersTop10]);
+        }
     }
 
     public function startGame($id)

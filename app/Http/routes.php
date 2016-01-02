@@ -18,14 +18,14 @@ Route::get('game', function () {
     return view('game');
 });
 
-
-
 /*Route::get('gameLobby', function () {
     echo("User".Auth::user());
     //return view('gameLobby');
 });*/
+
 Route::get('gameLobby', 'GameLobbyController@lobby');
 
+Route::get('gameLobby/top10',['uses' => 'GameLobbyController@top10']);
 
 // Authentication routes...
 Route::any('login', 'LoginRegisterController@showLoginView');

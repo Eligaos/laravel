@@ -25,73 +25,56 @@
             @if(Auth::user() != null)
                 <h3>Hello, {{Auth::user()->nickname}}</h3>
             @endif
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid">
-                        <div id="navbar" class="navbar-collapse">
-                            <ul class="nav navbar-nav">
-                                <li class="active"><a href="/">Home</a></li>
-                                <li><a href="#">Top 10</a></li>
-                                <li><a href="logout">Logout</a></li>
-                            </ul>
-                            </li>
-                            </ul>
-                        </div><!--/.nav-collapse -->
-                    </div><!--/.container-fluid -->
-                </nav>
-                <h3 class="page-header">Chat</h3>
-                <div id="chatZone" ng-controller="chatController">
-                    <lable id="chatMessage"></lable>
-                    <form id="chatForm">
-                        <input id="m" autocomplete="off" ng-model="chatMsg"
-                               ng-keypress="sendMessage($event,'{{Auth::user()->nickname}}')">
-                    </form>
-                    <ul id="messages">
-                        <li ng-repeat="m in chatMessages track by $index">@{{ m }}</li>
-                    </ul>
-                </div><hr>
-                <h2 class="page-header">Game Lobby</h2>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div id="navbar" class="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="#top10" data-toggle="collapse" data-parent="#accordionid"> TOP 10 </a></li>
+                            <li><a href="logout">Logout</a></li>
+                        </ul>
+                        </li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!--/.container-fluid -->
+            </nav>
+            <h3 class="page-header">Chat</h3>
+
+            <div id="chatZone" ng-controller="chatController">
+                <lable id="chatMessage"></lable>
+                <form id="chatForm">
+                    <input id="m" autocomplete="off" ng-model="chatMsg"
+                           ng-keypress="sendMessage($event,'{{Auth::user()->nickname}}')">
+                </form>
+                <ul id="messages">
+                    <li ng-repeat="m in chatMessages track by $index">@{{ m }}</li>
+                </ul>
+            </div>
+            <hr>
+            <h2 class="page-header">Game Lobby</h2>
+                @if( Session::get('message'))
+                    <div style="text-align: center">
+                        <span class="alert alert-info"> {{ Session::get('message') }}</span>
+                    </div>
+                @endif
+            <div style="text-align: center; visibility: hidden;" id="error">
+                <span class="alert alert-info"> @{{ error }}</span>
+            </div>
             <div id="gamesList" ng-init="listGames()">
                 <div class="textAlignCenter">
-                <button class="btn btn-lg btn-primary" type="button" name ng-click="createDialog()">Create Game</button>
-                <button class="btn btn-lg btn-primary" name=private value="private" ng-click="ngPrivate =! ngPrivate"
-                        type="button">Private Games
-                </button>
+                    <button class="btn btn-lg btn-primary" type="button" name ng-click="createDialog()">Create Game
+                    </button>
+                    <button class="btn btn-lg btn-primary" name=private value="private"
+                            ng-click="ngPrivate =! ngPrivate"
+                            type="button">Private Games
+                    </button>
                 </div>
                 <div ng-show="ngPrivate">
-                    @if( Session::get('errors'))
-                        <div style="text-align: center">
-                            <span class="alert alert-info"> {{ Session::get('errors') }}</span>
-                        </div>
-                    @endif
+
                     <input class="form-control" type="text" name="joinP" id="joinP" required>
-                    <button class="btn btn-default" type="button"  ng-click="joinGame(-1)">Join</button>
+                    <button class="btn btn-sm btn-primary btn-block" type="button" ng-click="joinGame(-1)">Join</button>
                     </tbody>
                 </div>
-
-                <h3>My Created Games Waiting to Start</h3>
-                <table class="table table-striped" id="gamesStarting">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Players</th>
-                        <th>Options</th>
-                    </tr>
-                    </thead>
-                    <tbody ng-repeat="game in gamesStarting">
-                    <tr>
-                        <td>@{{ game.gameName}}</td>
-                        <td>@{{ game.lines}} x @{{ game.columns}}</td>
-                        <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary btn-block" ng-controller="gameController" id="game@{{game.game_id}}"
-                                    ng-init="startGame('{{Auth::user()->nickname}}', game.game_id)" type="button">Start
-                            </button>
-                        </td>
-                    </tr>
-
-                    </tbody>
-                </table>
 
                 <h3>Waiting for Players</h3>
 
@@ -113,7 +96,8 @@
 
                             <td>
                                 <button class="btn btn-sm btn-primary btn-block" id="game@{{game.game_id}}"
-                                        ng-click="joinGame(game.game_id, '{{Auth::user()->nickname}}')" type="button">Join
+                                        ng-click="joinGame(game.game_id, '{{Auth::user()->nickname}}')" type="button">
+                                    Join
                                 </button>
                             </td>
                         </tr>
@@ -151,14 +135,35 @@
             <button class="btn btn-sm btn-primary" type="submit"><img src="img/menuClose.png"></button>
         </div>
         <div id="mainArea" class="col-sm-8 col-md-8">
-
+            <div id="top10" class="collapse" style="width: 50%;">
+                <div class="accordion-inner">
+                    <h3>Top10</h3>
+                    <table class="table table-striped " id="top10">
+                        <thead>
+                        <tr>
+                            <th>Players</th>
+                            <th>Wins</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="top in top10">
+                        <tr>
+                            <td>@{{ top.Player}}</td>
+                            <td>@{{ top.Wins}} </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <ul id="activeGames" class="nav nav-tabs">
                 @foreach($games as $key => $game)
                     @if($key == 0 )
                         <li id="game{{$game->game_id}}" class='active'><a data-toggle='tab'
-                                              href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a></li>
+                                                                          href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a>
+                        </li>
                     @else
-                        <li id="game{{$game->game_id}}"><a data-toggle='tab' href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a></li>
+                        <li id="game{{$game->game_id}}"><a data-toggle='tab'
+                                                           href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a>
+                        </li>
                     @endif
                 @endforeach
             </ul>
@@ -169,9 +174,10 @@
                             <div ng-controller="gameController">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <h3>Game: {{$game->gameName}}</h3><hr>
+                                        <h3>Game: {{$game->gameName}}</h3>
+                                        <hr>
                                         <div class="col-sm-4 col-md-4">
-                                            <table class="table table-striped" >
+                                            <table class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Player</th>
@@ -190,7 +196,7 @@
                                                 </tbody>
                                             </table>
 
-                                            <table class="table table-striped" >
+                                            <table class="table table-striped">
                                                 <caption>Game General Info</caption>
                                                 <thead>
                                                 <tr>
@@ -210,12 +216,30 @@
                                             </table>
                                         </div>
                                         <div class="col-sm-7 col-md-7">
-                                            <table class="marginAuto" ng-init="init('{{Auth::user()->nickname}}', {{$game->game_id}})">
+                                            <table class="marginAuto"
+                                                   ng-init="init('{{Auth::user()->nickname}}', {{$game->game_id}})">
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
-                                                        <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
-                                                             ng-src="@{{getImage(cols)}}" alt="img">
+                                                        @{{cols.id}}
+                                                        @{{cols.flipped}}
+                                                        <flippy
+                                                                ng-if="cols.state != 'empty'"
+                                                                class="fancy"
+                                                                ng-class="{flipped:cols.flipped}"
+                                                                ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
+                                                                flip-duration="500"
+                                                                timing-function="ease-in-out">
+                                                            <flippy-front>
+                                                                <img ng-src="img/hidden.png"/>
+                                                            </flippy-front>
+
+                                                            <flippy-back>
+                                                                <img ng-src="img/@{{cols.id}}.png"/>
+                                                            </flippy-back>
+
+                                                        </flippy>
+                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -230,9 +254,10 @@
                             <div ng-controller="gameController">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <h3>Game: {{$game->gameName}}</h3><hr>
+                                        <h3>Game: {{$game->gameName}}</h3>
+                                        <hr>
                                         <div class="col-sm-4 col-md-4">
-                                            <table class="table table-striped" >
+                                            <table class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Player</th>
@@ -251,7 +276,7 @@
                                                 </tbody>
                                             </table>
 
-                                            <table class="table table-striped" >
+                                            <table class="table table-striped">
                                                 <caption>Game General Info</caption>
                                                 <thead>
                                                 <tr>
@@ -271,12 +296,30 @@
                                             </table>
                                         </div>
                                         <div class="col-sm-7 col-md-7">
-                                            <table class="marginAuto" ng-init="init('{{Auth::user()->nickname}}', {{$game->game_id}})">
+                                            <table class="marginAuto"
+                                                   ng-init="init('{{Auth::user()->nickname}}', {{$game->game_id}})">
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
-                                                        <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
-                                                             ng-src="@{{getImage(cols)}}" alt="img">
+                                                        @{{cols.flipped}}
+                                                        @{{cols.id}}
+                                                        <flippy
+                                                                ng-if="cols.state != 'empty'"
+                                                                class="fancy"
+                                                                ng-class="{flipped:cols.flipped}"
+                                                                ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
+                                                                flip-duration="500"
+                                                                timing-function="ease-in-out">
+                                                            <flippy-front>
+                                                                <img ng-src="img/hidden.png"/>
+                                                            </flippy-front>
+
+                                                            <flippy-back>
+                                                                <img ng-src="img/@{{cols.id}}.png"/>
+                                                            </flippy-back>
+
+                                                        </flippy>
+                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -292,8 +335,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <form method="POST" id="formCreateRoom" action="gameLobby/createRoom">

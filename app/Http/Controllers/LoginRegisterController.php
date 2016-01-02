@@ -20,7 +20,7 @@ class LoginRegisterController extends Controller
     public function showLoginView()
     {
 
-        if(count(Input::all()) > 0){
+        if (count(Input::all()) > 0) {
             Session::reflash();
         }
         return view('auth.login');
@@ -29,30 +29,41 @@ class LoginRegisterController extends Controller
     public function login()
     {
         $input = Input::except("_token");
+        if (Input::get('login_guest')) {
+            //onde se faz o validation?! Fazer required if login_guest e tirar os inputs
+            $guest = User::createGuest();
+            dd((Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']]))); // return false -.-'
+            if (Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']])) {
+                dd("hey");
+                return Redirect::to('gameLobby');
+            }
+        }
+        if (Auth::attempt(['nickname' => $input['nickname'], 'password' => $input['password']], Input::get('remember_token'))) {
 
-        if(Auth::attempt(['nickname' => $input['nickname'], 'password' => $input['password']], Input::get('remember_token'))){
-              return Redirect::to('gameLobby');
+            return Redirect::to('gameLobby');
         }
         Session::flash('error', 'Login failed check your nickname and/or password');
-
         return Redirect::to('login');
     }
 
 
-    public function showRegisterView()
+    public
+    function showRegisterView()
     {
         return view('auth.register');
     }
 
-    public function registerAccount(Requests\RegisterRequest $request)
+    public
+    function registerAccount(Requests\RegisterRequest $request)
     {
         User::createUser(Input::except("_token", "password_confirmation"));
-        if(Auth::attempt(['nickname' => Input::get('nickname'), 'password' => Input::get('password')])){
-               return Redirect::to('gameLobby');
-         }
+        if (Auth::attempt(['nickname' => Input::get('nickname'), 'password' => Input::get('password')])) {
+            return Redirect::to('gameLobby');
+        }
     }
 
-    public function logout()
+    public
+    function logout()
     {
         Auth::logout();
         $rememberMeCookie = Auth::getRecallerName();
@@ -62,7 +73,6 @@ class LoginRegisterController extends Controller
 
         return Redirect::to('/')->withCookie($cookie);
     }
-
 
 
 }
