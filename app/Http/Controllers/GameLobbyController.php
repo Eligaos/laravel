@@ -85,7 +85,7 @@ class GameLobbyController extends Controller
 
     public function insertInGame($game){
         if ($game != null) {
-            dd($game);
+
             if ($game->joinedPlayers < $game->maxPlayers) {
                 $user = Auth::user()->user;
 

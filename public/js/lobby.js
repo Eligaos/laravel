@@ -81,7 +81,6 @@
                     var game = response.data.game;
                     $scope.game = modelsService.game(game.lines, game.columns);
                     $scope.game.gameID = gameID;
-                    console.log("start game!!");
                     socket.emit("startGame", userID, gameID, game.lines, game.columns);
 
                 }, function errorCallback(response) {
@@ -94,11 +93,6 @@
                         $scope.game = data;
                         $scope.$apply();
                     }
-                    //  console.log($scope.game.gameID);
-                    /* if($scope.game.playerTurn == data.playerTurn){ //not working
-                     $(#'nickPlayer').css('color', 'red');
-                     }*/
-
                 }
             );
 
@@ -142,10 +136,22 @@
 
                 if ($scope.game.playerTurn == user) {
                     if ($scope.game.turn == 0) {
+                        $scope.time = 0;
+                        $scope.timer = setInterval(
+                            function(){
+                                $scope.time++;
+                            }, 1000);
                         socket.emit("playMove", user, gameID, tile);
+                    }else if ($scope.lastTurn != $scope.game.turn ){
+                        var time = $scope.time;
+
+                        clearInterval($scope.timer);
+                        socket.emit("playMove", user, gameID, tile, time);
+                        $scope.lastTurn = $scope.game.turn;
                     }
-                    socket.emit("playMove", user, gameID, tile);
+                 //   socket.emit("playMove", user, gameID, tile);
                 }
+
             }
 
             $scope.getImage = function (cols) {

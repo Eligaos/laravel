@@ -34,8 +34,6 @@ class SocialiteController extends Controller
             $authUser = $this->findOrCreateUser($user);
 
             Auth::login($authUser, true);
-
-            // dd($user);
             return Redirect::to('gameLobby');
 
         }else{

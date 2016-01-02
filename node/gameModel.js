@@ -154,9 +154,8 @@ var Game = function (lines, columns) {
         var player = this.gamePlayers.shift();
         this.gamePlayers.push(player);
         this.turn++;
-
         this.playerTurn = this.gamePlayers[0]['nickname'];
-        console.log("hide tiles" + this.gamePlayers);
+
     }
 
     Game.prototype.tilesMatch = function () {

@@ -56,19 +56,23 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.on('playMove', function (user, gameId, tile) {
+    socket.on('playMove', function (user, gameId, tile, time) {
        console.log('Client requested "playMove" - gameId = ' + gameId + ' move= ', tile.index);
         var time = 0;
         var playerPosition = checkPlayerInGame(gameId, user);
+
       //  console.log(playerPosition);
       /*  if (games[gameId].getTurn() == 0) {
            time =  setInterval(function(){
-               games[gameId].gamePlayers[playerPosition]["time"]++;
+
             },1000);
         }
         */
 
+        games[gameId].gamePlayers[playerPosition]["time"]= time;
+
         games[gameId].tileTouch(tile, playerPosition);
+
         io.in(gameId).emit('refreshGame', games[gameId]);
         if(games[gameId].endGame() == true){
             //encontrar o vencedor
