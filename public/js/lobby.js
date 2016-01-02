@@ -265,11 +265,11 @@
         $scope.createRoom = function () {
             console.log("create game");
             if ($scope.createGame()) {
-                if ($scope.isPrivate == 0) { //confirmar se necessario, bd guarda vazio
+                if ($scope.isPrivate == 0) {
                     $scope.token = undefined;
                 }
-                $('#formCreateRoom').submit();
 
+                $('#formCreateRoom').submit();
                 // console.log($scope.token);
                 $scope.diag.close();
             }

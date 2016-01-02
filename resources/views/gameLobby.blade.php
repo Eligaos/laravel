@@ -52,7 +52,11 @@
             </div>
             <hr>
             <h2 class="page-header">Game Lobby</h2>
-
+                @if( Session::get('message'))
+                    <div style="text-align: center">
+                        <span class="alert alert-info"> {{ Session::get('message') }}</span>
+                    </div>
+                @endif
             <div style="text-align: center; visibility: hidden;" id="error">
                 <span class="alert alert-info"> @{{ error }}</span>
             </div>

@@ -69,7 +69,7 @@ class GameLobbyController extends Controller
         $gameID = Input::all();
         if ($gameID['id'] == -1) {
             $game = Game::where('token','NOT LIKE', "")->where('token', '=', $gameID['token'])->first();
-           $error = $this->insertInGame($game);
+            $error = $this->insertInGame($game);
         } else {
             $game = Game::find($gameID['id']);
             $error = $this->insertInGame($game);
@@ -100,7 +100,6 @@ class GameLobbyController extends Controller
         if (Auth::user()){
             $playersTop10 = DB::select( DB::raw("select winner as 'Player', count(*) as 'Wins' from games WHERE status = 'finished' group by winner ORDER BY 2 DESC ;"));
             return response()->json(['top10'=> $playersTop10]);
-
         }
     }
 
