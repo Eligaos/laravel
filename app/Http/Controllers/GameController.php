@@ -22,10 +22,17 @@ class GameController extends Controller
             return Redirect::to('gameLobby')->with('message', 'Game Already Exists!');
 
         }
+        $user = Auth::user()->id;
+
         $gameCreated = Game::create($createGame);
         $gameCreated->attachPlayersToGame();
+        $player = User::findOrFail($user);
+        $relation = $player->games->find($gameCreated['game_id']);
+
+        $relation->pivot->isPlayer=1;
         if($gameCreated->joinedPlayers == $gameCreated->maxPlayers){
             $gameCreated->status= "Playing";
+            $relation->pivot->save();
             $gameCreated->save();
         }
 

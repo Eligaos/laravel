@@ -196,14 +196,32 @@
                 url: 'gameLobby/joinGame'
             }).then(function successCallback(response) {
                 socket.emit("joinGame", id);
-                console.log(response.data.game)
                 if(response.data.game != null){
                     $scope.error = response.data.error + " on Room: " + response.data.game.gameName;
                 }else{
                     $scope.error = response.data.error;
                 }
                 $("#error").css("visibility", "visible");
-                console.log( $scope.error );
+            }, function errorCallback(response) {
+                //   console.log('There was an error on startGame request');
+            });
+        }
+
+        $scope.viewGame = function(id, userID){
+            var protocol = location.protocol;
+            var port = '8080';
+            var url = protocol + '//' + window.location.hostname + ':' + port;
+            var socket = io.connect(url, {reconnect: true});
+            var params = {
+                id: id
+            };
+            $http({
+                method: 'POST',
+                data: params,
+                url: 'gameLobby/viewGame'
+            }).then(function successCallback(response) {
+                console.log("viewGame");
+                socket.emit("viewGame", id, userID);
 
             }, function errorCallback(response) {
                 //   console.log('There was an error on startGame request');

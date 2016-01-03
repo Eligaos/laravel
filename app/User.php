@@ -84,7 +84,7 @@ class User extends Model implements AuthenticatableContract,
 
     public function games()
     {
-        return $this->belongsToMany('App\Game', 'game_player')->withPivot(['numberPairs', 'timePlaying'])->withTimestamps();
+        return $this->belongsToMany('App\Game', 'game_player')->withPivot(['numberPairs', 'isPlayer','timePlaying'])->withTimestamps();
     }
 
 }
