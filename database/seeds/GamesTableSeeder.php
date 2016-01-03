@@ -31,19 +31,6 @@ class GamesTableSeeder extends Seeder
                 ));
             }
 
-        for ($i=0; $i < 5; $i++) {
-            Game::insert(array(
-                'gameName' => $faker->numerify('Game ###'),
-                'gameOwner' =>$faker->lastName,
-                'lines' => $faker->numberBetween(2,10),
-                'columns' => $faker->numberBetween(2,10),
-                'maxPlayers' => 5,
-                'joinedPlayers' => 5,
-                'isPrivate' => 0,
-                'status' => 'Playing',
-                'winner' => null,
-            ));
-        }
     }
 
 }
