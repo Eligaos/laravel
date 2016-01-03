@@ -154,27 +154,17 @@
                     </table>
                 </div>
             </div>
-            <ul id="activeGames" class="nav nav-tabs">
-                @foreach($games as $key => $game)
-                    @if($key == 0 )
-                        <li id="game{{$game->game_id}}" class='active'><a data-toggle='tab'
-                                                                          href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a>
+            <ul id="activeGames" class="nav nav-tabs" >
+                        <li ng-repeat="game in gamesPlaying" id="game@{{game.game_id}}" ng-class='{active: $first}'><a data-toggle='tab'
+                                                                          href="#gameHolder@{{game.game_id}}">@{{game.gameName}}</a>
                         </li>
-                    @else
-                        <li id="game{{$game->game_id}}"><a data-toggle='tab'
-                                                           href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a>
-                        </li>
-                    @endif
-                @endforeach
             </ul>
             <div id="games-holder" class="tab-content">
-                @foreach($games as $key => $game)
-                    @if($key == 0 )
-                        <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active">
+                        <div ng-repeat="game in gamesPlaying" id="gameHolder@{{game.game_id}}" class="tab-pane fade in" ng-class="{'active': $first }" >
                             <div ng-controller="gameController">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <h3>Game: {{$game->gameName}}</h3>
+                                        <h3>Player Turn: @{{game.playerTurn }}</h3>
                                         <hr>
                                         <div class="col-sm-4 col-md-4">
                                             <table class="table table-striped">
@@ -217,18 +207,18 @@
                                         </div>
                                         <div class="col-sm-7 col-md-7">
                                             <table class="marginAuto"
-                                                   ng-init="init('{{Auth::user()->nickname}}', {{$game->game_id}})">
+                                                   ng-init="init('{{Auth::user()->nickname}}', game.game_id); outerIndex = game.game_id">
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
-                                                    {{--    <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
-                                                             ng-src="@{{getImage(cols)}}" alt="img">--}}
+                                                        <img ng-click="tileClick('{{Auth::user()->nickname}}', outerIndex , cols)"
+                                                             ng-src="@{{getImage(cols)}}" alt="img">
 
-                                                        <flippy
+                                               {{--         <flippy
                                                                 ng-if="cols.state != 'empty'"
                                                                 class="fancy"
                                                                 ng-class="{flipped: cols.flipped}"
-                                                                ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
+                                                                ng-click="tileClick('{{Auth::user()->nickname}}', game.game_id, cols)"
                                                                 flip-duration="500"
                                                                 timing-function="ease-in-out">
                                                             <flippy-front>
@@ -240,7 +230,7 @@
                                                             </flippy-back>
 
                                                         </flippy>
-                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>
+                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>--}}
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -250,86 +240,6 @@
                                 </div>
                             </div>
                         </div>
-                    @else
-                        <div id="gameHolder{{$game->game_id}}" class="tab-pane fade">
-                            <div ng-controller="gameController">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <h3>Game: {{$game->gameName}}</h3>
-                                        <hr>
-                                        <div class="col-sm-4 col-md-4">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th>Player</th>
-                                                    <th>Pairs</th>
-                                                    <th>Moves</th>
-                                                    <th>Time</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody ng-repeat="player in game.gamePlayers">
-                                                <tr>
-                                                    <td>@{{ player.nickname }}</td>
-                                                    <td>@{{ player.pairs }}</td>
-                                                    <td>@{{ player.moves }}</td>
-                                                    <td>@{{ player.time }}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-
-                                            <table class="table table-striped">
-                                                <caption>Game General Info</caption>
-                                                <thead>
-                                                <tr>
-                                                    <th>Total Moves</th>
-                                                    <th>Total Pairs</th>
-                                                    <th>Remaining Pairs</th>
-
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>@{{game.moves }}</td>
-                                                    <td>@{{game.board.lines*game.board.columns/2 - game.remainingTiles/2 }}</td>
-                                                    <td>@{{game.remainingTiles /2}}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-sm-7 col-md-7">
-                                            <table class="marginAuto"
-                                                   ng-init="init('{{Auth::user()->nickname}}', {{$game->game_id}})">
-                                                <tbody>
-                                                <tr ng-repeat="line in game.tiles">
-                                                    <td ng-repeat="cols in line">
-                                                        <flippy
-                                                                ng-if="cols.state != 'empty'"
-                                                                class="fancy"
-                                                                ng-class="{flipped:cols.flipped}"
-                                                                ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
-                                                                flip-duration="500"
-                                                                timing-function="ease-in-out">
-                                                            <flippy-front>
-                                                                <img ng-src="img/hidden.png"/>
-                                                            </flippy-front>
-
-                                                            <flippy-back>
-                                                                <img ng-src="img/@{{cols.id}}.png"/>
-                                                            </flippy-back>
-
-                                                        </flippy>
-                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
             </div>
         </div>
     </div>

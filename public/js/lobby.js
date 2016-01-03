@@ -69,6 +69,7 @@
 
         }
         $scope.init = function (userID, gameID) {
+
             var params = {
                 id: gameID
             };
@@ -138,7 +139,7 @@
 
 
         $scope.tileClick = function (user, gameID, tile) {
-
+            console.log(gameID);
                if ($scope.game.playerTurn == user) {
                       /*  $scope.timer = setInterval(
                             function () {
@@ -211,7 +212,7 @@
         }
 
         $scope.listGames = function () {
-          $interval(function () {
+       //   $interval(function () {
                 var url = 'gameLobby/listGames';
                 var urltop10= 'gameLobby/top10';
                 $http.get(url).then(function successCallback(response) {
@@ -228,7 +229,7 @@
                     console.log('There was an error to request top10 players');
                 });
 
-           },3000);
+       //    },3000);
 
         }
 
