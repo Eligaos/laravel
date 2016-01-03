@@ -157,7 +157,7 @@
                 </div>
             </div>
             <ul id="activeGames" class="nav nav-tabs" >
-                        <li ng-repeat="game in gamesPlaying" id="game@{{game.game_id}}" ng-class='{active: $first}'><a data-toggle='tab'
+                        <li ng-repeat="game in gamesPlaying" id="gameTab@{{game.game_id}}" ng-class='{active: $first}'><a data-toggle='tab'
                                                                           href="#gameHolder@{{game.game_id}}">@{{game.gameName}}</a>
                         </li>
             </ul>

@@ -60,14 +60,7 @@
         var socket = io.connect(url, {reconnect: true});
 
 
-        $scope.startGame = function (user, gameID) {
-            $scope.init(user, gameID);
-            setTimeout(function () {
-                    window.location.reload(true);
-                }
-                , 1000);
 
-        }
         $scope.init = function (userID, gameID) {
 
             var params = {
@@ -115,9 +108,11 @@
                         closeByDocument: false,
                         preCloseCallback: function () {
                             var gameHolder = "#gameHolder" + $scope.game.gameID;
-                            var tab = "#game" + $scope.game.gameID;
-                            $(gameHolder).remove();
+                            var tab = "#gameTab" + $scope.game.gameID;
+                            console.log(tab);
                             $(tab).remove();
+                            $(gameHolder).remove();
+
                             var params = {
                                 id: $scope.game.gameID,
                                 winner: winner.nickname
