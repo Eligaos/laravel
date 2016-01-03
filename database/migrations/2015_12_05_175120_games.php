@@ -35,6 +35,7 @@ class Games extends Migration
             $table->foreign('game_id')->references('game_id')->on('games');
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('numberPairs');
+            $table->boolean('isPlayer');
             $table->double('timePlaying',4,4);
             $table->timestamps();
         });

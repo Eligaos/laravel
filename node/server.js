@@ -32,24 +32,46 @@ function checkPlayerInGame(gameId, userID) {
     return -1;
 }
 
+function checkViewPlayer(gameId, userID) {
+    if(games[gameId].gameViewers==undefined){
+        return -1;
+    }
+    for (var i = 0, len = games[gameId].gameViewers.length; i < len; i++) {
+        if (games[gameId].gameViewers[i]["nickname"] == userID) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+
+
 
 io.on('connection', function (socket) {
     socket.on('startGame', function (userID, gameId, lines, columns) {
        // console.log('\n----------------------------------------------------\n');
        // console.log('Client requested "startGame" - gameId = ' + gameId);
-
+        console.log("start");
         socket.join(gameId);
+        console.log(gameId);
 
-        if (games[gameId] == undefined) {
-            games[gameId] = gameMod.game(lines, columns);
-            games[gameId].gameID = gameId;
-            var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
-            games[gameId].gamePlayers.push(player);
-            games[gameId].playerTurn = games[gameId].gamePlayers[0]["nickname"];
-        }
-        if (checkPlayerInGame(gameId, userID) == -1) {
-            var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
-            games[gameId].gamePlayers.push(player);
+            if (games[gameId] == undefined) {
+                games[gameId] = gameMod.game(lines, columns);
+                games[gameId].gameID = gameId;
+               /* if(checkViewPlayer(gameId,userID) !=-1) {
+                    console.log("hey no check");
+                }*/
+                var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
+                games[gameId].gamePlayers.push(player);
+                console.log(games[gameId].gamePlayers);
+
+                games[gameId].playerTurn = games[gameId].gamePlayers[0]["nickname"];
+            if (checkPlayerInGame(gameId, userID) == -1) {
+                var player = {nickname: userID, moves: 0, pairs: 0, time: 0};
+                games[gameId].gamePlayers.push(player);
+                console.log(games[gameId].gamePlayers);
+
+            }
         }
         console.log("start game" + games[gameId].gamePlayers);
         io.in(gameId).emit('refreshGame', games[gameId]);
@@ -93,6 +115,19 @@ io.on('connection', function (socket) {
         console.log('Client requested "joinGame" - gameId = ' + gameId);
 
         socket.join(gameId);
+
+        //io.in(gameId).emit('refreshGame', games[gameId]);
+    });
+
+    socket.on('viewGame', function (gameId, userID) {
+        console.log('\n----------------------------------------------------\n');
+        console.log('Client requested "viewGame" - gameId = ' + gameId);
+
+        socket.join(gameId);
+        var player = {nickname: userID};
+        console.log(player);
+        games[gameId].gameViewers.push(player);
+        console.log(games[gameId].gameViewers);
 
         //io.in(gameId).emit('refreshGame', games[gameId]);
     });

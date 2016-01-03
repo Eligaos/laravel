@@ -93,6 +93,7 @@ var Game = function (lines, columns) {
     this.tiles = insertPieces(this.board, lines, columns);
     this.gameID = undefined;
     this.gamePlayers = [];
+    this.gameViewers = [];
     this.turn = 0;
     this.playerTurn = undefined;
     this.firstTile = undefined;

@@ -52,13 +52,13 @@
             </div>
             <hr>
             <h2 class="page-header">Game Lobby</h2>
-                @if( Session::get('message'))
-                    <div style="text-align: center">
-                        <span class="alert alert-info"> {{ Session::get('message') }}</span>
-                    </div>
-                @endif
+            @if( Session::get('message'))
+                <div style="text-align: center">
+                    <span class="alert alert-info"> {{ Session::get('message') }}</span>
+                </div>
+            @endif
             <div style="text-align: center; visibility: hidden;" id="error">
-                <span class="alert alert-info"> @{{ error }}</span>
+                <span class="alert alert-info" ; visibility="hidden"> @{{ error }}</span>
             </div>
             <div id="gamesList" ng-init="listGames()">
                 <div class="textAlignCenter">
@@ -96,7 +96,7 @@
 
                             <td>
                                 <button class="btn btn-sm btn-primary btn-block" id="game@{{game.game_id}}"
-                                        ng-click="joinGame(game.game_id, '{{Auth::user()->nickname}}')" type="button">
+                                        ng-click="joinGame(game.game_id)" type="button">
                                     Join
                                 </button>
                             </td>
@@ -122,7 +122,9 @@
                             <td>@{{ game.joinedPlayers}} / @{{ game.maxPlayers}}</td>
                             <td>
                                 <button class="btn btn-sm btn-primary btn-block"
-                                        href="gameLobby/viewGame/@{{ game.game_id}}" type="submit">View
+                                        id="game@{{game.game_id}}"
+                                        ng-click="viewGame(game.game_id, '{{Auth::user()->id}}')" type="button">
+                                    View
                                 </button>
                             </td>
                         </tr>
@@ -211,8 +213,12 @@
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
+
                                                         <img ng-click="tileClick('{{Auth::user()->nickname}}', outerIndex , cols)"
                                                              ng-src="@{{getImage(cols)}}" alt="img">
+
+                                                        {{--    <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
+                                                                 ng-src="@{{getImage(cols)}}" alt="img">--}}
 
                                                {{--         <flippy
                                                                 ng-if="cols.state != 'empty'"
