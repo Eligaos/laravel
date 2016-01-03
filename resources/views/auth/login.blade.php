@@ -24,7 +24,6 @@
     <form class="form-signin" method="POST" action="login/confirmation">
         <input type="hidden" name="_token" value="{!!  csrf_token()!!}">
 
-
         <label for="nickname" class="sr-only">Nickname</label>
         <input type="text" name="nickname" id="nickname" class="form-control" value="{{ old('nickname') }}"
                placeholder="Nickname" required autofocus>
@@ -49,6 +48,10 @@
 
         <div id="social-login">
             <a href="/login/facebook"><button class="btn btn-xs btn-primary" type="button"><img src="/img/facebook_icon.png"></button></a>
+        </div>
+
+        <div id="guest-login">
+            <a href="/login/guest"><button class="btn btn-xs btn-primary" type="button"><img src="/img/facebook_icon.png"></button></a>
         </div>
     </form>
 

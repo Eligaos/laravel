@@ -62,9 +62,9 @@ class GameLobbyController extends Controller
           //  Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
             //  return view('guest_all.users-list', compact('users', 'title', 'featured'));
             //return view('gameLobby', compact('nickname', 'gamesWaiting', 'gamesPlaying'));
-            $gamesIamPlaying =  $player->games()->where('status', 'LIKE', 'Playing')->get();
 
-            return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesIamPlaying' => $gamesIamPlaying, 'gamesWaiting' => $gamesWaiting]);
+
+            return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesWaiting' => $gamesWaiting]);
         }
     }
 
