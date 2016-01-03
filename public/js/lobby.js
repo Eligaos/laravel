@@ -224,7 +224,7 @@
         }
 
         $scope.listGames = function () {
-       //   $interval(function () {
+          $interval(function () {
                 var url = 'gameLobby/listGames';
                 var urltop10= 'gameLobby/top10';
                 $http.get(url).then(function successCallback(response) {
@@ -241,7 +241,7 @@
                     console.log('There was an error to request top10 players');
                 });
 
-       //    },3000);
+           },3000);
 
         }
 

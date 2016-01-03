@@ -129,7 +129,7 @@ io.on('connection', function (socket) {
         games[gameId].gameViewers.push(player);
         console.log(games[gameId].gameViewers);
 
-        //io.in(gameId).emit('refreshGame', games[gameId]);
+        io.in(gameId).emit('refreshGame', games[gameId]);
     });
 
     socket.on('showGame', function (gameId) {
