@@ -30,6 +30,10 @@ Route::get('gameLobby/top10',['uses' => 'GameLobbyController@top10']);
 // Authentication routes...
 Route::any('login', 'LoginRegisterController@showLoginView');
 Route::post('login/confirmation', ['as' => 'login-confirm', 'uses' => 'LoginRegisterController@login']);
+
+Route::any('guest/login', ['as' => 'login-confirm', 'uses' => 'LoginRegisterController@loginGuest']);
+
+
 Route::post('gameLobby/createRoom', ['uses' => 'GameController@createRoom']);
 //Route::get('gameLobby/showGames', ['uses' => 'GameController@showGames']);
 Route::get('gameLobby/startGame/{id}', ['uses' => 'GameLobbyController@startGame']);
