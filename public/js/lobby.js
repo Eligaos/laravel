@@ -89,8 +89,13 @@
 
 
 
-            socket.on('refreshGame', function (data) {
+            socket.on('refreshGame', function (data, clearTime) {
+                console.log($scope.game);
                     if ($scope.game.gameID == data.gameID) {
+                        if(clearTime != undefined){
+                            clearInterval($scope.timer);
+                            $scope.time = 0;
+                        }
                         console.log("refresh");
                         $scope.game = data;
                         $scope.$apply();
@@ -134,26 +139,15 @@
 
         $scope.tileClick = function (user, gameID, tile) {
 
-                if ($scope.game.playerTurn == user) {
-                    if ($scope.game.turn == 0) {
-                        $scope.time = 0;
-                        $scope.timer = setInterval(
-                            function(){
+               if ($scope.game.playerTurn == user) {
+                      /*  $scope.timer = setInterval(
+                            function () {
                                 $scope.time++;
-                            }, 1000);
-                        socket.emit("playMove", user, gameID, tile);
-                    }else if ($scope.lastTurn != $scope.game.turn ){
-                        var time = $scope.time;
-
-                        clearInterval($scope.timer);
-                        socket.emit("playMove", user, gameID, tile, time);
-                        $scope.lastTurn = $scope.game.turn;
-                    }
-                 //   socket.emit("playMove", user, gameID, tile);
+                                console.log($scope.time);
+                            }, 1000);*/
+                    socket.emit("playMove", user, gameID, tile, $scope.time);
                 }
-
-            }
-
+        }
 
         $scope.getImage = function (cols) {
             if (cols.state == "visible") {
@@ -217,7 +211,7 @@
         }
 
         $scope.listGames = function () {
-            $interval(function () {
+          $interval(function () {
                 var url = 'gameLobby/listGames';
                 var urltop10= 'gameLobby/top10';
                 $http.get(url).then(function successCallback(response) {
@@ -234,7 +228,7 @@
                     console.log('There was an error to request top10 players');
                 });
 
-            },3000);
+           },3000);
 
         }
 
@@ -352,7 +346,6 @@
     angular.module('lobby').controller('chatController', ['$scope', '$log', '$http', 'modelsService', chatController]);
     angular.module('angular-flippy', [])
         .directive('flippy', function() {
-            console.log("dasd");
             return {
                 restrict: 'EA',
                 link: function($scope, $elem, $attrs) {

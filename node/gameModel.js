@@ -112,13 +112,13 @@ var Game = function (lines, columns) {
             if (this.firstTile == undefined) {
                 this.firstTile = this.board.getTileByIndex(tile.index);
                 this.firstTile.setState("visible");
-                this.firstTile.flipped = this.board.getTileByIndex(tile.index).flip();
+                this.firstTile.flipped = !this.firstTile.flipped;
                 this.secondTile = undefined;
 
             } else if (this.secondTile == undefined) {
                 this.secondTile = this.board.getTileByIndex(tile.index);
                 this.secondTile.setState("visible");
-                this.secondTile.flipped = this.board.getTileByIndex(tile.index).flip();
+                this.secondTile.flipped = !this.secondTile.flipped;
                 return this.compare(playerPosition);
             }
         }

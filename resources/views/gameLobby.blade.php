@@ -221,12 +221,13 @@
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
-                                                        @{{cols.id}}
-                                                        @{{cols.flipped}}
+                                                    {{--    <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
+                                                             ng-src="@{{getImage(cols)}}" alt="img">--}}
+
                                                         <flippy
                                                                 ng-if="cols.state != 'empty'"
                                                                 class="fancy"
-                                                                ng-class="{flipped:cols.flipped}"
+                                                                ng-class="{flipped: cols.flipped}"
                                                                 ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
                                                                 flip-duration="500"
                                                                 timing-function="ease-in-out">
@@ -301,8 +302,6 @@
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
-                                                        @{{cols.flipped}}
-                                                        @{{cols.id}}
                                                         <flippy
                                                                 ng-if="cols.state != 'empty'"
                                                                 class="fancy"

@@ -58,7 +58,10 @@ io.on('connection', function (socket) {
 
     socket.on('playMove', function (user, gameId, tile, time) {
        console.log('Client requested "playMove" - gameId = ' + gameId + ' move= ', tile.index);
-        var time = 0;
+       // var time = 0;
+        if(time != undefined){
+             console.log("Time:" + time);
+        }
         var playerPosition = checkPlayerInGame(gameId, user);
 
       //  console.log(playerPosition);
@@ -80,7 +83,7 @@ io.on('connection', function (socket) {
             io.in(gameId).emit('endGame', winner, games[gameId]);
         }
         setTimeout(function () {
-                io.in(gameId).emit('refreshGame', games[gameId]);
+                io.in(gameId).emit('refreshGame', games[gameId], true);
             }
             , 1000);
     });
