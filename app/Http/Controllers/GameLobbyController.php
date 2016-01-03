@@ -49,19 +49,22 @@ class GameLobbyController extends Controller
     public function listGames()
     {
         if (Auth::user()) {
-            $userID = Auth::user()->id;
+
+            $player = User::findOrFail($userID = Auth::user()->id);
             //$title = "Utilizadores";
             // $users = User::paginate(10);
 
             //FAZER PARA OS TOKENS!!
 
             $gamesWaiting = Game::where('status', 'LIKE', 'Waiting')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
-            $gamesPlaying =Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
+            $gamesPlaying = Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
                 //DB::select( DB::raw("SELECT * FROM game_player gp join games g on gp.game_id = g.game_id where g.status like 'Playing' and g.isPrivate = 0 and gp.isPlayer = 0 and gp.user_id != :userID "), array('userID' => $userID));
           //  Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
             //  return view('guest_all.users-list', compact('users', 'title', 'featured'));
             //return view('gameLobby', compact('nickname', 'gamesWaiting', 'gamesPlaying'));
-            return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesWaiting' => $gamesWaiting]);
+            $gamesIamPlaying =  $player->games()->where('status', 'LIKE', 'Playing')->get();
+
+            return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesIamPlaying' => $gamesIamPlaying, 'gamesWaiting' => $gamesWaiting]);
         }
     }
 

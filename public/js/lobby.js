@@ -62,7 +62,6 @@
 
 
         $scope.init = function (userID, gameID) {
-
             var params = {
                 id: gameID
             };
@@ -231,7 +230,7 @@
                 $http.get(url).then(function successCallback(response) {
                     $scope.gamesWaiting = response.data.gamesWaiting;
                     $scope.gamesPlaying = response.data.gamesPlaying;
-                    $scope.gamesStarting = response.data.gamesStarting;
+                    $scope.gamesIamPlaying = response.data.gamesIamPlaying;
                 }, function errorCallback(response) {
                     console.log('There was an error on startGame request');
                 });
