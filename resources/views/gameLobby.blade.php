@@ -123,7 +123,7 @@
                             <td>
                                 <button class="btn btn-sm btn-primary btn-block"
                                         id="game@{{game.game_id}}"
-                                        ng-click="viewGame(game.game_id, '{{Auth::user()->id}}')" type="button">
+                                        ng-click="viewGame(game.game_id, '{{Auth::user()->nickname}}')" type="button">
                                     View
                                 </button>
                             </td>

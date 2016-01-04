@@ -102,10 +102,15 @@ var Game = function (lines, columns) {
     this.timeout;
     this.remainingTiles = lines * columns;
     this.moves = 0;
+    // $interval
 
     Game.prototype.getBoard = function () {
         return this.board;
     }
+
+    /*var $interval = function(){
+
+    }*/
 
     Game.prototype.tileTouch = function (tile, playerPosition) {
 

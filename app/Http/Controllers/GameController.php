@@ -17,7 +17,7 @@ class GameController extends Controller
     public function createRoom(Request $request){
 
         $createGame = Game::prepareCreateGame(Input::all());
-        if(Game::where('gameName','=',$createGame['gameName'])->where('status', 'not like', 'Finished')->first() != null) {
+        if(Game::where('gameName','=',$createGame['gameName'])->first() != null) {
 
             return Redirect::to('gameLobby')->with('message', 'Game Already Exists!');
 

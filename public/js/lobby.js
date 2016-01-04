@@ -202,7 +202,8 @@
             });
         }
 
-       /* $scope.viewGame = function(id, userID){
+        $scope.viewGame = function(id, userID){
+            console.log(userID);
             var protocol = location.protocol;
             var port = '8080';
             var url = protocol + '//' + window.location.hostname + ':' + port;
@@ -221,7 +222,7 @@
             }, function errorCallback(response) {
                 //   console.log('There was an error on startGame request');
             });
-        }*/
+        }
 
         $scope.listGames = function () {
           $interval(function () {

@@ -54,8 +54,8 @@ class GameLobbyController extends Controller
             //$title = "Utilizadores";
             // $users = User::paginate(10);
             
-            $gamesWaiting = DB::select( DB::raw("SELECT * FROM game_player gp join games g on gp.game_id = g.game_id where g.status like 'Waiting' and g.isPrivate = 0 and gp.user_id != :userID "), array('userID' => $userID));
-            $gamesPlaying = DB::select( DB::raw("SELECT * FROM game_player gp join games g on gp.game_id = g.game_id where g.status like 'Playing' and g.isPrivate = 0 and gp.isPlayer = 0 and gp.user_id = :userID "), array('userID' => $userID));
+            $gamesWaiting = Game::where('status', 'LIKE', 'Waiting')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
+            $gamesPlaying = Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
 
                 //DB::select( DB::raw("SELECT * FROM game_player gp join games g on gp.game_id = g.game_id where g.status like 'Playing' and g.isPrivate = 0 and gp.isPlayer = 0 and gp.user_id != :userID "), array('userID' => $userID));
           //  Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
