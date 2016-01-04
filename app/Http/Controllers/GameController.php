@@ -32,10 +32,9 @@ class GameController extends Controller
         $relation->pivot->isPlayer=1;
         if($gameCreated->joinedPlayers == $gameCreated->maxPlayers){
             $gameCreated->status= "Playing";
-            $relation->pivot->save();
-            $gameCreated->save();
         }
-
+        $relation->pivot->save();
+        $gameCreated->save();
         return Redirect::to('gameLobby')->with('message', 'Game Created!');
     }
 

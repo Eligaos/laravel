@@ -53,12 +53,12 @@ class GameLobbyController extends Controller
             //$title = "Utilizadores";
             // $users = User::paginate(10);
 
-            //FAZER PARA OS TOKENS!!
 
-            $gamesWaiting = Game::where('status', 'LIKE', 'Waiting')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
-            $gamesPlaying =Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
+            $gamesWaiting = DB::select( DB::raw("SELECT * FROM game_player gp join games g on gp.game_id = g.game_id where g.status like 'Waiting' and g.isPrivate = 0 and gp.user_id != :userID "), array('userID' => $userID));
+            $gamesPlaying = DB::select( DB::raw("SELECT * FROM game_player gp join games g on gp.game_id = g.game_id where g.status like 'Playing' and g.isPrivate = 0 and gp.isPlayer = 0 and gp.user_id = :userID "), array('userID' => $userID));
                 //DB::select( DB::raw("SELECT * FROM game_player gp join games g on gp.game_id = g.game_id where g.status like 'Playing' and g.isPrivate = 0 and gp.isPlayer = 0 and gp.user_id != :userID "), array('userID' => $userID));
           //  Game::where('status', 'LIKE', 'Playing')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
+            //Game::where('status', 'LIKE', 'Waiting')->where('isPrivate', '=', 0)->orderBy('gameName', 'DESC')->get();
             //  return view('guest_all.users-list', compact('users', 'title', 'featured'));
             //return view('gameLobby', compact('nickname', 'gamesWaiting', 'gamesPlaying'));
             return response()->json(['gamesPlaying' => $gamesPlaying, 'gamesWaiting' => $gamesWaiting]);
@@ -90,8 +90,6 @@ class GameLobbyController extends Controller
         $relation->pivot->isPlayer=0;
         $relation->pivot->save();
         $game->save();
-
-
         return response()->json(['game' => $game, 'error' => "View Game"]);
     }
 
@@ -121,7 +119,7 @@ class GameLobbyController extends Controller
 
     public function top10(){
         if (Auth::user()){
-            $playersTop10 = DB::select( DB::raw("select winner as 'Player', count(*) as 'Wins' from games WHERE status = 'finished' group by winner ORDER BY 2 DESC ;"));
+            $playersTop10 = DB::select( DB::raw("select winner as 'Player', count(*) as 'Wins' from games WHERE status = 'finished' group by winner, updated_at ORDER BY 2, updated_at DESC ;"));
             return response()->json(['top10'=> $playersTop10]);
         }
     }
