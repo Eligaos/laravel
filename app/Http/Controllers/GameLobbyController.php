@@ -85,7 +85,7 @@ class GameLobbyController extends Controller
         $gameID = Input::all();
         $game = Game::find($gameID['id']);
         $user = Auth::user()->id;
-        $game->attachPlayersToGame($user); //fazer coluna para viewers?
+        $game->attachPlayersToGame($user);
 
         $player = User::findOrFail($user);
         $relation = $player->games->find($game['game_id']);

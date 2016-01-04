@@ -82,21 +82,24 @@
 
 
 
-            socket.on('refreshGame', function (data, clearTime) {
-                console.log($scope.game);
+            socket.on('refreshGame', function (data, validator) {
                     if ($scope.game.gameID == data.gameID) {
-                        if(clearTime != undefined){
-                            clearInterval($scope.timer);
-                            $scope.time = 0;
+                        if(validator){
+                            $interval.cancel($scope.timer);
+                            $scope.timer = undefined ;
+                          //  $scope.game.gamePlayers[userPosition].time = 0;
                         }
                         console.log("refresh");
                         $scope.game = data;
-                        $scope.$apply();
+                        $scope.$apply(function(){
+
+                        });
                     }
                 }
             );
 
             socket.on('endGame', function (winner, data) {
+                $interval.cancel($scope.timer);
                 if ($scope.game.gameID == data.gameID) {
                     $scope.winner = winner;
                     $scope.diag = ngDialog.open({
@@ -133,14 +136,14 @@
 
 
         $scope.tileClick = function (user, gameID, tile) {
-            console.log(gameID);
                if ($scope.game.playerTurn == user) {
-                      /*  $scope.timer = setInterval(
-                            function () {
-                                $scope.time++;
-                                console.log($scope.time);
-                            }, 1000);*/
-                    socket.emit("playMove", user, gameID, tile, $scope.time);
+                   if($scope.timer == undefined) {
+                       $scope.timer = $interval(
+                           function () {
+                               $scope.game.gamePlayers[0]["time"]++;
+                           }, 1000);
+                   }
+                   socket.emit("playMove", user, gameID, tile, $scope.game.gamePlayers[0]["time"]);
                 }
         }
 
@@ -231,7 +234,6 @@
                 $http.get(url).then(function successCallback(response) {
                     $scope.gamesWaiting = response.data.gamesWaiting;
                     $scope.gamesPlaying = response.data.gamesPlaying;
-                    $scope.gamesIamPlaying = response.data.gamesIamPlaying;
                 }, function errorCallback(response) {
                     console.log('There was an error on startGame request');
                 });
@@ -241,7 +243,6 @@
                 }, function errorCallback(response) {
                     console.log('There was an error to request top10 players');
                 });
-
            },3000);
 
         }

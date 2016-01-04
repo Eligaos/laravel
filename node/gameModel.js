@@ -98,6 +98,7 @@ var Game = function (lines, columns) {
     this.playerTurn = undefined;
     this.firstTile = undefined;
     this.secondTile = undefined;
+    this.time=0;
     //this.pieces;
     this.timeout;
     this.remainingTiles = lines * columns;
@@ -190,19 +191,19 @@ var Game = function (lines, columns) {
 
         for (var i = 0, len = this.gamePlayers.length; i < len; i++) {
             if (this.gamePlayers[i]["pairs"] >= topPlayer["pairs"]) {
-                topPlayer = this.gamePlayers[i]; //temp cod
-             /*   if (this.gamePlayers[i]["pairs"] == topPlayer["pairs"]) {
+                // topPlayer = this.gamePlayers[i]; //temp cod
+                if (this.gamePlayers[i]["pairs"] == topPlayer["pairs"]) {
                     if (this.gamePlayers[i]["time"] > topPlayer["time"]) {
                         topPlayer = this.gamePlayers[i];
 
-                } else {
-                    topPlayer = this.gamePlayers[i];
-                }*/
+                    } else {
+                        topPlayer = this.gamePlayers[i];
+                    }
+                }
             }
+            return topPlayer;
         }
-        return topPlayer;
     }
-
     Game.prototype.endGame = function () {
         //this.getPlayerMorePairs();
         if (this.remainingTiles == 0) {

@@ -29,15 +29,6 @@ class LoginRegisterController extends Controller
     public function login()
     {
         $input = Input::except("_token");
-        if (Input::get('login_guest')) {
-            //onde se faz o validation?! Fazer required if login_guest e tirar os inputs
-            $guest = User::createGuest();
-            dd((Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']]))); // return false -.-'
-            if (Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']])) {
-                dd("hey");
-                return Redirect::to('gameLobby');
-            }
-        }
         if (Auth::attempt(['nickname' => $input['nickname'], 'password' => $input['password']], Input::get('remember_token'))) {
 
             return Redirect::to('gameLobby');
@@ -48,19 +39,15 @@ class LoginRegisterController extends Controller
 
     public function loginGuest()
     {
-
-
-            $guest = User::createGuest();
-          //  dd((Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']]))); // return false -.-'
-            //if (Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']])) {
-              //  dd("hey");
-                Auth::login($guest, $remember = false);
-                return Redirect::to('gameLobby');
-
+        $guest = User::createGuest();
+        //  dd((Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']]))); // return false -.-'
+        //if (Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']])) {
+        //  dd("hey");
+        Auth::login($guest, $remember = false);
+        return Redirect::to('gameLobby');
     }
 
-    public
-    function showRegisterView()
+    public function showRegisterView()
     {
         return view('auth.register');
     }

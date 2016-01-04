@@ -29,6 +29,7 @@ function checkPlayerInGame(gameId, userID) {
             return i;
         }
     }
+    console.log('kappa');
     return -1;
 }
 
@@ -51,6 +52,7 @@ io.on('connection', function (socket) {
     socket.on('startGame', function (userID, gameId, lines, columns) {
         // console.log('\n----------------------------------------------------\n');
         // console.log('Client requested "startGame" - gameId = ' + gameId);
+        console.log(userID);
         socket.join(gameId);
 
         if (games[gameId] == undefined) {
@@ -69,7 +71,7 @@ io.on('connection', function (socket) {
             }
         }
         console.log("start game" + games[gameId].gamePlayers);
-        io.in(gameId).emit('refreshGame', games[gameId]);
+        io.in(gameId).emit('refreshGame', games[gameId], false);
 
     });
 
@@ -79,7 +81,6 @@ io.on('connection', function (socket) {
         if (time != undefined) {
             console.log("Time:" + time);
         }
-        var playerPosition = checkPlayerInGame(gameId, user);
 
         //  console.log(playerPosition);
         /*  if (games[gameId].getTurn() == 0) {
@@ -88,19 +89,21 @@ io.on('connection', function (socket) {
          },1000);
          }
          */
+        games[gameId].gamePlayers[0]["time"] = time;
 
-        games[gameId].gamePlayers[playerPosition]["time"] = time;
-
-        games[gameId].tileTouch(tile, playerPosition);
-
-        io.in(gameId).emit('refreshGame', games[gameId]);
+        games[gameId].tileTouch(tile, 0);
+        if(games[gameId].secondTile != undefined){
+            io.in(gameId).emit('refreshGame', games[gameId], true);
+        }else{
+            io.in(gameId).emit('refreshGame', games[gameId], false);
+        }
         if (games[gameId].endGame() == true) {
             //encontrar o vencedor
             var winner = games[gameId].getWinner();
             io.in(gameId).emit('endGame', winner, games[gameId]);
         }
         setTimeout(function () {
-                io.in(gameId).emit('refreshGame', games[gameId], true);
+                io.in(gameId).emit('refreshGame', games[gameId], false);
             }
             , 1000);
     });
@@ -125,14 +128,10 @@ io.on('connection', function (socket) {
         games[gameId].gameViewers.push(player);
         console.log(games[gameId].gameViewers);
 
-        io.in(gameId).emit('refreshGame', games[gameId]);
+        io.in(gameId).emit('refreshGame', games[gameId], false);
     });
 
 
-    socket.on('showGame', function (gameId) {
-        console.log('\n---------------ShowGame------------------------\n');
-        io.in(gameId).emit('refreshGame', games[gameId]);
-    });
 
     socket.on('chatInput', function (msg, name) {
         io.emit('chatOutput', msg, name);
