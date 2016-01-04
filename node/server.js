@@ -97,6 +97,21 @@ io.on('connection', function (socket) {
         //io.in(gameId).emit('refreshGame', games[gameId]);
     });
 
+/*
+    socket.on('viewGame', function (gameId, userID) {
+        console.log('\n----------------------------------------------------\n');
+        console.log('Client requested "viewGame" - gameId = ' + gameId);
+
+        socket.join(gameId);
+        var player = {nickname: userID};
+        console.log(player);
+        games[gameId].gameViewers.push(player);
+        console.log(games[gameId].gameViewers);
+
+        io.in(gameId).emit('refreshGame', games[gameId]);
+    });
+
+*/
     socket.on('showGame', function (gameId) {
         console.log('\n---------------ShowGame------------------------\n');
         io.in(gameId).emit('refreshGame', games[gameId]);

@@ -24,7 +24,6 @@
     <form class="form-signin" method="POST" action="login/confirmation">
         <input type="hidden" name="_token" value="{!!  csrf_token()!!}">
 
-
         <label for="nickname" class="sr-only">Nickname</label>
         <input type="text" name="nickname" id="nickname" class="form-control" value="{{ old('nickname') }}"
                placeholder="Nickname" required autofocus>
@@ -35,20 +34,23 @@
             <label>
                 <input type="checkbox" name="remember_token" value="remember-me"> Remember me
             </label>
-            <label>
-                <input type="checkbox" name="login_guest" value="login_guest"> Guest
-            </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 
 
         <div style="text-align: center; padding-top: 2%">
-
                 <span style="font-weight: bold">Or Login with:</span>
         </div>
 
         <div id="social-login">
             <a href="/login/facebook"><button class="btn btn-xs btn-primary" type="button"><img src="/img/facebook_icon.png"></button></a>
+        </div>
+
+        <div style="text-align: center; padding-top: 2%">
+            <span style="font-weight: bold">Or Enter As:</span>
+        </div>
+        <div id="social-login" style="text-align: center; padding-top: 2%">
+            <a href="/guest/login"><button class="btn btn-xs btn-primary" type="button">GUEST</button></a>
         </div>
     </form>
 

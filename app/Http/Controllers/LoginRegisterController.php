@@ -46,6 +46,18 @@ class LoginRegisterController extends Controller
         return Redirect::to('login');
     }
 
+    public function loginGuest()
+    {
+
+
+            $guest = User::createGuest();
+          //  dd((Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']]))); // return false -.-'
+            //if (Auth::attempt(['nickname' => $guest['nickname'], 'password' => $guest['password']])) {
+              //  dd("hey");
+                Auth::login($guest, $remember = false);
+                return Redirect::to('gameLobby');
+
+    }
 
     public
     function showRegisterView()

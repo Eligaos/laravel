@@ -156,23 +156,24 @@
                     </table>
                 </div>
             </div>
-            <ul id="activeGames" class="nav nav-tabs">
+            <ul id="activeGames" class="nav nav-tabs" >
                 @foreach($games as $key => $game)
                     @if($key == 0 )
-                        <li id="game{{$game->game_id}}" class='active'><a data-toggle='tab'
+                        <li id="gameTab{{$game->game_id}}" class='active'><a data-toggle='tab'
                                                                           href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a>
                         </li>
                     @else
-                        <li id="game{{$game->game_id}}"><a data-toggle='tab'
+                        <li id="gameTab{{$game->game_id}}"><a data-toggle='tab'
                                                            href="#gameHolder{{$game->game_id}}">{{$game->gameName}}</a>
                         </li>
                     @endif
                 @endforeach
             </ul>
             <div id="games-holder" class="tab-content">
+
                 @foreach($games as $key => $game)
                     @if($key == 0 )
-                        <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active">
+                        <div id="gameHolder{{$game->game_id}}" class="tab-pane fade in active"  >
                             <div ng-controller="gameController">
                                 <div class="container-fluid">
                                     <div class="row">
@@ -223,10 +224,10 @@
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
-                                                        {{--    <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
-                                                                 ng-src="@{{getImage(cols)}}" alt="img">--}}
+                                                            <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
+                                                                 ng-src="@{{getImage(cols)}}" alt="img">
 
-                                                        <flippy
+                                                    {{--    <flippy
                                                                 ng-if="cols.state != 'empty'"
                                                                 class="fancy"
                                                                 ng-class="{flipped: cols.flipped}"
@@ -242,7 +243,7 @@
                                                             </flippy-back>
 
                                                         </flippy>
-                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>
+                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>--}}
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -304,7 +305,10 @@
                                                 <tbody>
                                                 <tr ng-repeat="line in game.tiles">
                                                     <td ng-repeat="cols in line">
-                                                        <flippy
+                                                        <img ng-click="tileClick('{{Auth::user()->nickname}}', {{$game->game_id}}, cols)"
+                                                             ng-src="@{{getImage(cols)}}" alt="img">
+
+                                                      {{--  <flippy
                                                                 ng-if="cols.state != 'empty'"
                                                                 class="fancy"
                                                                 ng-class="{flipped:cols.flipped}"
@@ -320,7 +324,7 @@
                                                             </flippy-back>
 
                                                         </flippy>
-                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>
+                                                        <img ng-if="cols.state == 'empty'" ng-src="img/empty.png"/>--}}
                                                     </td>
                                                 </tr>
                                                 </tbody>
