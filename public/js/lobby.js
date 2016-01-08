@@ -141,7 +141,7 @@
                        $scope.timer = $interval(
                            function () {
                                $scope.game.gamePlayers[0]["time"]++;
-                           }, 1000);
+                           }, 100);
                    }
                    socket.emit("playMove", user, gameID, tile, $scope.game.gamePlayers[0]["time"]);
                 }
